@@ -10,8 +10,8 @@ public class Carnivore extends Animal {
     private int hungerRate;
     private int hungerChange;
 
-    public Carnivore(int maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, int hungerRate, double attackPoints) {
-        super(maxAge, weight, mainHabitat, livingType, reproductionRate);
+    public Carnivore(String animalType, int maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, int hungerRate, double attackPoints) {
+        super(animalType, maxAge, weight, mainHabitat, livingType, reproductionRate);
         this.hungerRate = hungerRate;
         this.attackPoints = attackPoints;
         this.hungerChange = new Random().nextInt(1, 20);
@@ -19,7 +19,7 @@ public class Carnivore extends Animal {
 
     @Override
     public Carnivore reproduce() {
-        return new Carnivore(getMaxAge(), getWeight(), getMainHabitat(), getLivingType(), getReproductionRate(), hungerRate, 0);
+        return new Carnivore(getAnimalType(), getMaxAge(), getWeight(), getMainHabitat(), getLivingType(), getReproductionRate(), hungerRate, 0);
     }
 
     public double getAttackSuccess(Herbivore herbivore) {
@@ -27,6 +27,7 @@ public class Carnivore extends Animal {
 
         int groupOfAttackers = isInGroup();
 
+        //TODO CHECK IF ITS A GROUP WITH THE ENUM CLASS
         if(groupOfAttackers > 1) {
             success *= 0.7;
         }
@@ -49,6 +50,9 @@ public class Carnivore extends Animal {
 
     public void increaseHungerLevel(double hunger) {
         hungerRate += hunger;
+        if(hungerRate >= 100) {
+            hungerRate = 100;
+        }
     }
 
     public void decreaseHungerLevel(double hunger) {

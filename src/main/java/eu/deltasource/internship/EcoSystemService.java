@@ -15,16 +15,24 @@ public class EcoSystemService {
     private AnimalRepository animalRepository = new AnimalRepository();
     private BiomeRepository biomeRepository = new BiomeRepository();
 
+    private List<Carnivore> carnivores = carnivoreRepository.getCarnivores();
+    private List<Herbivore> herbivores = herbivoreRepository.getHerbivores();
+    private List<Animal> animals = animalRepository.getAnimals();
+
     private void updateRepositories() {
         Biome savanna = new Biome(HabitatEnum.LAND, BiomeEnum.SAVANNA);
 
         EcoSystem ecoSystem = new EcoSystem(savanna);
 
-        Herbivore zebra = new Herbivore(50, 300, HabitatEnum.LAND, LivingType.GROUP, 10, 80);
+        Herbivore zebra = new Herbivore("zebra",50, 300, HabitatEnum.LAND, LivingType.GROUP, 10, 80);
         Herbivore hare = new Herbivore(24, 5, HabitatEnum.LAND, LivingType.ALONE, 3, 100);
         Herbivore gazelle = new Herbivore(25, 25, HabitatEnum.LAND, LivingType.GROUP, 5, 80);
         Herbivore buffalo = new Herbivore(24, 5, HabitatEnum.LAND, LivingType.GROUP, 9, 40);
-        herbivoreRepository.addHerbivore(zebra, hare, gazelle, buffalo);
+        Herbivore krava = new Herbivore(11, 50, HabitatEnum.LAND, LivingType.GROUP, 11, 10);
+        Herbivore prasa = new Herbivore(14, 80, HabitatEnum.LAND, LivingType.GROUP, 5, 20);
+        Herbivore kon = new Herbivore(4, 100, HabitatEnum.LAND, LivingType.GROUP, 6, 90);
+        Herbivore koza = new Herbivore(18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
+        herbivoreRepository.addHerbivore(zebra, hare, gazelle, buffalo, krava, prasa, kon, koza);
 
         Carnivore lion = new Carnivore(30, 150, HabitatEnum.LAND, LivingType.GROUP, 6, 20, 80);
         Carnivore cheetah = new Carnivore(30, 60, HabitatEnum.LAND, LivingType.ALONE, 5, 15, 110);
@@ -39,10 +47,6 @@ public class EcoSystemService {
 
     public void simulateIteration() {
         updateRepositories();
-
-        List<Carnivore> carnivores = carnivoreRepository.getCarnivores();
-        List<Herbivore> herbivores = herbivoreRepository.getHerbivores();
-        List<Animal> animals = animalRepository.getAnimals();
 
         for (Carnivore carnivore : carnivores) {
             if (carnivore.getHungerRate() >= 100) {
@@ -64,7 +68,7 @@ public class EcoSystemService {
                     // calculate the success rate of the attack
                     double successRate = carnivore.getAttackSuccess(target);
 
-                    double random = new Random().nextDouble(1, 100);
+                    int random = new Random().nextInt(1, 100);
                     // if the attack is successful
                     if (successRate > random) {
                         double food = target.getWeight() / carnivores.size();
@@ -78,30 +82,19 @@ public class EcoSystemService {
                     }
                 }
             }
-// TODO FIGURE OUT THE animals collection with all animals
+
             // increase the age of all animals
             for (Animal animal : animals) {
                 animal.increaseAge();
             }
 
             // check if any animal has reached its maximum age
-//        Iterator<Animal> animalIterator = animals.iterator();
-
-            while (animals.size() != 2) {
-                for (int i = 0; i < animals.size() - 1; i++) {
-                    Animal currentAnimal = animals.get(i);
-                    if (currentAnimal.isAlive()) {
-                        animals.remove(currentAnimal);
-                    }
+            for (int i = 0; i < animals.size() - 1; i++) {
+                Animal currentAnimal = animals.get(i);
+                if (currentAnimal.isAlive()) {
+                    animals.remove(currentAnimal);
                 }
             }
-
-//        while (animalIterator.hasNext()) {
-//            Animal animal = animalIterator.next();
-//            if (!animal.isAlive()) {
-//                animalIterator.remove();
-//            }
-//        }
 
             // reproduce new animals
             for (Animal animal : animals) {
@@ -112,45 +105,21 @@ public class EcoSystemService {
         }
     }
 
-//    public void simulateEcoSystem() {
-//        updateRepositories();
-//
-//        List<Carnivore> carnivores = carnivoreRepository.getCarnivores();
-//        List<Herbivore> herbivores = herbivoreRepository.getHerbivores();
-//
-//        while (carnivores.size() != 0 && herbivores.size() != 0) {
-//            for (Carnivore carnivore : carnivores) {
-//                Herbivore herbivore = herbivores.get(new Random().nextInt(herbivores.size()));
-//
-//
-//
-//                double successRate = carnivore.getAttackSuccess(herbivore);
-//                int randomNumber = new Random().nextInt(1, 100);
-//
-//                if (successRate > randomNumber) {
-//                    double portion = herbivore.getWeight() / carnivores.size();
-//                    for (Carnivore carnivore1 : carnivores) {
-//                        double hungerRate = carnivore1.getHungerRate() - portion;
-//                        carnivore1.setHungerRate(hungerRate);
-//
-//                        if(carnivore1.getHungerRate() >= 100) {
-//                            carnivores.remove(carnivore1);
-//                        }
-//                    }
-//                    double hungerRate = carnivore.getHungerRate();
-//                    hungerRate -= 2 * portion;
-//                    carnivore.setHungerRate(hungerRate);
-//                }
-//                double hungerRate = carnivore.getHungerRate();
-//                hungerRate += carnivore.getHungerChange();
-//                carnivore.setHungerRate(hungerRate);
-//
-//                if (carnivore.getHungerRate() >= 100) {
-//                    carnivores.remove(carnivore);
-//                }
-//            }
-//        }
-//
-//    }
+    public String print() {
+        StringBuilder sb = new StringBuilder();
+
+        if(animals.isEmpty()) {
+            sb.append("No more animals alive left.");
+            return sb.toString();
+        }
+
+        sb.append("Animals left to live: \n");
+
+        for (Animal animal : animals) {
+            sb.append(animal);
+        }
+
+        return sb.toString();
+    }
 
 }

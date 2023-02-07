@@ -6,8 +6,8 @@ import eu.deltasource.internship.enums.LivingType;
 public class Herbivore extends Animal {
     private double escapePoints;
 
-    public Herbivore(int maxAge, int weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, double escapePoints) {
-        super(maxAge, weight, mainHabitat, livingType, reproductionRate);
+    public Herbivore(String animalType, int maxAge, int weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, double escapePoints) {
+        super(animalType, maxAge, weight, mainHabitat, livingType, reproductionRate);
         this.escapePoints = escapePoints;
     }
 
