@@ -21,5 +21,9 @@ public class Biome {
     public BiomeEnum getBiome() {
         return biome;
     }
-
+    
+    @Override
+    public String toString() {
+        return biome.toString();
+    }
 }

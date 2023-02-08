@@ -9,117 +9,168 @@ import java.util.List;
 import java.util.Random;
 
 public class EcoSystemService {
-
     private CarnivoreRepository carnivoreRepository = new CarnivoreRepository();
     private HerbivoreRepository herbivoreRepository = new HerbivoreRepository();
     private AnimalRepository animalRepository = new AnimalRepository();
     private BiomeRepository biomeRepository = new BiomeRepository();
-
-    private List<Carnivore> carnivores = carnivoreRepository.getCarnivores();
-    private List<Herbivore> herbivores = herbivoreRepository.getHerbivores();
-    private List<Animal> animals = animalRepository.getAnimals();
-
+    private GroupRepository groupRepository = new GroupRepositoryImpl();
+    
     private void updateRepositories() {
         Biome savanna = new Biome(HabitatEnum.LAND, BiomeEnum.SAVANNA);
-
+        
         EcoSystem ecoSystem = new EcoSystem(savanna);
 
-        Herbivore zebra = new Herbivore("zebra",50, 300, HabitatEnum.LAND, LivingType.GROUP, 10, 80);
-        Herbivore hare = new Herbivore(24, 5, HabitatEnum.LAND, LivingType.ALONE, 3, 100);
-        Herbivore gazelle = new Herbivore(25, 25, HabitatEnum.LAND, LivingType.GROUP, 5, 80);
-        Herbivore buffalo = new Herbivore(24, 5, HabitatEnum.LAND, LivingType.GROUP, 9, 40);
-        Herbivore krava = new Herbivore(11, 50, HabitatEnum.LAND, LivingType.GROUP, 11, 10);
-        Herbivore prasa = new Herbivore(14, 80, HabitatEnum.LAND, LivingType.GROUP, 5, 20);
-        Herbivore kon = new Herbivore(4, 100, HabitatEnum.LAND, LivingType.GROUP, 6, 90);
-        Herbivore koza = new Herbivore(18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
-        herbivoreRepository.addHerbivore(zebra, hare, gazelle, buffalo, krava, prasa, kon, koza);
+//        Herbivore zebra = new Herbivore("zebra", 50, 300, HabitatEnum.LAND, LivingType.GROUP, 10, 80);
+//        Herbivore hare = new Herbivore("hare", 24, 5, HabitatEnum.LAND, LivingType.ALONE, 3, 100);
+//        Herbivore gazelle = new Herbivore("gazelle", 25, 25, HabitatEnum.LAND, LivingType.GROUP, 5, 80);
+//        Herbivore buffalo = new Herbivore("buffalo", 24, 5, HabitatEnum.LAND, LivingType.GROUP, 9, 40);
+//        Herbivore krava = new Herbivore("krava", 11, 50, HabitatEnum.LAND, LivingType.GROUP, 11, 10);
+//        Herbivore prasa = new Herbivore("prasa", 14, 80, HabitatEnum.LAND, LivingType.GROUP, 5, 20);
+        Herbivore kon = new Herbivore("kon", 4, 100, HabitatEnum.LAND, LivingType.GROUP, 6, 90);
+        Herbivore koza = new Herbivore("koza", 18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
+//        herbivoreRepository.addHerbivore(zebra, hare, gazelle, buffalo, krava, prasa, kon, koza);
+        herbivoreRepository.addHerbivore(kon, koza);
 
-        Carnivore lion = new Carnivore(30, 150, HabitatEnum.LAND, LivingType.GROUP, 6, 20, 80);
-        Carnivore cheetah = new Carnivore(30, 60, HabitatEnum.LAND, LivingType.ALONE, 5, 15, 110);
-        Carnivore tiger = new Carnivore(20, 200, HabitatEnum.LAND, LivingType.ALONE, 6, 18, 75);
-        Carnivore hyena = new Carnivore(24, 50, HabitatEnum.LAND, LivingType.GROUP, 5, 14, 80);
-        carnivoreRepository.addCarnivore(lion, cheetah, tiger, hyena);
+//        Carnivore lion = new Carnivore("lion", 30, 150, HabitatEnum.LAND, LivingType.GROUP, 6, 20, 80);
+//        Carnivore cheetah = new Carnivore("cheetah", 30, 60, HabitatEnum.LAND, LivingType.ALONE, 5, 15, 110);
+        Carnivore tiger = new Carnivore("tiger", 20, 200, HabitatEnum.LAND, LivingType.ALONE, 6, 18, 75);
+        Carnivore hyena = new Carnivore("hyena", 24, 50, HabitatEnum.LAND, LivingType.GROUP, 5, 14, 80);
+//        carnivoreRepository.addCarnivore(lion, cheetah, tiger, hyena);
+        carnivoreRepository.addCarnivore(tiger, hyena);
 
-        animalRepository.addAnimal(zebra, hare, gazelle, buffalo, lion, cheetah, tiger, hyena);
-
+//        animalRepository.addAnimal(zebra, hare, gazelle, buffalo, krava, prasa, kon, koza, lion, cheetah, tiger, hyena);
+        animalRepository.addAnimal(kon, koza, tiger, hyena);
+        
         biomeRepository.addBiome(savanna);
     }
-
+    
     public void simulateIteration() {
+        List<Carnivore> carnivores = carnivoreRepository.getCarnivores();
+        List<Herbivore> herbivores = herbivoreRepository.getHerbivores();
+        List<Animal> animals = animalRepository.getAnimals();
+        List<Group> carnivoresGroup = groupRepository.getCarnivoresGroup();
+        
         updateRepositories();
-
-        for (Carnivore carnivore : carnivores) {
+        
+        List<Biome> biomes = biomeRepository.getBiomes();
+        System.out.println("Action happening in the " + biomes.get(0));
+        while (carnivores.size() != 0 && herbivores.size() != 0) {
+            Carnivore carnivore = carnivores.get(new Random().nextInt(carnivores.size()));
+            Herbivore herbivore = herbivores.get(new Random().nextInt(herbivores.size()));
+            herbivore.changeGroupingFactor();
+            
             if (carnivore.getHungerRate() >= 100) {
+                System.out.println(carnivore.getAnimalType() + " died out of hunger.");
+                carnivores.remove(carnivore);
+                animals.remove(carnivore);
+                break;
+            }
+            
+            if (carnivore.isAlive()) {
+                animals.remove(carnivore);
                 carnivores.remove(carnivore);
                 break;
             }
-            while (carnivore.isAlive()) {
-                // increase the hunger level
-                carnivore.increaseHungerLevel(carnivore.getHungerChange());
-
-                // check if the carnivore is still alive
-                if (carnivore.isAlive()) {
-                    if (herbivores.size() == 0) {
-                        break;
-                    }
-                    // find a target herbivore to attack
-                    Herbivore target = herbivores.get(new Random().nextInt(herbivores.size()));
-
-                    // calculate the success rate of the attack
-                    double successRate = carnivore.getAttackSuccess(target);
-
-                    int random = new Random().nextInt(1, 100);
-                    // if the attack is successful
-                    if (successRate > random) {
-                        double food = target.getWeight() / carnivores.size();
-                        for (Carnivore groupMember : carnivores) {
-                            groupMember.decreaseHungerLevel(food);
-                        }
-                        // the carnivore that performed the attack receives two portions
+            
+            //calculates the success rate of the attack
+            double successRate = carnivore.getAttackSuccess(herbivore);
+            
+            int random = new Random().nextInt(1, 100);
+            
+            double food = 0;
+            if (carnivore.getLivingType().equals(LivingType.GROUP)) {
+                createGroup(carnivore);
+                int randomAttackers = carnivoresGroup.size();
+                food = (herbivore.getWeight() / randomAttackers);
+            }
+            
+            //if the attack is successful
+            if (successRate > random) {
+                System.out.println(carnivore.getAnimalType() + " attacked " + herbivore.getAnimalType());
+                for (Carnivore groupMember : carnivores) {
+                    
+                    if (groupMember.equals(carnivore)) {
                         carnivore.decreaseHungerLevel(food * 2);
-//                    herbivores.remove(target);
-                        herbivores.remove(target);
+                    }
+                    
+                    for (Group groups : carnivoresGroup) {
+                        List<Animal> animals1 = groups.getAnimals();
+                        if (animals1.contains(carnivore)) {
+                        
+                        }
                     }
                 }
+                
+                
+                //the carnivore that performed the attack receives two portions
+                herbivores.remove(herbivore);
+                animals.remove(herbivore);
+            } else {
+                double escapePoints = 7;
+                herbivore.increaseEscapePoints(escapePoints);
+                carnivore.increaseHungerLevel(food);
             }
 
-            // increase the age of all animals
-            for (Animal animal : animals) {
-                animal.increaseAge();
-            }
-
-            // check if any animal has reached its maximum age
+//            }
+            
+            //checks if any animal has reached its maximum age
             for (int i = 0; i < animals.size() - 1; i++) {
                 Animal currentAnimal = animals.get(i);
                 if (currentAnimal.isAlive()) {
                     animals.remove(currentAnimal);
                 }
             }
-
-            // reproduce new animals
+            
+            //increase the age of all animals
             for (Animal animal : animals) {
-                if (new Random().nextDouble(animal.getReproductionRate()) == 0) {
-                    animals.add(animal.reproduce());
+                if (animal.getAge() > animal.getMaxAge()) {
+                    animals.remove(animal);
+                    break;
                 }
+                animal.increaseAge();
             }
         }
+        //reproduce new animals
+        for (Animal animal : animals) {
+            animal.reproduce();
+        }
     }
-
+    
     public String print() {
         StringBuilder sb = new StringBuilder();
-
-        if(animals.isEmpty()) {
+        
+        List<Animal> animals = animalRepository.getAnimals();
+        
+        if (animals.isEmpty()) {
             sb.append("No more animals alive left.");
             return sb.toString();
         }
-
+        
         sb.append("Animals left to live: \n");
-
+        
         for (Animal animal : animals) {
             sb.append(animal);
         }
-
+        
         return sb.toString();
     }
-
+    
+    private void createGroup(Carnivore carnivore) {
+        Group group = new Group();
+        List<Animal> animals = animalRepository.getAnimals();
+        group.addAnimal(carnivore);
+        for (int i = 0; i <= 4; i++) {
+            int maxAge = new Random().nextInt(0, carnivore.getMaxAge());
+            double weight = new Random().nextDouble(0, carnivore.getWeight());
+            double productionRate = new Random().nextDouble(1, carnivore.getReproductionRate());
+            int hungerRate = new Random().nextInt(0, carnivore.getHungerRate());
+            int attackPoints = new Random().nextInt(0, carnivore.getAttackPoints());
+            
+            Carnivore animalInGroup = new Carnivore(carnivore.getAnimalType(), maxAge, weight, carnivore.getMainHabitat(), carnivore.getLivingType(), productionRate, hungerRate, attackPoints);
+            animals.add(animalInGroup);
+            group.addAnimal(animalInGroup);
+        }
+        groupRepository.addToGroup(group);
+    }
+    
 }

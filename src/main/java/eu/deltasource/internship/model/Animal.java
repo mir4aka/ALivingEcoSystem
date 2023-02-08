@@ -3,6 +3,8 @@ package eu.deltasource.internship.model;
 import eu.deltasource.internship.enums.HabitatEnum;
 import eu.deltasource.internship.enums.LivingType;
 
+import java.util.Random;
+
 public abstract class Animal {
     private String animalType;
     private int age;
@@ -19,19 +21,22 @@ public abstract class Animal {
         this.mainHabitat = mainHabitat;
         this.livingType = livingType;
         this.reproductionRate = reproductionRate;
-        this.age = 1;
+        this.age = new Random().nextInt(1, 5);
     }
 
-    public Carnivore reproduce() {
-        return new Carnivore(getMaxAge(), getWeight(), getMainHabitat(), getLivingType(), getReproductionRate(), 20, 0);
+    public void reproduce() {
+        new Carnivore(getAnimalType(), getMaxAge(), getWeight(), getMainHabitat(), getLivingType(), getReproductionRate(), 20, 0);
     }
 
     public void increaseAge() {
         this.age++;
+        if(getAge() > getMaxAge()) {
+            this.age = getMaxAge();
+        }
     }
 
     public boolean isAlive() {
-        return this.age <= this.maxAge;
+        return this.age < this.maxAge;
     }
 
     public String getAnimalType() {
@@ -72,5 +77,17 @@ public abstract class Animal {
 
     public LivingType getLivingType() {
         return livingType;
+    }
+
+    @Override
+    public String toString() {
+        return "Type of animal = " + getClass().getSimpleName() + "\n" +
+                "Animal = " + animalType + "\n" +
+                "Age = " + age + "\n"+
+                "----------------\n";
+    }
+    
+    double scalePoints(double points) {
+        return points * (1 - (double)age / maxAge);
     }
 }

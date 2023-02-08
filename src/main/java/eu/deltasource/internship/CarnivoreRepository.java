@@ -16,10 +16,14 @@ public class CarnivoreRepository {
     }
 
     public List<Carnivore> getCarnivores() {
-        return Collections.unmodifiableList(carnivores);
+        return carnivores;
     }
 
     public void addCarnivore(Carnivore... animals) {
         carnivores.addAll(Arrays.asList(animals));
+    }
+
+    public void removeCarnivore(Carnivore animal) {
+        carnivores.remove(animal);
     }
 }
