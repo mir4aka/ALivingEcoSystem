@@ -7,25 +7,30 @@ import java.util.Random;
 
 public class Herbivore extends Animal {
     private double escapePoints;
-    private double grouping;
-
-    public Herbivore(String animalType, int maxAge, int weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, int escapePoints) {
+    
+    public Herbivore(String animalType, int maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, double escapePoints) {
         super(animalType, maxAge, weight, mainHabitat, livingType, reproductionRate);
         this.escapePoints = escapePoints;
-        this.grouping = 1;
     }
-
+    
+    public Herbivore reproduce() {
+        Herbivore herbivore = new Herbivore(getAnimalType(), getMaxAge(), getWeight(), getMainHabitat(), getLivingType(), getReproductionRate(), getEscapePoints());
+        herbivore.setAge(0);
+        return herbivore;
+    }
+    
+    
     public double getEscapePoints() {
         return escapePoints;
     }
-
+    
     public void setEscapePoints(int escapePoints) {
         this.escapePoints = escapePoints;
     }
-
+    
     public void decreaseEscapePoints(double points) {
         escapePoints -= points;
-        if(escapePoints < 0) {
+        if (escapePoints < 0) {
             escapePoints = 0;
         }
     }
@@ -38,11 +43,9 @@ public class Herbivore extends Animal {
         return scalePoints(escapePoints);
     }
     
-    public double getGrouping() {
-        return grouping;
-    }
-    
-    public void changeGroupingFactor() {
-        this.grouping = new Random().nextDouble(1, 3);
+    @Override
+    public String toString() {
+        return getAnimalType() + "\n" +
+                "escapePoints = " + escapePoints;
     }
 }

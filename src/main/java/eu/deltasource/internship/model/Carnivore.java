@@ -17,17 +17,18 @@ public class Carnivore extends Animal {
         this.hungerChange = new Random().nextInt(1, 20);
     }
     
-    @Override
-    public void reproduce() {
-        new Carnivore(getAnimalType(), getMaxAge(), getWeight(), getMainHabitat(), getLivingType(), getReproductionRate(), hungerRate, 0);
+    public Carnivore reproduce() {
+        Carnivore carnivore = new Carnivore(getAnimalType(), getMaxAge(), getWeight(), getMainHabitat(), getLivingType(), getReproductionRate(), hungerRate, 0);
+        carnivore.setAge(0);
+        return carnivore;
     }
     
     public double getAttackSuccess(Herbivore herbivore) {
-        int attackPoints = getAttackPoints();
-        double escapePoints = herbivore.getEscapePoints();
+        double attackPoints = getScaledAttackPoints();
+        double escapePoints = herbivore.getScaledEscapePoints();
         double successRate = attackPoints / (attackPoints + escapePoints) * 100;
         
-        if(getLivingType().equals(LivingType.ALONE)) {
+        if (getLivingType().equals(LivingType.ALONE)) {
             successRate *= 0.5;
         }
         
@@ -38,16 +39,12 @@ public class Carnivore extends Animal {
         return successRate;
     }
     
-    private int isInGroup() {
-        return new Random().nextInt(1, 15);
-    }
-    
     @Override
     public boolean isAlive() {
-        return getAge() >= getMaxAge() || hungerRate >= 100;
+        return getAge() > getMaxAge() || hungerRate >= 100;
     }
     
-    double getScaledAttackPoints(double points) {
+    double getScaledAttackPoints() {
         return scalePoints(attackPoints);
     }
     

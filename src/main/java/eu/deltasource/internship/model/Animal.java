@@ -24,10 +24,6 @@ public abstract class Animal {
         this.age = new Random().nextInt(1, 5);
     }
 
-    public void reproduce() {
-        new Carnivore(getAnimalType(), getMaxAge(), getWeight(), getMainHabitat(), getLivingType(), getReproductionRate(), 20, 0);
-    }
-
     public void increaseAge() {
         this.age++;
         if(getAge() > getMaxAge()) {
@@ -39,6 +35,10 @@ public abstract class Animal {
         return this.age < this.maxAge;
     }
 
+    public void decreaseReproductionRate() {
+        this.reproductionRate--;
+    }
+    
     public String getAnimalType() {
         return animalType;
     }

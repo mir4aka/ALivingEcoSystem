@@ -1,11 +1,11 @@
 package eu.deltasource.internship;
 
-import java.time.LocalDateTime;
+import eu.deltasource.internship.service.EcoSystemService;
 
 public class Main {
     public static void main(String[] args) {
         EcoSystemService ecoSystemService = new EcoSystemService();
-        ecoSystemService.simulateIteration();
+        ecoSystemService.simulateEcoSystem();
 
         System.out.println(ecoSystemService.print());
     }
