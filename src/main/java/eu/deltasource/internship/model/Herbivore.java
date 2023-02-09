@@ -7,10 +7,12 @@ import java.util.Random;
 
 public class Herbivore extends Animal {
     private double escapePoints;
+    private double originalEscapePoints;
     
     public Herbivore(String animalType, int maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, double escapePoints) {
         super(animalType, maxAge, weight, mainHabitat, livingType, reproductionRate);
         this.escapePoints = escapePoints;
+        this.originalEscapePoints = escapePoints;
     }
     
     public Herbivore reproduce() {
@@ -46,6 +48,10 @@ public class Herbivore extends Animal {
     @Override
     public String toString() {
         return getAnimalType() + "\n" +
-                "escapePoints = " + escapePoints;
+                "escapePoints = " + escapePoints + "\n";
+    }
+    
+    public double getOriginalEscapePoints() {
+        return this.originalEscapePoints;
     }
 }

@@ -1,7 +1,5 @@
 package eu.deltasource.internship.model;
 
-import eu.deltasource.internship.model.Animal;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;

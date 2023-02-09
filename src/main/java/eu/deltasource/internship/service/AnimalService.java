@@ -10,6 +10,7 @@ import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Carnivore;
 import eu.deltasource.internship.model.Herbivore;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -17,6 +18,7 @@ public class AnimalService {
     private CarnivoreRepository carnivoreRepository = new CarnivoreRepositoryImpl();
     private HerbivoreRepository herbivoreRepository = new HerbivoreRepositoryImpl();
     private AnimalRepository animalRepository = new AnimalRepositoryImpl();
+    private List<Animal> newBornAnimals = new ArrayList<>();
     
     public void addCarnivore(Carnivore... carnivores) {
         for (Carnivore carnivore : carnivores) {
@@ -46,9 +48,9 @@ public class AnimalService {
         return Collections.unmodifiableList(herbivoreRepository.getHerbivores());
     }
     
-    public void addAnimal(Animal... animals) {
+    public void addAnimals(Animal... animals) {
         for (Animal animal : animals) {
-            animalRepository.addAnimal(animals);
+            animalRepository.addAnimal(animal);
         }
     }
     
@@ -58,5 +60,13 @@ public class AnimalService {
     
     public List<Animal> getAnimals() {
         return Collections.unmodifiableList(animalRepository.getAnimals());
+    }
+    
+    public void addNewBorn(Animal animal) {
+        newBornAnimals.add(animal);
+    }
+    
+    public List<Animal> getNewBornAnimals() {
+        return Collections.unmodifiableList(newBornAnimals);
     }
 }

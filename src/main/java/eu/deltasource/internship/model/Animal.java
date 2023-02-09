@@ -13,6 +13,7 @@ public abstract class Animal {
     private HabitatEnum mainHabitat;
     private double reproductionRate;
     private LivingType livingType;
+    private double originalReproductionRate;
 
     public Animal(String animalType, int maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate) {
         this.animalType = animalType;
@@ -22,6 +23,7 @@ public abstract class Animal {
         this.livingType = livingType;
         this.reproductionRate = reproductionRate;
         this.age = new Random().nextInt(1, 5);
+        this.originalReproductionRate = reproductionRate;
     }
 
     public void increaseAge() {
@@ -79,15 +81,20 @@ public abstract class Animal {
         return livingType;
     }
 
+    
+    double scalePoints(double points) {
+        return points * (1 - (double)age / maxAge);
+    }
+    
+    public double getOriginalReproductionRate() {
+        return originalReproductionRate;
+    }
+    
     @Override
     public String toString() {
         return "Type of animal = " + getClass().getSimpleName() + "\n" +
                 "Animal = " + animalType + "\n" +
-                "Age = " + age + "\n"+
+                "Age = " + age + "\n" +
                 "----------------\n";
-    }
-    
-    double scalePoints(double points) {
-        return points * (1 - (double)age / maxAge);
     }
 }
