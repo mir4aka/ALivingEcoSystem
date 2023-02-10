@@ -7,7 +7,7 @@ import java.util.Random;
 
 public class Herbivore extends Animal {
     private double escapePoints;
-    private double originalEscapePoints;
+    private final double originalEscapePoints;
     
     public Herbivore(String animalType, int maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, double escapePoints) {
         super(animalType, maxAge, weight, mainHabitat, livingType, reproductionRate);

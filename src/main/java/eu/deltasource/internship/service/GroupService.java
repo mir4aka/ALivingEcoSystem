@@ -13,7 +13,7 @@ public class GroupService {
     private GroupRepository groupRepository = new GroupRepositoryImpl();
     
     public void addToGroup(Group group) {
-        groupRepository.addToGroup(group);
+        groupRepository.addGroupOfCarnivores(group);
     }
     
     public List<Carnivore> findCarnivoreInGroup(Carnivore carnivore) {
@@ -25,6 +25,6 @@ public class GroupService {
     }
     
     public List<Group> getGroups() {
-        return Collections.unmodifiableList(groupRepository.getAnimalsGroup());
+        return Collections.unmodifiableList(groupRepository.getCarnivoresGroup());
     }
 }

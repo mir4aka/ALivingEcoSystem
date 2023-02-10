@@ -8,13 +8,15 @@ import java.util.Random;
 public class Carnivore extends Animal {
     private int attackPoints;
     private int hungerRate;
-    private int hungerChange;
+    private final int originalAttackPoints;
+    private final int originalHungerRate;
     
     public Carnivore(String animalType, int maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, int hungerRate, int attackPoints) {
         super(animalType, maxAge, weight, mainHabitat, livingType, reproductionRate);
         this.hungerRate = hungerRate;
         this.attackPoints = attackPoints;
-        this.hungerChange = new Random().nextInt(1, 20);
+        this.originalAttackPoints = attackPoints;
+        this.originalHungerRate = hungerRate;
     }
     
     public Carnivore reproduce() {
@@ -62,10 +64,6 @@ public class Carnivore extends Animal {
         }
     }
     
-    public double getHungerChange() {
-        return hungerChange;
-    }
-    
     public int getAttackPoints() {
         return attackPoints;
     }
@@ -80,6 +78,14 @@ public class Carnivore extends Animal {
     
     public void setHungerRate(int hungerRate) {
         this.hungerRate = hungerRate;
+    }
+    
+    public int getOriginalAttackPoints() {
+        return originalAttackPoints;
+    }
+    
+    public int getOriginalHungerRate() {
+        return originalHungerRate;
     }
     
     @Override

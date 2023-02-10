@@ -2,6 +2,8 @@ package eu.deltasource.internship.service;
 
 import eu.deltasource.internship.BiomeRepository.BiomeRepository;
 import eu.deltasource.internship.BiomeRepository.BiomeRepositoryImpl;
+import eu.deltasource.internship.GroupRepository.GroupRepository;
+import eu.deltasource.internship.GroupRepository.GroupRepositoryImpl;
 import eu.deltasource.internship.model.Group;
 import eu.deltasource.internship.enums.BiomeEnum;
 import eu.deltasource.internship.enums.HabitatEnum;
@@ -16,7 +18,7 @@ public class EcoSystemService {
     private AnimalService animalService = new AnimalService();
     private GroupService groupService = new GroupService();
     private BiomeRepository biomeRepository = new BiomeRepositoryImpl();
-    private Group group = new Group();
+    private GroupRepository gr = new GroupRepositoryImpl();
     
     private void updateRepositories() {
         Biome savanna = new Biome(HabitatEnum.LAND, BiomeEnum.SAVANNA);
@@ -48,17 +50,20 @@ public class EcoSystemService {
     }
     
     public void simulateEcoSystem() {
+        updateRepositories();
+        
         List<Carnivore> carnivores = animalService.getCarnivores();
         List<Herbivore> herbivores = animalService.getHerbivores();
         List<Animal> animals = animalService.getAnimals();
-    
+        
         List<Animal> newBornAnimals = animalService.getNewBornAnimals();
-    
+        
         for (Animal newBornAnimal : newBornAnimals) {
             animalService.addAnimals(newBornAnimal);
         }
-    
-        updateRepositories();
+        
+        animalService.clearNewBornAnimalsList();
+        
         
         String biome = biomeRepository.getBiome();
         
@@ -95,7 +100,10 @@ public class EcoSystemService {
                 double foodInKg = herbivore.getWeight();
                 if (carnivore.getLivingType().equals(LivingType.GROUP)) {
                     createGroupOfCarnivores(carnivore);
-                    int attackersAmount = group.getAnimals().size();
+                    List<Group> groups = animalService.getGroups();
+                    List<Animal> groupOfAnimals = animalService.findGroup(groups, carnivore);
+    
+                    int attackersAmount = groupOfAnimals.size();
                     foodInKg /= attackersAmount + 1;
                 }
                 
@@ -138,18 +146,17 @@ public class EcoSystemService {
                 System.out.println(carnivore.getAnimalType() + " died out of hunger.");
                 animalService.removeAnimal(carnivore);
                 animalService.removeCarnivore(carnivore);
-                break;
             }
             
             if (carnivores.size() == 0 && herbivores.size() == 0) {
                 break;
             }
+            
             //increase the age of all animals
             for (Animal animal : animals) {
                 if (animal.getAge() > animal.getMaxAge()) {
                     System.out.println("Animal " + animal.getAnimalType() + " died naturally." + animal.getAge());
                     animalService.removeAnimal(animal);
-                    break;
                 }
                 animal.increaseAge();
                 animal.decreaseReproductionRate();
@@ -195,25 +202,28 @@ public class EcoSystemService {
     }
     
     private void createGroupOfCarnivores(Carnivore carnivore) {
-        List<Carnivore> carnivores = animalService.getCarnivores();
-        group.addAnimal(carnivore);
+        Group groupOfCarnivores = new Group();
+        
+        groupOfCarnivores.addAnimal(carnivore);
         for (int i = 0; i < 3; i++) {
             int maxAge = new Random().nextInt(0, carnivore.getMaxAge());
             double weight = new Random().nextDouble(0, carnivore.getWeight());
             double productionRate = carnivore.getOriginalReproductionRate();
-            int hungerRate = new Random().nextInt(0, carnivore.getHungerRate());
-            int attackPoints = new Random().nextInt(0, carnivore.getAttackPoints());
+            int hungerRate = new Random().nextInt(1, 100);
+            int attackPoints = new Random().nextInt(0, carnivore.getOriginalAttackPoints());
             
             Carnivore animalInGroup = new Carnivore(carnivore.getAnimalType(), maxAge, weight, carnivore.getMainHabitat(), carnivore.getLivingType(), productionRate, hungerRate, attackPoints);
+            
             animalService.addCarnivore(animalInGroup);
-            group.addAnimal(animalInGroup);
+            groupOfCarnivores.addAnimal(animalInGroup);
         }
-        groupService.addToGroup(group);
+        animalService.addGroupOfCarnivores(groupOfCarnivores);
     }
     
     private void createGroupOfHerbivores(Herbivore herbivore) {
-        List<Herbivore> herbivores = animalService.getHerbivores();
-        group.addAnimal(herbivore);
+        Group groupOfHerbivores = new Group();
+        
+        groupOfHerbivores.addAnimal(herbivore);
         for (int i = 0; i < 3; i++) {
             int maxAge = new Random().nextInt(0, herbivore.getMaxAge());
             double weight = new Random().nextDouble(0, herbivore.getWeight());
@@ -221,10 +231,11 @@ public class EcoSystemService {
             double escapePoints = herbivore.getOriginalEscapePoints();
             
             Herbivore animalInGroup = new Herbivore(herbivore.getAnimalType(), maxAge, weight, herbivore.getMainHabitat(), herbivore.getLivingType(), productionRate, escapePoints);
+            
             animalService.addHerbivore(animalInGroup);
-            group.addAnimal(animalInGroup);
+            groupOfHerbivores.addAnimal(animalInGroup);
         }
-        groupService.addToGroup(group);
+        animalService.addGroupOfHerbivores(groupOfHerbivores);
     }
     
 }

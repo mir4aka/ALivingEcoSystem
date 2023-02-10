@@ -10,20 +10,31 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public class GroupRepositoryImpl implements GroupRepository {
-    private List<Group> animalsGroup = new ArrayList<>();
+    private List<Group> carnivoresGroup = new ArrayList<>();
+    private List<Group> herbivoresGroup = new ArrayList<>();
     
     @Override
-    public List<Group> getAnimalsGroup() {
-        return Collections.unmodifiableList(animalsGroup);
+    public List<Group> getCarnivoresGroup() {
+        return carnivoresGroup;
     }
     
     @Override
-    public void addToGroup(Group group) {
-        animalsGroup.add(group);
+    public List<Group> getHerbivoresGroup() {
+        return herbivoresGroup;
+    }
+    
+    @Override
+    public void addGroupOfCarnivores(Group group) {
+        carnivoresGroup.add(group);
+    }
+    
+    @Override
+    public void addGroupOfHerbivores(Group group) {
+        herbivoresGroup.add(group);
     }
     
     public List<Carnivore> findInGroup(Carnivore animal) {
-        Group group = animalsGroup.stream()
+        Group group = carnivoresGroup.stream()
                 .filter(a -> a.getAnimals().contains(animal))
                 .findFirst()
                 .orElse(null);
@@ -41,7 +52,7 @@ public class GroupRepositoryImpl implements GroupRepository {
     
     @Override
     public List<Herbivore> findInGroup(Herbivore animal) {
-        Group group = animalsGroup.stream()
+        Group group = herbivoresGroup.stream()
                 .filter(a -> a.getAnimals().contains(animal))
                 .findFirst()
                 .orElse(null);

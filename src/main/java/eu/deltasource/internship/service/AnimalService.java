@@ -4,10 +4,13 @@ import eu.deltasource.internship.AnimalRepository.AnimalRepository;
 import eu.deltasource.internship.AnimalRepository.AnimalRepositoryImpl;
 import eu.deltasource.internship.CarnivoreRepository.CarnivoreRepository;
 import eu.deltasource.internship.CarnivoreRepository.CarnivoreRepositoryImpl;
+import eu.deltasource.internship.GroupRepository.GroupRepository;
+import eu.deltasource.internship.GroupRepository.GroupRepositoryImpl;
 import eu.deltasource.internship.HerbivoreRepository.HerbivoreRepository;
 import eu.deltasource.internship.HerbivoreRepository.HerbivoreRepositoryImpl;
 import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Carnivore;
+import eu.deltasource.internship.model.Group;
 import eu.deltasource.internship.model.Herbivore;
 
 import java.util.ArrayList;
@@ -18,7 +21,29 @@ public class AnimalService {
     private CarnivoreRepository carnivoreRepository = new CarnivoreRepositoryImpl();
     private HerbivoreRepository herbivoreRepository = new HerbivoreRepositoryImpl();
     private AnimalRepository animalRepository = new AnimalRepositoryImpl();
+    private GroupRepository groupRepository = new GroupRepositoryImpl();
     private List<Animal> newBornAnimals = new ArrayList<>();
+    
+    public void addGroupOfCarnivores(Group group) {
+        groupRepository.addGroupOfCarnivores(group);
+    }
+    
+    public void addGroupOfHerbivores(Group group) {
+        groupRepository.addGroupOfHerbivores(group);
+    }
+    
+    public List<Group> getGroups() {
+        return groupRepository.getCarnivoresGroup();
+    }
+    
+    public List<Animal> findGroup(List<Group> groups, Animal animal) {
+        List<Animal> animals = new ArrayList<>();
+        for (Group group : groups) {
+            Animal animal1 = group.getAnimals().stream().filter(g -> g.getAnimalType().equals(animal.getAnimalType())).findAny().orElse(null);
+            animals.add(animal1);
+        }
+        return animals;
+    }
     
     public void addCarnivore(Carnivore... carnivores) {
         for (Carnivore carnivore : carnivores) {
@@ -68,5 +93,9 @@ public class AnimalService {
     
     public List<Animal> getNewBornAnimals() {
         return Collections.unmodifiableList(newBornAnimals);
+    }
+    
+    public void clearNewBornAnimalsList() {
+        newBornAnimals.clear();
     }
 }
