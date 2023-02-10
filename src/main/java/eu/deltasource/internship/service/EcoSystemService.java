@@ -62,6 +62,7 @@ public class EcoSystemService {
                 lion, cheetah, tiger, hyena, kot, ko4e, galab);
     }
     
+    //TODO RUN A PROPER DEBUG SESSION
     public void simulateEcoSystem() throws InterruptedException {
         updateRepositories();
         
@@ -88,6 +89,7 @@ public class EcoSystemService {
             if (herbivores.size() == 0) {
                 for (Carnivore carnivore : carnivores) {
                     int hungerLevel = new Random().nextInt(1, 10);
+                    //TODO CHECK PROPERLY HUNGER LEVEL
                     carnivore.increaseHungerLevel(hungerLevel);
                     if (carnivore.isAlive()) {
                         System.out.println(carnivore.getAnimalType() + " died.");
@@ -169,12 +171,6 @@ public class EcoSystemService {
                     }
                 }
             }
-
-//            if (carnivore.getHungerRate() >= 100) {
-//                System.out.println(carnivore.getAnimalType() + " died out of hunger.");
-//                animalService.removeAnimal(carnivore);
-//                animalService.removeCarnivore(carnivore);
-//            }
             
             if (carnivores.size() == 0 && herbivores.size() == 0) {
                 break;
