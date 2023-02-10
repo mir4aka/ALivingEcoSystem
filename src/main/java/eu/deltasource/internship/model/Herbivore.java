@@ -54,4 +54,8 @@ public class Herbivore extends Animal {
     public double getOriginalEscapePoints() {
         return this.originalEscapePoints;
     }
+    
+    public void increaseReproductionRate(double originalReproductionRate) {
+        super.increaseReproductionRate(originalReproductionRate);
+    }
 }

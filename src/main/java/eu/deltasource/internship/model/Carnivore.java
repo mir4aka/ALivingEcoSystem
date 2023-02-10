@@ -93,4 +93,8 @@ public class Carnivore extends Animal {
         return getAnimalType() + "\n" +
                 "hungerRate = " + hungerRate + "\n";
     }
+    
+    public void increaseReproductionRate(double originalReproductionRate) {
+        super.increaseReproductionRate(originalReproductionRate);
+    }
 }

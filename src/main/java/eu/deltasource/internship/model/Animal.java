@@ -14,7 +14,9 @@ public abstract class Animal {
     private double reproductionRate;
     private LivingType livingType;
     private double originalReproductionRate;
-
+    private final int originalMaxAge;
+    private final double originalWeight;
+    
     public Animal(String animalType, int maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate) {
         this.animalType = animalType;
         this.maxAge = maxAge;
@@ -24,6 +26,8 @@ public abstract class Animal {
         this.reproductionRate = reproductionRate;
         this.age = new Random().nextInt(1, 5);
         this.originalReproductionRate = reproductionRate;
+        this.originalMaxAge = maxAge;
+        this.originalWeight = weight;
     }
 
     public void increaseAge() {
@@ -60,9 +64,17 @@ public abstract class Animal {
     public int getMaxAge() {
         return maxAge;
     }
+    
+    public int getOriginalMaxAge() {
+        return originalMaxAge;
+    }
 
     public double getWeight() {
         return weight;
+    }
+    
+    public double getOriginalWeight() {
+        return originalWeight;
     }
 
     public void setWeight(double weight) {
@@ -96,5 +108,13 @@ public abstract class Animal {
                 "Animal = " + animalType + "\n" +
                 "Age = " + age + "\n" +
                 "----------------\n";
+    }
+    
+    public void decreaseHungerLevel(Carnivore carnivore, double hungerLevel) {
+        carnivore.decreaseHungerLevel(hungerLevel);
+    }
+    
+    protected void increaseReproductionRate(double originalReproductionRate) {
+        reproductionRate += originalReproductionRate;
     }
 }

@@ -18,38 +18,51 @@ public class EcoSystemService {
     private AnimalService animalService = new AnimalService();
     private GroupService groupService = new GroupService();
     private BiomeRepository biomeRepository = new BiomeRepositoryImpl();
-    private GroupRepository gr = new GroupRepositoryImpl();
     
     private void updateRepositories() {
         Biome savanna = new Biome(HabitatEnum.LAND, BiomeEnum.SAVANNA);
         
         EcoSystem ecoSystem = new EcoSystem(savanna);
-
-//        Herbivore zebra = new Herbivore("zebra", 50, 300, HabitatEnum.LAND, LivingType.GROUP, 10, 80);
-//        Herbivore hare = new Herbivore("hare", 24, 5, HabitatEnum.LAND, LivingType.ALONE, 3, 100);
-//        Herbivore gazelle = new Herbivore("gazelle", 25, 25, HabitatEnum.LAND, LivingType.GROUP, 5, 80);
-//        Herbivore buffalo = new Herbivore("buffalo", 24, 5, HabitatEnum.LAND, LivingType.GROUP, 9, 40);
-//        Herbivore krava = new Herbivore("krava", 11, 50, HabitatEnum.LAND, LivingType.GROUP, 11, 10);
+        
+        Herbivore zebra = new Herbivore("zebra", 50, 300, HabitatEnum.LAND, LivingType.GROUP, 10, 80);
+        Herbivore hare = new Herbivore("hare", 24, 5, HabitatEnum.LAND, LivingType.ALONE, 3, 100);
+        Herbivore gazelle = new Herbivore("gazelle", 25, 25, HabitatEnum.LAND, LivingType.GROUP, 5, 80);
+        Herbivore buffalo = new Herbivore("buffalo", 24, 5, HabitatEnum.LAND, LivingType.GROUP, 9, 40);
+        Herbivore krava = new Herbivore("krava", 11, 50, HabitatEnum.LAND, LivingType.GROUP, 11, 10);
         Herbivore prasa = new Herbivore("prasa", 14, 80, HabitatEnum.LAND, LivingType.GROUP, 5, 20);
         Herbivore kon = new Herbivore("kon", 4, 100, HabitatEnum.LAND, LivingType.GROUP, 6, 90);
         Herbivore koza = new Herbivore("koza", 18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
-        animalService.addHerbivore(prasa, kon, koza);
-//        herbivoreRepository.addHerbivore(kon, koza);
+        Herbivore koza12 = new Herbivore("koza5334", 18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
+        Herbivore koza123 = new Herbivore("koza756756", 18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
+        Herbivore koza1234556756765 = new Herbivore("koza75675", 18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
+        Herbivore koza12534 = new Herbivore("koza545654", 18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
+        Herbivore koza12654 = new Herbivore("koza456", 18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
+        Herbivore koza12756 = new Herbivore("koza3454324", 18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
+        Herbivore koza127867 = new Herbivore("koza5467657", 18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
+        Herbivore koza1296854 = new Herbivore("koza6754", 18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
+        Herbivore koza12435654 = new Herbivore("koza7574543", 18, 45, HabitatEnum.LAND, LivingType.GROUP, 4, 60);
+        animalService.addHerbivore(zebra, hare, gazelle, buffalo, krava, prasa, kon, koza, koza12, koza123, koza1234556756765, koza12534, koza12654, koza12756, koza127867, koza1296854, koza12435654);
         
         Carnivore lion = new Carnivore("lion", 30, 150, HabitatEnum.LAND, LivingType.GROUP, 6, 20, 80);
         Carnivore cheetah = new Carnivore("cheetah", 30, 60, HabitatEnum.LAND, LivingType.ALONE, 5, 15, 110);
         Carnivore tiger = new Carnivore("tiger", 20, 200, HabitatEnum.LAND, LivingType.ALONE, 6, 18, 75);
         Carnivore hyena = new Carnivore("hyena", 24, 50, HabitatEnum.LAND, LivingType.GROUP, 5, 14, 80);
-        animalService.addCarnivore(lion, cheetah, tiger, hyena);
+        Carnivore kot = new Carnivore("hyena546768", 24, 50, HabitatEnum.LAND, LivingType.ALONE, 5, 14, 80);
+        Carnivore ko4e = new Carnivore("hyena867543", 24, 50, HabitatEnum.LAND, LivingType.GROUP, 5, 14, 80);
+        Carnivore galab = new Carnivore("hyena75645", 24, 50, HabitatEnum.LAND, LivingType.ALONE, 5, 14, 80);
+        Carnivore riba = new Carnivore("hyena867546", 24, 50, HabitatEnum.LAND, LivingType.ALONE, 5, 14, 80);
+        animalService.addCarnivore(lion, cheetah, tiger, hyena, kot, ko4e, galab, riba);
 //        carnivoreRepository.addCarnivore(tiger, hyena);
         
-        animalService.addAnimals(prasa, kon, koza, lion, cheetah, tiger, hyena);
+        animalService.addAnimals(zebra, hare, gazelle, buffalo, krava, prasa, kon, koza, koza12, koza123, koza1234556756765, koza12534, koza12654, koza12756, koza127867, koza1296854, koza12435654,
+                lion, cheetah, tiger, hyena, kot, ko4e, galab, riba);
 //        animalRepository.addAnimal(kon, koza, tiger, hyena);
         
-        biomeRepository.addBiomeAndAnimals(savanna, prasa, kon, koza, lion, cheetah, tiger, hyena);
+        biomeRepository.addBiomeAndAnimals(savanna, zebra, hare, gazelle, buffalo, krava, prasa, kon, koza, koza12, koza123, koza1234556756765, koza12534, koza12654, koza12756, koza127867, koza1296854, koza12435654,
+                lion, cheetah, tiger, hyena, kot, ko4e, galab);
     }
     
-    public void simulateEcoSystem() {
+    public void simulateEcoSystem() throws InterruptedException {
         updateRepositories();
         
         List<Carnivore> carnivores = animalService.getCarnivores();
@@ -63,7 +76,6 @@ public class EcoSystemService {
         }
         
         animalService.clearNewBornAnimalsList();
-        
         
         String biome = biomeRepository.getBiome();
         
@@ -102,7 +114,7 @@ public class EcoSystemService {
                     createGroupOfCarnivores(carnivore);
                     List<Group> groups = animalService.getGroups();
                     List<Animal> groupOfAnimals = animalService.findGroup(groups, carnivore);
-    
+                    
                     int attackersAmount = groupOfAnimals.size();
                     foodInKg /= attackersAmount + 1;
                 }
@@ -116,70 +128,91 @@ public class EcoSystemService {
                 
                 for (Carnivore groupMember : carnivores) {
                     if (groupMember.equals(carnivore)) {
-                        List<Carnivore> animalsGroup = groupService.findCarnivoreInGroup(carnivore);
-                        if (animalsGroup == null) {
-                            continue;
-                        }
-                        for (Carnivore animal : animalsGroup) {
+//                        List<Carnivore> carnivoresGroup = groupService.findCarnivoreInGroup(carnivore);
+                        
+                        List<Group> groups = animalService.getGroups();
+                        List<Animal> groupOfAnimals = animalService.findGroup(groups, carnivore);
+                        
+                        for (Animal animal : groupOfAnimals) {
                             if (animal.equals(carnivore)) {
                                 //The main attacker receives two portions of food
                                 carnivore.decreaseHungerLevel(foodForMainAttacker);
                             } else {
                                 //Each groupMember that is not the attacker should receive a single portion of the food.
-                                animal.decreaseHungerLevel(foodForTheRestOfTheGroup);
+                                animal.decreaseHungerLevel(carnivore, foodForTheRestOfTheGroup);
                             }
                         }
+                        System.out.println(carnivore.getAnimalType() + " killed " + herbivore.getAnimalType());
                     }
                     
                 }
                 animalService.removeHerbivore(herbivore);
                 animalService.removeAnimal(herbivore);
             } else {
-                double escapePoints = carnivore.getAttackPoints() - herbivore.getEscapePoints();
+                double escapePoints = Math.abs(carnivore.getAttackPoints() - herbivore.getEscapePoints());
                 herbivore.increaseEscapePoints(escapePoints);
-                
+                System.out.println(herbivore.getAnimalType() + " escaped the attack from " + carnivore.getAnimalType());
                 int hungerLevel = new Random().nextInt(1, 10);
                 carnivore.increaseHungerLevel(hungerLevel);
             }
             
-            if (carnivore.getHungerRate() >= 100) {
-                System.out.println(carnivore.getAnimalType() + " died out of hunger.");
-                animalService.removeAnimal(carnivore);
-                animalService.removeCarnivore(carnivore);
+            List<Group> groups = groupService.getGroups();
+            for (Group group : groups) {
+                List<Animal> animals1 = group.getAnimals();
+                for (Animal animal : animals1) {
+                    if (animal instanceof Carnivore) {
+                        if (((Carnivore) animal).getHungerRate() >= 100) {
+                            System.out.println(carnivore.getAnimalType() + " died out of hunger.");
+                            animalService.removeAnimal(carnivore);
+                            animalService.removeCarnivore(carnivore);
+                        }
+                    }
+                }
             }
+
+//            if (carnivore.getHungerRate() >= 100) {
+//                System.out.println(carnivore.getAnimalType() + " died out of hunger.");
+//                animalService.removeAnimal(carnivore);
+//                animalService.removeCarnivore(carnivore);
+//            }
             
             if (carnivores.size() == 0 && herbivores.size() == 0) {
                 break;
             }
+            Thread.sleep(1000);
+        }
+        
+        //increase the age of all animals
+        for (Animal animal : animals) {
             
-            //increase the age of all animals
-            for (Animal animal : animals) {
-                if (animal.getAge() > animal.getMaxAge()) {
-                    System.out.println("Animal " + animal.getAnimalType() + " died naturally." + animal.getAge());
-                    animalService.removeAnimal(animal);
-                }
-                animal.increaseAge();
-                animal.decreaseReproductionRate();
-            }
-            
-            //reproduce new animals
-            for (Carnivore animal : carnivores) {
-                if (animal.getReproductionRate() == 0) {
-                    Carnivore newCarnivore = animal.reproduce();
-                    animalService.addNewBorn(newCarnivore);
-                    animalService.addAnimals(newCarnivore);
-                }
-            }
-            
-            for (Herbivore animal : herbivores) {
-                if (animal.getReproductionRate() == 0) {
-                    Herbivore newHerbivore = animal.reproduce();
-                    animalService.addNewBorn(newHerbivore);
-                    animalService.addAnimals(newHerbivore);
-                }
+            animal.increaseAge();
+            animal.decreaseReproductionRate();
+            if (animal.getAge() > animal.getMaxAge()) {
+                System.out.println("Animal " + animal.getAnimalType() + " died naturally." + animal.getAge());
+                animalService.removeAnimal(animal);
             }
         }
         
+        //reproduce new animals
+        for (Carnivore animal : carnivores) {
+            if (animal.getReproductionRate() == 0) {
+                Carnivore newCarnivore = animal.reproduce();
+                System.out.println("New carnivore " + newCarnivore + " is born.");
+                animalService.addNewBorn(newCarnivore);
+                animalService.addAnimals(newCarnivore);
+                animal.increaseReproductionRate(animal.getOriginalReproductionRate());
+            }
+        }
+        
+        for (Herbivore animal : herbivores) {
+            if (animal.getReproductionRate() == 0) {
+                Herbivore newHerbivore = animal.reproduce();
+                System.out.println("New herbivore " + newHerbivore + " is born.");
+                animalService.addNewBorn(newHerbivore);
+                animalService.addAnimals(newHerbivore);
+                animal.increaseReproductionRate(animal.getOriginalReproductionRate());
+            }
+        }
     }
     
     public String print() {
@@ -206,7 +239,7 @@ public class EcoSystemService {
         
         groupOfCarnivores.addAnimal(carnivore);
         for (int i = 0; i < 3; i++) {
-            int maxAge = new Random().nextInt(0, carnivore.getMaxAge());
+            int maxAge = carnivore.getMaxAge();
             double weight = new Random().nextDouble(0, carnivore.getWeight());
             double productionRate = carnivore.getOriginalReproductionRate();
             int hungerRate = new Random().nextInt(1, 100);
@@ -215,6 +248,7 @@ public class EcoSystemService {
             Carnivore animalInGroup = new Carnivore(carnivore.getAnimalType(), maxAge, weight, carnivore.getMainHabitat(), carnivore.getLivingType(), productionRate, hungerRate, attackPoints);
             
             animalService.addCarnivore(animalInGroup);
+            animalService.addAnimals(animalInGroup);
             groupOfCarnivores.addAnimal(animalInGroup);
         }
         animalService.addGroupOfCarnivores(groupOfCarnivores);
@@ -225,14 +259,15 @@ public class EcoSystemService {
         
         groupOfHerbivores.addAnimal(herbivore);
         for (int i = 0; i < 3; i++) {
-            int maxAge = new Random().nextInt(0, herbivore.getMaxAge());
-            double weight = new Random().nextDouble(0, herbivore.getWeight());
-            double productionRate = herbivore.getReproductionRate();
+            int maxAge = herbivore.getOriginalMaxAge();
+            double weight = new Random().nextDouble(0, herbivore.getOriginalWeight());
+            double productionRate = herbivore.getOriginalReproductionRate();
             double escapePoints = herbivore.getOriginalEscapePoints();
             
             Herbivore animalInGroup = new Herbivore(herbivore.getAnimalType(), maxAge, weight, herbivore.getMainHabitat(), herbivore.getLivingType(), productionRate, escapePoints);
             
             animalService.addHerbivore(animalInGroup);
+            animalService.addAnimals(animalInGroup);
             groupOfHerbivores.addAnimal(animalInGroup);
         }
         animalService.addGroupOfHerbivores(groupOfHerbivores);

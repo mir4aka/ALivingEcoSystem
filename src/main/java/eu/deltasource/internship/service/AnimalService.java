@@ -16,6 +16,7 @@ import eu.deltasource.internship.model.Herbivore;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class AnimalService {
     private CarnivoreRepository carnivoreRepository = new CarnivoreRepositoryImpl();
@@ -38,9 +39,13 @@ public class AnimalService {
     
     public List<Animal> findGroup(List<Group> groups, Animal animal) {
         List<Animal> animals = new ArrayList<>();
+        
         for (Group group : groups) {
-            Animal animal1 = group.getAnimals().stream().filter(g -> g.getAnimalType().equals(animal.getAnimalType())).findAny().orElse(null);
-            animals.add(animal1);
+//            Animal animal1 = group.getAnimals().stream().filter(g -> g.getAnimalType().equals(animal.getAnimalType())).findAny().orElse(null);
+//            animals.add(animal1);
+    
+            List<Animal> animals1 = group.getAnimals().stream().filter(g -> g.getAnimalType().equals(animal.getAnimalType())).toList();
+            animals.addAll(animals1);
         }
         return animals;
     }
