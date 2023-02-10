@@ -117,4 +117,8 @@ public abstract class Animal {
     protected void increaseReproductionRate(double originalReproductionRate) {
         reproductionRate += originalReproductionRate;
     }
+    
+    public double getHungerRate(Carnivore carnivore) {
+        return carnivore.getHungerRate();
+    }
 }

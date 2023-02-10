@@ -47,8 +47,7 @@ public class Herbivore extends Animal {
     
     @Override
     public String toString() {
-        return getAnimalType() + "\n" +
-                "escapePoints = " + escapePoints + "\n";
+        return getAnimalType() + getAge() + "\n";
     }
     
     public double getOriginalEscapePoints() {

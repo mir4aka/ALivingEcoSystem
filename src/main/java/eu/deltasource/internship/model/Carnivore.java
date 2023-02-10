@@ -90,8 +90,7 @@ public class Carnivore extends Animal {
     
     @Override
     public String toString() {
-        return getAnimalType() + "\n" +
-                "hungerRate = " + hungerRate + "\n";
+        return getAnimalType() + getAge() + "\n";
     }
     
     public void increaseReproductionRate(double originalReproductionRate) {
