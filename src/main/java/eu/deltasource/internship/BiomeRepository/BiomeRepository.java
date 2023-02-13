@@ -11,7 +11,6 @@ public interface BiomeRepository {
      Map<Biome, List<Animal>> animalsInBiome = new HashMap<>();
      
      void addBiomeAndAnimals(Biome biome, Animal... animals);
-     
      Map<Biome, List<Animal>> getAnimalsInBiome();
      String getBiome();
 }

@@ -6,10 +6,10 @@ import eu.deltasource.internship.enums.LivingType;
 import java.util.Random;
 
 public class Herbivore extends Animal {
-    private double escapePoints;
-    private final double originalEscapePoints;
+    private int escapePoints;
+    private final int originalEscapePoints;
     
-    public Herbivore(String animalType, int maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, double escapePoints) {
+    public Herbivore(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, int escapePoints) {
         super(animalType, maxAge, weight, mainHabitat, livingType, reproductionRate);
         this.escapePoints = escapePoints;
         this.originalEscapePoints = escapePoints;
@@ -22,7 +22,7 @@ public class Herbivore extends Animal {
     }
     
     
-    public double getEscapePoints() {
+    public int getEscapePoints() {
         return escapePoints;
     }
     
@@ -50,7 +50,7 @@ public class Herbivore extends Animal {
         return getAnimalType() + getAge() + "\n";
     }
     
-    public double getOriginalEscapePoints() {
+    public int getOriginalEscapePoints() {
         return this.originalEscapePoints;
     }
     

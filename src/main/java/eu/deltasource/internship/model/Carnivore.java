@@ -11,7 +11,7 @@ public class Carnivore extends Animal {
     private final int originalAttackPoints;
     private final int originalHungerRate;
     
-    public Carnivore(String animalType, int maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, int hungerRate, int attackPoints) {
+    public Carnivore(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, int hungerRate, int attackPoints) {
         super(animalType, maxAge, weight, mainHabitat, livingType, reproductionRate);
         this.hungerRate = hungerRate;
         this.attackPoints = attackPoints;
@@ -90,7 +90,7 @@ public class Carnivore extends Animal {
     
     @Override
     public String toString() {
-        return getAnimalType() + getAge() + "\n";
+        return getAnimalType() + " age " + getAge() + "\n";
     }
     
     public void increaseReproductionRate(double originalReproductionRate) {

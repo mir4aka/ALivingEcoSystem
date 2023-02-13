@@ -7,6 +7,6 @@ public class Main {
         EcoSystemService ecoSystemService = new EcoSystemService();
         ecoSystemService.simulateEcoSystem();
 
-        System.out.println(ecoSystemService.print());
+        System.out.println(ecoSystemService.printAnimals());
     }
 }

@@ -3,21 +3,25 @@ package eu.deltasource.internship.model;
 import eu.deltasource.internship.enums.HabitatEnum;
 import eu.deltasource.internship.enums.LivingType;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Random;
 
 public abstract class Animal {
     private String animalType;
-    private int age;
-    private int maxAge;
+    private double age;
+    private double maxAge;
     private double weight;
     private HabitatEnum mainHabitat;
     private double reproductionRate;
     private LivingType livingType;
     private double originalReproductionRate;
-    private final int originalMaxAge;
+    private final double originalMaxAge;
     private final double originalWeight;
+    private List<Biome> biomes;
     
-    public Animal(String animalType, int maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate) {
+    public Animal(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate) {
         this.animalType = animalType;
         this.maxAge = maxAge;
         this.weight = weight;
@@ -28,11 +32,12 @@ public abstract class Animal {
         this.originalReproductionRate = reproductionRate;
         this.originalMaxAge = maxAge;
         this.originalWeight = weight;
+        this.biomes = new ArrayList<>();
     }
 
     public void increaseAge() {
         this.age++;
-        if(getAge() > getMaxAge()) {
+        if(getAge() >= getMaxAge()) {
             this.age = getMaxAge();
         }
     }
@@ -53,7 +58,7 @@ public abstract class Animal {
         this.animalType = animalType;
     }
 
-    public int getAge() {
+    public double getAge() {
         return age;
     }
 
@@ -61,11 +66,11 @@ public abstract class Animal {
         this.age = age;
     }
 
-    public int getMaxAge() {
+    public double getMaxAge() {
         return maxAge;
     }
     
-    public int getOriginalMaxAge() {
+    public double getOriginalMaxAge() {
         return originalMaxAge;
     }
 
@@ -95,7 +100,10 @@ public abstract class Animal {
 
     
     double scalePoints(double points) {
-        return points * (1 - (double)age / maxAge);
+        if(age == 0) {
+            return points;
+        }
+        return points * (1 - (age / maxAge));
     }
     
     public double getOriginalReproductionRate() {
@@ -121,4 +129,9 @@ public abstract class Animal {
     public double getHungerRate(Carnivore carnivore) {
         return carnivore.getHungerRate();
     }
+    
+    public List<Biome> getBiomes() {
+        return Collections.unmodifiableList(biomes);
+    }
+    
 }

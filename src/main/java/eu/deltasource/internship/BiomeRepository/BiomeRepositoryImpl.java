@@ -1,5 +1,6 @@
 package eu.deltasource.internship.BiomeRepository;
 
+import eu.deltasource.internship.enums.BiomeEnum;
 import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Biome;
 
