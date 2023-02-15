@@ -1,4 +1,4 @@
-package eu.deltasource.internship.HerbivoreRepository;
+package eu.deltasource.internship.repository.HerbivoreRepository;
 
 import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Herbivore;

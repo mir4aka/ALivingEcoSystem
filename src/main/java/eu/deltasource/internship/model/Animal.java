@@ -16,17 +16,19 @@ public abstract class Animal {
     private HabitatEnum mainHabitat;
     private double reproductionRate;
     private LivingType livingType;
+    private int groupAmount;
     private double originalReproductionRate;
     private final double originalMaxAge;
     private final double originalWeight;
     private List<Biome> biomes;
     
-    public Animal(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate) {
+    public Animal(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, int groupAmount, double reproductionRate) {
         this.animalType = animalType;
         this.maxAge = maxAge;
         this.weight = weight;
         this.mainHabitat = mainHabitat;
         this.livingType = livingType;
+        this.groupAmount = groupAmount;
         this.reproductionRate = reproductionRate;
         this.age = new Random().nextInt(1, 5);
         this.originalReproductionRate = reproductionRate;
@@ -41,23 +43,18 @@ public abstract class Animal {
             this.age = getMaxAge();
         }
     }
-
-    public boolean isAlive() {
-        return this.age < this.maxAge;
-    }
-
+    
     public void decreaseReproductionRate() {
         this.reproductionRate--;
+    }
+    public void increaseReproductionRate() {
+        this.reproductionRate += originalReproductionRate;
     }
     
     public String getAnimalType() {
         return animalType;
     }
-
-    public void setAnimalType(String animalType) {
-        this.animalType = animalType;
-    }
-
+    
     public double getAge() {
         return age;
     }
@@ -97,7 +94,10 @@ public abstract class Animal {
     public LivingType getLivingType() {
         return livingType;
     }
-
+    
+    public int getGroupAmount() {
+        return groupAmount;
+    }
     
     double scalePoints(double points) {
         if(age == 0) {
@@ -110,6 +110,10 @@ public abstract class Animal {
         return originalReproductionRate;
     }
     
+    protected void increaseReproductionRate(double originalReproductionRate) {
+        reproductionRate += originalReproductionRate;
+    }
+    
     @Override
     public String toString() {
         return "Type of animal = " + getClass().getSimpleName() + "\n" +
@@ -117,21 +121,4 @@ public abstract class Animal {
                 "Age = " + age + "\n" +
                 "----------------\n";
     }
-    
-    public void decreaseHungerLevel(Carnivore carnivore, double hungerLevel) {
-        carnivore.decreaseHungerLevel(hungerLevel);
-    }
-    
-    protected void increaseReproductionRate(double originalReproductionRate) {
-        reproductionRate += originalReproductionRate;
-    }
-    
-    public double getHungerRate(Carnivore carnivore) {
-        return carnivore.getHungerRate();
-    }
-    
-    public List<Biome> getBiomes() {
-        return Collections.unmodifiableList(biomes);
-    }
-    
 }

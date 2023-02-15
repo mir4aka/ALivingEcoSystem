@@ -1,11 +1,10 @@
-package eu.deltasource.internship.GroupRepository;
+package eu.deltasource.internship.repository.GroupRepository;
 
 import eu.deltasource.internship.model.Carnivore;
 import eu.deltasource.internship.model.Group;
 import eu.deltasource.internship.model.Herbivore;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 

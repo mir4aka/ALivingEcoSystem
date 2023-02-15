@@ -1,4 +1,4 @@
-package eu.deltasource.internship.GroupRepository;
+package eu.deltasource.internship.repository.GroupRepository;
 
 import eu.deltasource.internship.model.Carnivore;
 import eu.deltasource.internship.model.Group;

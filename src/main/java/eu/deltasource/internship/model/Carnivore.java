@@ -11,65 +11,16 @@ public class Carnivore extends Animal {
     private final int originalAttackPoints;
     private final int originalHungerRate;
     
-    public Carnivore(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, double reproductionRate, int hungerRate, int attackPoints) {
-        super(animalType, maxAge, weight, mainHabitat, livingType, reproductionRate);
+    public Carnivore(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, int groupAmount, double reproductionRate, int hungerRate, int attackPoints) {
+        super(animalType, maxAge, weight, mainHabitat, livingType, groupAmount, reproductionRate);
         this.hungerRate = hungerRate;
         this.attackPoints = attackPoints;
         this.originalAttackPoints = attackPoints;
         this.originalHungerRate = hungerRate;
     }
     
-    public Carnivore reproduce() {
-        Carnivore carnivore = new Carnivore(getAnimalType(), getMaxAge(), getWeight(), getMainHabitat(), getLivingType(), getReproductionRate(), hungerRate, 0);
-        carnivore.setAge(0);
-        return carnivore;
-    }
-    
-    public double getAttackSuccess(Herbivore herbivore) {
-        double attackPoints = getScaledAttackPoints();
-        double escapePoints = herbivore.getScaledEscapePoints();
-        double successRate = attackPoints / (attackPoints + escapePoints) * 100;
-        
-        if (getLivingType().equals(LivingType.ALONE)) {
-            successRate *= 0.5;
-        }
-        
-        if (herbivore.getWeight() > getWeight() && getLivingType().equals(LivingType.ALONE)) {
-            successRate = herbivore.getWeight() / getWeight();
-        }
-        
-        return successRate;
-    }
-    
-    @Override
-    public boolean isAlive() {
-        return getAge() > getMaxAge() || hungerRate >= 100;
-    }
-    
-    double getScaledAttackPoints() {
+    public double getScaledAttackPoints() {
         return scalePoints(attackPoints);
-    }
-    
-    public void increaseHungerLevel(double hunger) {
-        hungerRate += hunger;
-        if (hungerRate >= 100) {
-            hungerRate = 100;
-        }
-    }
-    
-    public void decreaseHungerLevel(double hunger) {
-        hungerRate -= hunger;
-        if (hungerRate <= 0) {
-            hungerRate = 1;
-        }
-    }
-    
-    public int getAttackPoints() {
-        return attackPoints;
-    }
-    
-    public void setAttackPoints(int attackPoints) {
-        this.attackPoints = attackPoints;
     }
     
     public int getHungerRate() {
@@ -84,16 +35,12 @@ public class Carnivore extends Animal {
         return originalAttackPoints;
     }
     
-    public int getOriginalHungerRate() {
-        return originalHungerRate;
-    }
-    
     @Override
     public String toString() {
         return getAnimalType() + " age " + getAge() + "\n";
     }
     
-    public void increaseReproductionRate(double originalReproductionRate) {
-        super.increaseReproductionRate(originalReproductionRate);
+    public int getAttackPoints() {
+        return attackPoints;
     }
 }

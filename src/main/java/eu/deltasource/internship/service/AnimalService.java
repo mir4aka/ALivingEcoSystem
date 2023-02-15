@@ -1,12 +1,14 @@
 package eu.deltasource.internship.service;
 
-import eu.deltasource.internship.CarnivoreRepository.CarnivoreRepository;
-import eu.deltasource.internship.CarnivoreRepository.CarnivoreRepositoryImpl;
-import eu.deltasource.internship.GroupRepository.GroupRepository;
-import eu.deltasource.internship.GroupRepository.GroupRepositoryImpl;
-import eu.deltasource.internship.HerbivoreRepository.HerbivoreRepository;
-import eu.deltasource.internship.HerbivoreRepository.HerbivoreRepositoryImpl;
+import eu.deltasource.internship.repository.CarnivoreRepository.CarnivoreRepository;
+import eu.deltasource.internship.repository.CarnivoreRepository.CarnivoreRepositoryImpl;
+import eu.deltasource.internship.repository.GroupRepository.GroupRepository;
+import eu.deltasource.internship.repository.GroupRepository.GroupRepositoryImpl;
+import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepository;
+import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepositoryImpl;
+import eu.deltasource.internship.enums.LivingType;
 import eu.deltasource.internship.model.Animal;
+import eu.deltasource.internship.model.Carnivore;
 import eu.deltasource.internship.model.Group;
 import eu.deltasource.internship.model.Herbivore;
 
@@ -80,5 +82,71 @@ public class AnimalService {
     
     public void clearNewBornAnimalsList() {
         newBornAnimals.clear();
+    }
+    
+    public double getAttackSuccess(Carnivore carnivore, Herbivore herbivore) {
+        double attackPoints = 0;
+        double escapePoints = 0;
+        double successRate = 0;
+        
+        if (carnivore.getLivingType().equals(LivingType.GROUP)) {
+            attackPoints = carnivore.getScaledAttackPoints() * 4;
+        } else {
+            attackPoints = carnivore.getScaledAttackPoints();
+        }
+        
+        if (herbivore.getLivingType().equals(LivingType.GROUP)) {
+            escapePoints = herbivore.getScaledEscapePoints() * 4;
+        } else {
+            escapePoints = herbivore.getScaledEscapePoints();
+        }
+        
+        successRate = attackPoints / (attackPoints + escapePoints) * 100;
+        
+        if (carnivore.getLivingType().equals(LivingType.ALONE)) {
+            successRate *= 0.5;
+        }
+        
+        if (herbivore.getWeight() > carnivore.getWeight() && carnivore.getLivingType().equals(LivingType.ALONE)) {
+            successRate = herbivore.getWeight() / carnivore.getWeight();
+        }
+        
+        return successRate;
+    }
+    
+    public void increaseHungerLevel(Carnivore carnivore, double hunger) {
+        int hungerRate = carnivore.getHungerRate();
+        hungerRate += hunger;
+        if (hungerRate >= 100) {
+            carnivore.setHungerRate(100);
+        }
+    }
+    
+    public void decreaseHungerLevel(Carnivore carnivore, double hunger) {
+        int hungerRate = carnivore.getHungerRate();
+        hungerRate -= hunger;
+        if (hungerRate <= 0) {
+            carnivore.setHungerRate(1);
+        }
+    }
+    
+    public void decreaseEscapePoints(Herbivore herbivore, double points) {
+        int escapePoints = herbivore.getEscapePoints();
+        escapePoints -= points;
+        if (escapePoints < 0) {
+            herbivore.setEscapePoints(0);
+        }
+    }
+    
+    public Carnivore reproduce(Carnivore carnivore) {
+        Carnivore newCarnivore = new Carnivore(carnivore.getAnimalType(), carnivore.getMaxAge(), carnivore.getWeight(), carnivore.getMainHabitat(), carnivore.getLivingType(), carnivore.getGroupAmount(), carnivore.getOriginalReproductionRate(), carnivore.getHungerRate(), carnivore.getAttackPoints());
+        newCarnivore.setAge(0);
+        return newCarnivore;
+    }
+    
+    public Herbivore reproduce(Herbivore herbivore) {
+        Herbivore newHerbivore = new Herbivore(herbivore.getAnimalType(), herbivore.getMaxAge(), herbivore.getWeight(), herbivore.getMainHabitat(), herbivore.getLivingType(), herbivore.getGroupAmount(), herbivore.getOriginalReproductionRate(), herbivore.getEscapePoints());
+        newHerbivore.setAge(0);
+        return newHerbivore;
     }
 }

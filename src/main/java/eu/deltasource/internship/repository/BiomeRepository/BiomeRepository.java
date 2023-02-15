@@ -1,4 +1,4 @@
-package eu.deltasource.internship.BiomeRepository;
+package eu.deltasource.internship.repository.BiomeRepository;
 
 import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Biome;
