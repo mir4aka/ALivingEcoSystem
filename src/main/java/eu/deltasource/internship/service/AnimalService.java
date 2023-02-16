@@ -64,7 +64,7 @@ public class AnimalService {
         }
     }
     
-    public void removeHerbivore(Herbivore herbivore) {
+    public void removeHerbivore(Animal herbivore) {
         herbivoreRepository.removeHerbivore(herbivore);
     }
     
@@ -85,18 +85,18 @@ public class AnimalService {
     }
     
     public double getAttackSuccess(Carnivore carnivore, Herbivore herbivore) {
-        double attackPoints = 0;
-        double escapePoints = 0;
-        double successRate = 0;
+        double attackPoints;
+        double escapePoints;
+        double successRate;
         
         if (carnivore.getLivingType().equals(LivingType.GROUP)) {
-            attackPoints = carnivore.getScaledAttackPoints() * 4;
+            attackPoints = carnivore.getScaledAttackPoints() * carnivore.getGroupAmount();
         } else {
             attackPoints = carnivore.getScaledAttackPoints();
         }
         
         if (herbivore.getLivingType().equals(LivingType.GROUP)) {
-            escapePoints = herbivore.getScaledEscapePoints() * 4;
+            escapePoints = herbivore.getScaledEscapePoints() * herbivore.getGroupAmount();
         } else {
             escapePoints = herbivore.getScaledEscapePoints();
         }
@@ -105,6 +105,8 @@ public class AnimalService {
         
         if (carnivore.getLivingType().equals(LivingType.ALONE)) {
             successRate *= 0.5;
+        } else {
+            successRate = successRate + (successRate * 0.3);
         }
         
         if (herbivore.getWeight() > carnivore.getWeight() && carnivore.getLivingType().equals(LivingType.ALONE)) {

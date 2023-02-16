@@ -11,5 +11,5 @@ public interface HerbivoreRepository {
     
     void addHerbivore(Animal... animals);
     
-    void removeHerbivore(Herbivore herbivore);
+    void removeHerbivore(Animal herbivore);
 }

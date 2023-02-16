@@ -22,7 +22,7 @@ public class HerbivoreRepositoryImpl implements HerbivoreRepository {
     }
     
     @Override
-    public void removeHerbivore(Herbivore animal) {
+    public void removeHerbivore(Animal animal) {
         herbivores.remove(animal);
     }
 }
