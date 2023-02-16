@@ -42,7 +42,7 @@ public class EcoSystemService {
             animalFactory(carnivores, herbivores);
             
             System.out.println("------------------------------------------");
-            Thread.sleep(2000);
+            Thread.sleep(1000);
         }
     }
     
@@ -241,10 +241,9 @@ public class EcoSystemService {
             if (carnivore.getClass().getSimpleName().equals("Carnivore")) {
                 double reproductionRate = carnivore.getReproductionRate();
                 if (reproductionRate == 0) {
-//                    Carnivore newBornCarnivore = animalService.reproduce((Carnivore) carnivore);
                     Carnivore newBornCarnivore = biomeService.getAnimalService().reproduce((Carnivore) carnivore);
                     biomeService.getAnimalService().addNewBorn(newBornCarnivore);
-//                    animalService.addNewBorn(newBornCarnivore);
+                    carnivore.increaseReproductionRate();
                     System.out.println("New carnivore " + newBornCarnivore.getAnimalType() + " is born.");
                 }
             }
@@ -254,10 +253,9 @@ public class EcoSystemService {
             if (herbivore.getClass().getSimpleName().equals("Herbivore")) {
                 double reproductionRate = herbivore.getReproductionRate();
                 if (reproductionRate <= 0) {
-//                    Herbivore newBornHerbivore = animalService.reproduce((Herbivore) herbivore);
                     Herbivore newBornHerbivore = biomeService.getAnimalService().reproduce((Herbivore) herbivore);
-//                    animalService.addNewBorn(newBornHerbivore);
                     biomeService.getAnimalService().addNewBorn(newBornHerbivore);
+                    herbivore.increaseReproductionRate();
                     System.out.println("New herbivore " + newBornHerbivore.getAnimalType() + " is born.");
                 }
             }

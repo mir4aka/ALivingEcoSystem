@@ -110,8 +110,8 @@ public abstract class Animal {
         return originalReproductionRate;
     }
     
-    protected void increaseReproductionRate(double originalReproductionRate) {
-        reproductionRate += originalReproductionRate;
+    public void increaseReproductionRate() {
+        reproductionRate = 10;
     }
     
     @Override
