@@ -3,15 +3,13 @@ package eu.deltasource.internship.model;
 import eu.deltasource.internship.enums.HabitatEnum;
 import eu.deltasource.internship.enums.LivingType;
 
-import java.util.Random;
-
 public class Carnivore extends Animal {
     private int attackPoints;
     private int hungerRate;
     private final int originalAttackPoints;
     private final int originalHungerRate;
     
-    public Carnivore(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, int groupAmount, double reproductionRate, int hungerRate, int attackPoints) {
+    public Carnivore(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, int groupAmount, int reproductionRate, int hungerRate, int attackPoints) {
         super(animalType, maxAge, weight, mainHabitat, livingType, groupAmount, reproductionRate);
         this.hungerRate = hungerRate;
         this.attackPoints = attackPoints;

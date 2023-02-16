@@ -14,15 +14,15 @@ public abstract class Animal {
     private double maxAge;
     private double weight;
     private HabitatEnum mainHabitat;
-    private double reproductionRate;
+    private int reproductionRate;
     private LivingType livingType;
     private int groupAmount;
-    private double originalReproductionRate;
+    private int originalReproductionRate;
     private final double originalMaxAge;
     private final double originalWeight;
     private List<Biome> biomes;
     
-    public Animal(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, int groupAmount, double reproductionRate) {
+    public Animal(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, int groupAmount, int reproductionRate) {
         this.animalType = animalType;
         this.maxAge = maxAge;
         this.weight = weight;
@@ -46,9 +46,9 @@ public abstract class Animal {
     
     public void decreaseReproductionRate() {
         this.reproductionRate--;
-    }
-    public void increaseReproductionRate() {
-        this.reproductionRate += originalReproductionRate;
+        if(reproductionRate <= 0) {
+            reproductionRate = 0;
+        }
     }
     
     public String getAnimalType() {
@@ -106,7 +106,7 @@ public abstract class Animal {
         return points * (1 - (age / maxAge));
     }
     
-    public double getOriginalReproductionRate() {
+    public int getOriginalReproductionRate() {
         return originalReproductionRate;
     }
     

@@ -9,7 +9,7 @@ public class Herbivore extends Animal {
     private int escapePoints;
     private final int originalEscapePoints;
     
-    public Herbivore(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, int groupAmount, double reproductionRate, int escapePoints) {
+    public Herbivore(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, int groupAmount, int reproductionRate, int escapePoints) {
         super(animalType, maxAge, weight, mainHabitat, livingType, groupAmount, reproductionRate);
         this.escapePoints = escapePoints;
         this.originalEscapePoints = escapePoints;

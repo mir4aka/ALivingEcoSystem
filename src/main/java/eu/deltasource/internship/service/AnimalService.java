@@ -119,6 +119,7 @@ public class AnimalService {
     public void increaseHungerLevel(Carnivore carnivore, double hunger) {
         int hungerRate = carnivore.getHungerRate();
         hungerRate += hunger;
+        carnivore.setHungerRate(hungerRate);
         if (hungerRate >= 100) {
             carnivore.setHungerRate(100);
         }
@@ -127,6 +128,7 @@ public class AnimalService {
     public void decreaseHungerLevel(Carnivore carnivore, double hunger) {
         int hungerRate = carnivore.getHungerRate();
         hungerRate -= hunger;
+        carnivore.setHungerRate(hungerRate);
         if (hungerRate <= 0) {
             carnivore.setHungerRate(1);
         }
@@ -141,13 +143,13 @@ public class AnimalService {
     }
     
     public Carnivore reproduce(Carnivore carnivore) {
-        Carnivore newCarnivore = new Carnivore(carnivore.getAnimalType(), carnivore.getMaxAge(), carnivore.getWeight(), carnivore.getMainHabitat(), carnivore.getLivingType(), carnivore.getGroupAmount(), carnivore.getOriginalReproductionRate(), carnivore.getHungerRate(), carnivore.getAttackPoints());
+        Carnivore newCarnivore = new Carnivore(carnivore.getAnimalType(), carnivore.getMaxAge(), carnivore.getWeight(), carnivore.getMainHabitat(), carnivore.getLivingType(), carnivore.getGroupAmount(), 10, carnivore.getHungerRate(), carnivore.getAttackPoints());
         newCarnivore.setAge(0);
         return newCarnivore;
     }
     
     public Herbivore reproduce(Herbivore herbivore) {
-        Herbivore newHerbivore = new Herbivore(herbivore.getAnimalType(), herbivore.getMaxAge(), herbivore.getWeight(), herbivore.getMainHabitat(), herbivore.getLivingType(), herbivore.getGroupAmount(), herbivore.getOriginalReproductionRate(), herbivore.getEscapePoints());
+        Herbivore newHerbivore = new Herbivore(herbivore.getAnimalType(), herbivore.getMaxAge(), herbivore.getWeight(), herbivore.getMainHabitat(), herbivore.getLivingType(), herbivore.getGroupAmount(), 10, herbivore.getEscapePoints());
         newHerbivore.setAge(0);
         return newHerbivore;
     }
