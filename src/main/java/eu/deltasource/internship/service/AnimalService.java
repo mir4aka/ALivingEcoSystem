@@ -134,14 +134,6 @@ public class AnimalService {
         }
     }
     
-    public void decreaseEscapePoints(Herbivore herbivore, double points) {
-        int escapePoints = herbivore.getEscapePoints();
-        escapePoints -= points;
-        if (escapePoints < 0) {
-            herbivore.setEscapePoints(0);
-        }
-    }
-    
     public Carnivore reproduce(Carnivore carnivore) {
         Carnivore newCarnivore = new Carnivore(carnivore.getAnimalType(), carnivore.getMaxAge(), carnivore.getWeight(), carnivore.getMainHabitat(), carnivore.getLivingType(), carnivore.getGroupAmount(), 10, carnivore.getHungerRate(), carnivore.getAttackPoints());
         newCarnivore.setAge(0);

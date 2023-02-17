@@ -8,10 +8,8 @@ import java.util.List;
 
 public interface GroupRepository {
     List<Group> getCarnivoresGroup();
-    List<Group> getHerbivoresGroup();
     
     void addGroupOfCarnivores(Group group);
+    
     void addGroupOfHerbivores(Group group);
-    List<Carnivore> findInGroup(Carnivore animal);
-    List<Herbivore> findInGroup(Herbivore animal);
 }

@@ -13,13 +13,13 @@ public abstract class Animal {
     private double age;
     private double maxAge;
     private double weight;
-    private HabitatEnum mainHabitat;
     private int reproductionRate;
-    private LivingType livingType;
-    private int groupAmount;
     private int originalReproductionRate;
+    private int groupAmount;
     private final double originalMaxAge;
     private final double originalWeight;
+    private HabitatEnum mainHabitat;
+    private LivingType livingType;
     private List<Biome> biomes;
     
     public Animal(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, int groupAmount, int reproductionRate) {
@@ -36,17 +36,17 @@ public abstract class Animal {
         this.originalWeight = weight;
         this.biomes = new ArrayList<>();
     }
-
+    
     public void increaseAge() {
         this.age++;
-        if(getAge() >= getMaxAge()) {
+        if (getAge() >= getMaxAge()) {
             this.age = getMaxAge();
         }
     }
     
     public void decreaseReproductionRate() {
         this.reproductionRate--;
-        if(reproductionRate <= 0) {
+        if (reproductionRate <= 0) {
             reproductionRate = 0;
         }
     }
@@ -58,11 +58,11 @@ public abstract class Animal {
     public double getAge() {
         return age;
     }
-
+    
     public void setAge(int age) {
         this.age = age;
     }
-
+    
     public double getMaxAge() {
         return maxAge;
     }
@@ -70,7 +70,7 @@ public abstract class Animal {
     public double getOriginalMaxAge() {
         return originalMaxAge;
     }
-
+    
     public double getWeight() {
         return weight;
     }
@@ -78,19 +78,15 @@ public abstract class Animal {
     public double getOriginalWeight() {
         return originalWeight;
     }
-
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-
+    
     public HabitatEnum getMainHabitat() {
         return mainHabitat;
     }
-
+    
     public double getReproductionRate() {
         return reproductionRate;
     }
-
+    
     public LivingType getLivingType() {
         return livingType;
     }
@@ -100,7 +96,7 @@ public abstract class Animal {
     }
     
     double scalePoints(double points) {
-        if(age == 0) {
+        if (age == 0) {
             return points;
         }
         return points * (1 - (age / maxAge));

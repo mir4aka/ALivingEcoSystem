@@ -6,16 +6,16 @@ import eu.deltasource.internship.enums.HabitatEnum;
 public class Biome {
     private HabitatEnum mainHabitat;
     private BiomeEnum biome;
-
+    
     public Biome(HabitatEnum mainHabitat, BiomeEnum biome) {
         this.mainHabitat = mainHabitat;
         this.biome = biome;
     }
-
+    
     public HabitatEnum getMainHabitat() {
         return mainHabitat;
     }
-
+    
     public BiomeEnum getBiome() {
         return biome;
     }

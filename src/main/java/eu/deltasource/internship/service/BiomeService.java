@@ -165,7 +165,6 @@ public class BiomeService {
                 
                 Carnivore animalInGroup = new Carnivore(animal.getAnimalType(), maxAge, weight, animal.getMainHabitat(), animal.getLivingType(), groupAmount, productionRate, hungerRate, attackPoints);
 
-//            animalService.addCarnivore(animalInGroup);
                 getAnimalService().addCarnivore(animalInGroup);
                 group.addAnimal(animalInGroup);
             }
@@ -183,13 +182,11 @@ public class BiomeService {
                 
                 Herbivore animalInGroup = new Herbivore(herbivore.getAnimalType(), maxAge, weight, herbivore.getMainHabitat(), herbivore.getLivingType(), groupAmount, productionRate, escapePoints);
 
-//            animalService.addHerbivore(animalInGroup);
                 getAnimalService().addHerbivore(animalInGroup);
                 group.addAnimal(animalInGroup);
             }
             getAnimalService().addGroupOfHerbivores(group);
         }
-//        animalService.addGroupOfHerbivores(groupOfHerbivores);
     }
     
     public AnimalService getAnimalService() {

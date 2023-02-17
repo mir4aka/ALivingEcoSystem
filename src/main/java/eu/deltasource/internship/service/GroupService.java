@@ -12,10 +12,6 @@ import java.util.List;
 public class GroupService {
     private GroupRepository groupRepository = new GroupRepositoryImpl();
     
-    public List<Herbivore> findHerbivoreInGroup(Herbivore herbivore) {
-        return groupRepository.findInGroup(herbivore);
-    }
-    
     public List<Group> getGroups() {
         return Collections.unmodifiableList(groupRepository.getCarnivoresGroup());
     }
