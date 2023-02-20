@@ -1,24 +1,23 @@
 package eu.deltasource.internship.model;
 
 import eu.deltasource.internship.enums.HabitatEnum;
-import eu.deltasource.internship.enums.LivingType;
+import eu.deltasource.internship.enums.SocialStatus;
 
 public class Carnivore extends Animal {
     private int attackPoints;
     private int hungerRate;
-    private final int originalAttackPoints;
-    private final int originalHungerRate;
     
-    public Carnivore(String animalType, double maxAge, double weight, HabitatEnum mainHabitat, LivingType livingType, int groupAmount, int reproductionRate, int hungerRate, int attackPoints) {
-        super(animalType, maxAge, weight, mainHabitat, livingType, groupAmount, reproductionRate);
+    public Carnivore(String animalType, int maxAge, double weight, HabitatEnum habitat, SocialStatus livingType, int groupAmount, int reproductionRate, int hungerRate, int attackPoints) {
+        super(animalType, maxAge, weight, habitat, livingType, groupAmount, reproductionRate);
         this.hungerRate = hungerRate;
         this.attackPoints = attackPoints;
-        this.originalAttackPoints = attackPoints;
-        this.originalHungerRate = hungerRate;
     }
     
-    public double getScaledAttackPoints() {
-        return scalePoints(attackPoints);
+    public Carnivore() {
+    }
+    
+    public int getAttackPoints() {
+        return attackPoints;
     }
     
     public int getHungerRate() {
@@ -29,16 +28,9 @@ public class Carnivore extends Animal {
         this.hungerRate = hungerRate;
     }
     
-    public int getOriginalAttackPoints() {
-        return originalAttackPoints;
-    }
-    
     @Override
     public String toString() {
-        return getAnimalType() + " age " + getAge() + "\n";
+        return getSpecie() + " age " + getAge() + "\n";
     }
     
-    public int getAttackPoints() {
-        return attackPoints;
-    }
 }

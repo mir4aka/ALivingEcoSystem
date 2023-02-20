@@ -10,9 +10,9 @@ import java.util.Map;
 public interface BiomeRepository {
     Map<Biome, List<Animal>> animalsInBiome = new HashMap<>();
     
-    void addBiomeAndAnimals(Biome biome, Animal... animals);
+    void addBiomeAndAnimals(String biome, Animal... animals);
     
-    Map<Biome, List<Animal>> getAnimalsInBiome();
+    Map<String, List<Animal>> getAnimalsInBiome();
     
     String getBiome();
 }

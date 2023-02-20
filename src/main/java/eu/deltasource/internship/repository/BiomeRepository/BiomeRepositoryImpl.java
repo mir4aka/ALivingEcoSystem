@@ -6,11 +6,11 @@ import eu.deltasource.internship.model.Biome;
 import java.util.*;
 
 public class BiomeRepositoryImpl implements BiomeRepository {
-    private Map<Biome, List<Animal>> animalsInBiome = new HashMap<>();
+    private Map<String, List<Animal>> animalsInBiome = new HashMap<>();
     private String biome;
     
     @Override
-    public void addBiomeAndAnimals(Biome biome, Animal... animals) {
+    public void addBiomeAndAnimals(String biome, Animal... animals) {
         this.biome = String.valueOf(biome);
         for (Animal animal : animals) {
             if (!animalsInBiome.containsKey(biome)) {
@@ -21,7 +21,7 @@ public class BiomeRepositoryImpl implements BiomeRepository {
         }
     }
     
-    public Map<Biome, List<Animal>> getAnimalsInBiome() {
+    public Map<String, List<Animal>> getAnimalsInBiome() {
         return Collections.unmodifiableMap(animalsInBiome);
     }
     

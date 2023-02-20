@@ -11,7 +11,4 @@ public class Group {
         return Collections.unmodifiableList(animals);
     }
     
-    public void addAnimal(Animal animal) {
-        animals.add(animal);
-    }
 }

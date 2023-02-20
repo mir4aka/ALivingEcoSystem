@@ -9,20 +9,20 @@ import java.util.Collections;
 import java.util.List;
 
 public class HerbivoreRepositoryImpl implements HerbivoreRepository {
-    private List<Animal> herbivores = new ArrayList<>();
+    private List<Herbivore> herbivores = new ArrayList<>();
     
     @Override
-    public List<Animal> getHerbivores() {
+    public List<Herbivore> getHerbivores() {
         return Collections.unmodifiableList(herbivores);
     }
     
     @Override
-    public void addHerbivore(Animal... animals) {
+    public void addHerbivore(Herbivore... animals) {
         herbivores.addAll(Arrays.asList(animals));
     }
     
     @Override
-    public void removeHerbivore(Animal animal) {
+    public void removeHerbivore(Herbivore animal) {
         herbivores.remove(animal);
     }
 }

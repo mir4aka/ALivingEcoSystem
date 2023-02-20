@@ -1,19 +1,21 @@
 package eu.deltasource.internship;
 
 import eu.deltasource.internship.enums.BiomeEnum;
-import eu.deltasource.internship.model.Biome;
 import eu.deltasource.internship.service.EcoSystemService;
 
+import java.io.IOException;
+import java.util.Scanner;
+
 public class Main {
-    public static void main(String[] args) throws InterruptedException {
+    public static void main(String[] args) throws InterruptedException, IOException {
+        Scanner scanner = new Scanner(System.in);
         EcoSystemService ecoSystemService = new EcoSystemService();
-        
-        ecoSystemService.simulateEcoSystem(BiomeEnum.SAVANNA);
-        ecoSystemService.simulateEcoSystem(BiomeEnum.OCEAN);
-        ecoSystemService.simulateEcoSystem(BiomeEnum.TROPICAL_RAINFOREST);
-        ecoSystemService.simulateEcoSystem(BiomeEnum.TUNDRA);
-        ecoSystemService.simulateEcoSystem(BiomeEnum.SWAMP);
-        ecoSystemService.simulateEcoSystem(BiomeEnum.PLAINS);
+    
+        System.out.println("Enter biome. You can choose savanna, swamp, plains, tundra or ocean");
+    
+        BiomeEnum biomeEnum = BiomeEnum.valueOf(scanner.nextLine().toUpperCase());
+
+        ecoSystemService.simulateEcoSystem(biomeEnum);
 
         System.out.println(ecoSystemService.printAnimalsInfo());
     }

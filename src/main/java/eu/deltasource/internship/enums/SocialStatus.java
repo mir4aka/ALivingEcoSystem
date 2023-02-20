@@ -1,5 +1,5 @@
 package eu.deltasource.internship.enums;
 
-public enum LivingType {
+public enum SocialStatus {
     GROUP, ALONE
 }

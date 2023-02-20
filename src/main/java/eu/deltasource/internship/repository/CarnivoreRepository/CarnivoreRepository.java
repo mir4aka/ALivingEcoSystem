@@ -7,9 +7,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface CarnivoreRepository {
-    public List<Animal> getCarnivores();
+    public List<Carnivore> getCarnivores();
     
-    public void addCarnivore(Animal... animals);
+    public void addCarnivore(Carnivore... animals);
     
-    public void removeCarnivore(Animal animal);
+    public void removeCarnivore(Carnivore animal);
 }
