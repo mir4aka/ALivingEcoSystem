@@ -17,11 +17,19 @@ import java.util.Collections;
 import java.util.List;
 
 public class AnimalService {
-    private CarnivoreRepository carnivoreRepository = new CarnivoreRepositoryImpl();
-    private HerbivoreRepository herbivoreRepository = new HerbivoreRepositoryImpl();
-    private GroupRepository groupRepository = new GroupRepositoryImpl();
-    private List<Carnivore> newBornCarnivores = new ArrayList<>();
-    private List<Herbivore> newBornHerbivores = new ArrayList<>();
+    private HerbivoreRepository herbivoreRepository;
+    private CarnivoreRepository carnivoreRepository;
+    private GroupRepository groupRepository;
+    private List<Carnivore> newBornCarnivores;
+    private List<Herbivore> newBornHerbivores;
+    
+    public AnimalService(HerbivoreRepository herbivoreRepository, CarnivoreRepository carnivoreRepository, GroupRepository groupRepository) {
+        this.herbivoreRepository = herbivoreRepository;
+        this.carnivoreRepository = carnivoreRepository;
+        this.groupRepository = groupRepository;
+        this.newBornCarnivores = new ArrayList<>();
+        this.newBornHerbivores = new ArrayList<>();
+    }
     
     public void addGroupOfCarnivores(Group group) {
         groupRepository.addGroupOfCarnivores(group);
@@ -41,7 +49,6 @@ public class AnimalService {
     
     public List<Animal> findGroup(List<Group> groups, Animal animal) {
         List<Animal> animals = new ArrayList<>();
-        
         for (Group group : groups) {
             List<Animal> animalsList = group.getAnimals();
             for (Animal animalInList : animalsList) {
@@ -78,7 +85,7 @@ public class AnimalService {
     }
     
     public List<Herbivore> getHerbivores() {
-        return Collections.unmodifiableList(herbivoreRepository.getHerbivores());
+        return Collections.unmodifiableList(herbivoreRepository.getHerbivoresList());
     }
     
     public void addNewBornCarnivore(Carnivore carnivore) {
@@ -109,19 +116,17 @@ public class AnimalService {
         double attackPoints;
         double escapePoints;
         double successRate;
-    
-        if(herbivore.getPoints() > carnivore.getPoints()) {
+        
+        if (herbivore.getPoints() > carnivore.getPoints()) {
             successRate = 0;
             return successRate;
         }
-    
+        
         attackPoints = calculateAttackPoints(carnivore);
         escapePoints = calculateEscapePoints(herbivore);
-    
+        
         successRate = attackPoints / (attackPoints + escapePoints) * 100;
-    
         successRate = calculateSuccessChanceIfTheCarnivoreAttacksAlone(carnivore, successRate);
-    
         successRate = calculatesTheSuccessChanceIfTheHerbivoreWeighsMoreThanTheCarnivore(carnivore, herbivore, successRate);
         
         return successRate;
@@ -177,7 +182,7 @@ public class AnimalService {
         hungerRate -= hunger;
         carnivore.setHungerRate(hungerRate);
         if (hungerRate <= 0) {
-            carnivore.setHungerRate(1);
+            carnivore.setHungerRate(0);
         }
     }
     
@@ -189,23 +194,23 @@ public class AnimalService {
         return new Herbivore(herbivore.getSpecie(), herbivore.getMaxAge(), herbivore.getWeight(), herbivore.getHabitat(), herbivore.getSocialStatus(), herbivore.getGroupAmount(), 10, getScaledEscapePoints(herbivore));
     }
     
-    private int scalePoints(Animal animal, int points) {
+    public double scalePoints(Animal animal, double points) {
         if (animal.getAge() == 0) {
             return points;
         }
         return points * (1 - (animal.getAge() / animal.getMaxAge()));
     }
     
-    private int getScaledAttackPoints(Carnivore carnivore) {
+    private double getScaledAttackPoints(Carnivore carnivore) {
         return scalePoints(carnivore, carnivore.getPoints());
     }
     
-    private int getScaledEscapePoints(Herbivore herbivore) {
+    private double getScaledEscapePoints(Herbivore herbivore) {
         return scalePoints(herbivore, herbivore.getPoints());
     }
     
     public void increaseAge(Animal animal) {
-        int age = animal.getAge();
+        double age = animal.getAge();
         age++;
         if (animal.getAge() >= animal.getMaxAge()) {
             age = animal.getMaxAge();
@@ -223,6 +228,6 @@ public class AnimalService {
     }
     
     public void resetReproductionRate(Animal animal) {
-        animal.setReproductionRate(10);
+        animal.setReproductionRate(animal.getOriginalReproductionRate());
     }
 }

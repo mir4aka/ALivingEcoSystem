@@ -7,9 +7,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public interface HerbivoreRepository {
-    List<Herbivore> getHerbivores();
+    List<Herbivore> getHerbivoresList();
     
     void addHerbivore(Herbivore... animals);
     
     void removeHerbivore(Herbivore herbivore);
+    
+    void addAllHerbivores(List<Herbivore> herbivores);
 }

@@ -4,10 +4,10 @@ import eu.deltasource.internship.enums.HabitatEnum;
 import eu.deltasource.internship.enums.SocialStatus;
 
 public class Carnivore extends Animal {
-    private int attackPoints;
+    private double attackPoints;
     private int hungerRate;
     
-    public Carnivore(String specie, int maxAge, double weight, HabitatEnum habitat, SocialStatus livingType, int groupAmount, int reproductionRate, int hungerRate, int attackPoints) {
+    public Carnivore(String specie, double maxAge, double weight, HabitatEnum habitat, SocialStatus livingType, int groupAmount, int reproductionRate, int hungerRate, double attackPoints) {
         super(specie, maxAge, weight, habitat, livingType, groupAmount, reproductionRate);
         this.hungerRate = hungerRate;
         this.attackPoints = attackPoints;
@@ -17,7 +17,7 @@ public class Carnivore extends Animal {
     }
     
     @Override
-    public int getPoints() {
+    public double getPoints() {
         return attackPoints;
     }
     

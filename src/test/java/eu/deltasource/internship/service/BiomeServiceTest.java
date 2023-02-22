@@ -7,6 +7,12 @@ import eu.deltasource.internship.model.Group;
 import eu.deltasource.internship.model.Herbivore;
 import eu.deltasource.internship.repository.BiomeRepository.BiomeRepository;
 import eu.deltasource.internship.repository.BiomeRepository.BiomeRepositoryImpl;
+import eu.deltasource.internship.repository.CarnivoreRepository.CarnivoreRepository;
+import eu.deltasource.internship.repository.CarnivoreRepository.CarnivoreRepositoryImpl;
+import eu.deltasource.internship.repository.GroupRepository.GroupRepository;
+import eu.deltasource.internship.repository.GroupRepository.GroupRepositoryImpl;
+import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepository;
+import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -17,23 +23,18 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class BiomeServiceTest {
-    private AnimalService animalService;
-    private GroupService groupService;
-    private BiomeRepository biomeRepository;
-    private BiomeService biomeService;
-    
-    @BeforeEach
-    public void setUp() {
-        animalService = new AnimalService();
-        groupService = new GroupService();
-        biomeRepository = new BiomeRepositoryImpl();
-        biomeService = new BiomeService();
-    }
+    private CarnivoreRepository carnivoreRepository = new CarnivoreRepositoryImpl();
+    private HerbivoreRepository herbivoreRepository = new HerbivoreRepositoryImpl();
+    private GroupRepository groupRepository = new GroupRepositoryImpl();
+    private AnimalService animalService = new AnimalService(herbivoreRepository, carnivoreRepository, groupRepository);
+    private GroupService groupService = new GroupService(groupRepository);
+    private BiomeRepository biomeRepository = new BiomeRepositoryImpl();
+    private BiomeService biomeService = new BiomeService(animalService, groupService, biomeRepository);
 
     @Test
     public void testIfAnimalRepositoriesAreUpdatedCorrectly() throws FileNotFoundException {
         JsonParser parser = new JsonParser();
-        JsonObject asJsonObject = parser.parse(new FileReader("C:\\Users\\mirchakis\\IdeaProjects\\ProjectsDeltaSource\\ALivingEcoSystem\\ALivingEcoSystem\\src\\main\\resources\\testAnimals.json")).getAsJsonObject();
+        JsonObject asJsonObject = parser.parse(new FileReader("C:\\Users\\mirchakis\\IdeaProjects\\ProjectsDeltaSource\\ALivingEcoSystem\\ALivingEcoSystem\\src\\main\\resources\\animals.json")).getAsJsonObject();
         Gson gson = new GsonBuilder().create();
         BiomeEnum biomeEnum = BiomeEnum.DESERT;
         
@@ -42,7 +43,7 @@ class BiomeServiceTest {
         List<Carnivore> carnivores = biomeService.getAnimalService().getCarnivores();
         List<Herbivore> herbivores = biomeService.getAnimalService().getHerbivores();
         
-        assertEquals(21, herbivores.size());
-        assertEquals(8, carnivores.size());
+        assertEquals(3, herbivores.size());
+        assertEquals(3, carnivores.size());
     }
 }

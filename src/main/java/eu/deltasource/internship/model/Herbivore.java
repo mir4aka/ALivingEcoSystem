@@ -4,9 +4,9 @@ import eu.deltasource.internship.enums.HabitatEnum;
 import eu.deltasource.internship.enums.SocialStatus;
 
 public class Herbivore extends Animal {
-    private int escapePoints;
+    private double escapePoints;
     
-    public Herbivore(String specie, int maxAge, double weight, HabitatEnum habitat, SocialStatus livingType, int groupAmount, int reproductionRate, int escapePoints) {
+    public Herbivore(String specie, double maxAge, double weight, HabitatEnum habitat, SocialStatus livingType, int groupAmount, int reproductionRate, double escapePoints) {
         super(specie, maxAge, weight, habitat, livingType, groupAmount, reproductionRate);
         this.escapePoints = escapePoints;
     }
@@ -15,7 +15,7 @@ public class Herbivore extends Animal {
     }
     
     @Override
-    public int getPoints() {
+    public double getPoints() {
         return escapePoints;
     }
     

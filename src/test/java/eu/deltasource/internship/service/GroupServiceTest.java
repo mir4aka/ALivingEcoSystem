@@ -6,6 +6,8 @@ import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Carnivore;
 import eu.deltasource.internship.model.Group;
 import eu.deltasource.internship.model.Herbivore;
+import eu.deltasource.internship.repository.GroupRepository.GroupRepository;
+import eu.deltasource.internship.repository.GroupRepository.GroupRepositoryImpl;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -15,12 +17,8 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 class GroupServiceTest {
-    private GroupService groupService;
-    
-    @BeforeEach
-    public void setUp() {
-        groupService = new GroupService();
-    }
+    private GroupRepository groupRepository = new GroupRepositoryImpl();
+    private GroupService groupService = new GroupService(groupRepository);
     
     @Test
     public void testIfCarnivoresGroupSizeIsCorrect() {
@@ -68,17 +66,29 @@ class GroupServiceTest {
         Carnivore carnivore = new Carnivore("lion", 20, 200, HabitatEnum.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
         groupService.createGroupOfCarnivores(carnivore);
     
-        List<Group> carnivoresGroup = groupService.getCarnivoresGroup();
+        Group carnivoreGroup = groupService.findCarnivoreGroup(carnivore);
         
+        assertEquals(3, carnivoreGroup.getAnimals().size());
+        
+        carnivoreGroup.removeAnimal(carnivore);
+        
+        assertEquals(2, carnivoreGroup.getAnimals().size());
+    }
+    
+    @Test
+    public void testIfTheCarnivoreIsRemovedFromTheGroup() {
+        Carnivore carnivore = new Carnivore("lion", 20, 200, HabitatEnum.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
+        groupService.createGroupOfCarnivores(carnivore);
+    
         List<Animal> animals = new ArrayList<>();
+        
+        List<Group> carnivoresGroup = groupService.getCarnivoresGroup();
         for (Group group : carnivoresGroup) {
             animals = group.getAnimals();
         }
-    
-        assertEquals(4, animals.size());
-        
-        groupService.removeCarnivore(carnivore);
         
         assertEquals(3, animals.size());
+        groupService.removeCarnivore(carnivore);
+        assertEquals(2, animals.size());
     }
 }

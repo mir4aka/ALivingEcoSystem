@@ -7,16 +7,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 public abstract class Animal {
-    private int age;
-    private int maxAge;
+    private double age;
+    private double maxAge;
     private int reproductionRate;
+    private int originalReproductionRate;
     private int groupAmount;
     private double weight;
     private String specie;
     private HabitatEnum habitat;
     private SocialStatus socialStatus;
     
-    public Animal(String specie, int maxAge, double weight, HabitatEnum mainHabitat, SocialStatus socialStatus, int groupAmount, int reproductionRate) {
+    public Animal(String specie, double maxAge, double weight, HabitatEnum mainHabitat, SocialStatus socialStatus, int groupAmount, int reproductionRate) {
         this.specie = specie;
         this.maxAge = maxAge;
         this.weight = weight;
@@ -25,6 +26,7 @@ public abstract class Animal {
         this.groupAmount = groupAmount;
         this.reproductionRate = reproductionRate;
         this.age = 0;
+        this.originalReproductionRate = reproductionRate;
     }
     
     public Animal() {
@@ -34,15 +36,15 @@ public abstract class Animal {
         return specie;
     }
     
-    public int getAge() {
+    public double getAge() {
         return age;
     }
     
-    public void setAge(int age) {
+    public void setAge(double age) {
         this.age = age;
     }
     
-    public int getMaxAge() {
+    public double getMaxAge() {
         return maxAge;
     }
     
@@ -62,6 +64,10 @@ public abstract class Animal {
         this.reproductionRate = reproductionRate;
     }
     
+    public int getOriginalReproductionRate() {
+        return originalReproductionRate;
+    }
+    
     public SocialStatus getSocialStatus() {
         return socialStatus;
     }
@@ -70,7 +76,7 @@ public abstract class Animal {
         return groupAmount;
     }
     
-    public abstract int getPoints();
+    public abstract double getPoints();
     @Override
     public String toString() {
         return "Type of animal = " + getClass().getSimpleName() + "\n" +

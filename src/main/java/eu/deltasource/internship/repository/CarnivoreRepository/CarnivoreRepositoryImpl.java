@@ -9,20 +9,25 @@ import java.util.Collections;
 import java.util.List;
 
 public class CarnivoreRepositoryImpl implements CarnivoreRepository {
-    private List<Carnivore> carnivores = new ArrayList<>();
+    private List<Carnivore> carnivoresList = new ArrayList<>();
     
     @Override
     public List<Carnivore> getCarnivores() {
-        return Collections.unmodifiableList(carnivores);
+        return Collections.unmodifiableList(carnivoresList);
     }
     
     @Override
     public void addCarnivore(Carnivore... animals) {
-        carnivores.addAll(Arrays.asList(animals));
+        carnivoresList.addAll(Arrays.asList(animals));
     }
     
     @Override
     public void removeCarnivore(Carnivore animal) {
-        carnivores.remove(animal);
+        carnivoresList.remove(animal);
+    }
+    
+    @Override
+    public void addAllCarnivores(List<Carnivore> carnivores) {
+        carnivoresList.addAll(carnivores);
     }
 }

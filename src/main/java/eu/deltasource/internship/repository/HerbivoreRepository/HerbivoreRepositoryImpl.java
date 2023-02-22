@@ -1,6 +1,5 @@
 package eu.deltasource.internship.repository.HerbivoreRepository;
 
-import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Herbivore;
 
 import java.util.ArrayList;
@@ -9,20 +8,25 @@ import java.util.Collections;
 import java.util.List;
 
 public class HerbivoreRepositoryImpl implements HerbivoreRepository {
-    private List<Herbivore> herbivores = new ArrayList<>();
+    private List<Herbivore> herbivoresList = new ArrayList<>();
     
     @Override
-    public List<Herbivore> getHerbivores() {
-        return Collections.unmodifiableList(herbivores);
+    public List<Herbivore> getHerbivoresList() {
+        return Collections.unmodifiableList(herbivoresList);
     }
     
     @Override
     public void addHerbivore(Herbivore... animals) {
-        herbivores.addAll(Arrays.asList(animals));
+        herbivoresList.addAll(Arrays.asList(animals));
     }
     
     @Override
     public void removeHerbivore(Herbivore animal) {
-        herbivores.remove(animal);
+        herbivoresList.remove(animal);
+    }
+    
+    @Override
+    public void addAllHerbivores(List<Herbivore> herbivores) {
+        herbivoresList.addAll(herbivores);
     }
 }
