@@ -6,6 +6,7 @@ import eu.deltasource.internship.enums.BiomeEnum;
 import eu.deltasource.internship.enums.SocialStatus;
 import eu.deltasource.internship.model.*;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.List;
@@ -16,23 +17,19 @@ public class EcoSystemService {
     
     public void simulateEcoSystem(BiomeEnum ecoSystemBiome) throws InterruptedException, IOException {
         
-        Gson gson = new GsonBuilder().create();
-        JsonParser parser = new JsonParser();
-        JsonElement parse = parser.parse(new FileReader("C:\\Users\\mirchakis\\IdeaProjects\\ProjectsDeltaSource\\ALivingEcoSystem\\ALivingEcoSystem\\src\\main\\resources\\animals.json"));
-        JsonObject JSONObject = (JsonObject) parse;
-    
         List<Carnivore> carnivores = biomeService.getAnimalService().getCarnivores();
         List<Herbivore> herbivores = biomeService.getAnimalService().getHerbivores();
-    
-        String biome = biomeService.updateAnimalsRepositories(ecoSystemBiome, gson, JSONObject, carnivores, herbivores);
-    
         List<Carnivore> newBornCarnivores = biomeService.getAnimalService().getNewBornCarnivores();
         List<Herbivore> newBornHerbivores = biomeService.getAnimalService().getNewBornHerbivores();
+        
+        Gson gson = new GsonBuilder().create();
+        JsonObject jsonObject = readingFile().getAsJsonObject();
+        
+        String biome = biomeService.updateAnimalsRepositories(ecoSystemBiome, gson, jsonObject);
         
         System.out.println("Action happening in " + biome);
         while (isAnimalsDead(carnivores, herbivores)) {
             increaseHungerLevelOfCarnivoresIfAllHerbivoresAreDead(carnivores, herbivores);
-            
             
             addNewBornAnimalsToTheirGroups(newBornCarnivores, newBornHerbivores);
             
@@ -40,29 +37,17 @@ public class EcoSystemService {
             
             increaseTheAgeOfTheAnimals(carnivores, herbivores);
             
-            //Reproduce new animals
             animalFactory(carnivores, herbivores);
             
             System.out.println("------------------------------------------");
             Thread.sleep(2000);
         }
     }
-
-//    private void runEcoSystemDependingOnTheBiome(BiomeEnum biome) {
-//        if (biome.equals(BiomeEnum.SAVANNA)) {
-//            biomeService.updateRepositoriesForSavanna();
-//        } else if (biome.equals(BiomeEnum.OCEAN)) {
-//            biomeService.updateRepositoriesForOcean();
-//        } else if (biome.equals(BiomeEnum.PLAINS)) {
-//            biomeService.updateRepositoriesForPlains();
-//        } else if (biome.equals(BiomeEnum.SWAMP)) {
-//            biomeService.updateRepositoriesForSwamp();
-//        } else if (biome.equals(BiomeEnum.TROPICAL_RAINFOREST)) {
-//            biomeService.updateRepositoriesForTropicalForest();
-//        } else if (biome.equals(BiomeEnum.TUNDRA)) {
-//            biomeService.updateRepositoriesForTundra();
-//        }
-//    }
+    
+    private JsonElement readingFile() throws FileNotFoundException {
+        JsonParser parser = new JsonParser();
+        return parser.parse(new FileReader("C:\\Users\\mirchakis\\IdeaProjects\\ProjectsDeltaSource\\ALivingEcoSystem\\ALivingEcoSystem\\src\\main\\resources\\animals.json"));
+    }
     
     private boolean isAnimalsDead(List<Carnivore> carnivores, List<Herbivore> herbivores) {
         return carnivores.size() != 0 && herbivores.size() != 0;
@@ -76,11 +61,10 @@ public class EcoSystemService {
                     increasingCarnivoreHungerLevel(carnivore);
                     if (carnivore.getHungerRate() >= 100) {
                         System.out.println(carnivore.getSpecie() + " died out of hunger.");
+                        Animal carnivoreInGroup = biomeService.getGroupService().findCarnivoreInGroup(carnivore);
                         biomeService.getAnimalService().removeCarnivore(carnivore);
-                        Carnivore carnivoreInGroup = biomeService.getGroupService().findCarnivoreInGroup(carnivore);
                         
-                        biomeService.getGroupService().removeAnimal(carnivoreInGroup);
-                        biomeService.getGroupService().findFirstAnimalToRemove(carnivoreInGroup);
+                        biomeService.getGroupService().removeCarnivore(carnivoreInGroup);
                     }
                 }
             }
@@ -109,7 +93,9 @@ public class EcoSystemService {
     }
     
     /**
-     * Attacking method that calculates the success chance of the attack.
+     * Gets a random carnivore and a random herbivore from the lists, calculates the success chance.
+     * @param carnivores
+     * @param herbivores
      */
     private void carnivoreAttacksHerbivore(List<Carnivore> carnivores, List<Herbivore> herbivores) {
         Carnivore carnivore = carnivores.get(new Random().nextInt(0, carnivores.size()));
@@ -136,13 +122,16 @@ public class EcoSystemService {
     
     private void attack(List<Carnivore> carnivores, Carnivore carnivore, Herbivore herbivore) {
         //Distributing the food depending on the carnivore's social status (GROUP, ALONE).
-        foodDistributionDependingOnTheCarnivoresWayOfLiving(carnivores, carnivore, herbivore);
+        foodDistributionDependingOnTheCarnivoresSocialStatus(carnivores, carnivore, herbivore);
         
         System.out.println(carnivore.getSpecie() + " killed " + herbivore.getSpecie());
         biomeService.getAnimalService().removeHerbivore(herbivore);
     }
     
-    private void foodDistributionDependingOnTheCarnivoresWayOfLiving(List<Carnivore> carnivores, Carnivore carnivore, Herbivore herbivore) {
+    /**
+     * Distributing the food of the carnivores whether the carnivore is living in a group or alone.
+     */
+    private void foodDistributionDependingOnTheCarnivoresSocialStatus(List<Carnivore> carnivores, Carnivore carnivore, Herbivore herbivore) {
         double foodInKg = herbivore.getWeight();
         double foodForMainAttacker;
         double foodForTheRestOfTheGroup;
@@ -162,6 +151,9 @@ public class EcoSystemService {
         }
     }
     
+    /**
+     * After the attack is successful, hunger rate of each member of the group is being decreased, the main attacker of the group receives two portions.
+     */
     private void decreasingTheHungerLevelOfEachMemberOfTheAttackersGroup(List<Carnivore> carnivores, Carnivore carnivore, double foodForMainAttacker, double foodForTheRestOfTheGroup) {
         for (Animal groupMember : carnivores) {
             if (groupMember.equals(carnivore)) {
@@ -193,6 +185,10 @@ public class EcoSystemService {
         }
     }
     
+    /**
+     * If the carnivore reaches its max age, it dies.
+     * @param carnivore
+     */
     private void checkIfTheAnimalHasReachedItsMaxAge(Carnivore carnivore) {
         if (carnivore.getAge() > carnivore.getMaxAge()) {
             System.out.println("Animal " + carnivore.getSpecie() + " died old." + carnivore.getAge());
@@ -200,6 +196,10 @@ public class EcoSystemService {
         }
     }
     
+    /**
+     * If the herbivore reaches its max age, it dies.
+     * @param herbivore
+     */
     private void checkIfTheAnimalHasReachedItsMaxAge(Herbivore herbivore) {
         if (herbivore.getAge() > herbivore.getMaxAge()) {
             System.out.println("Animal " + herbivore.getSpecie() + " died old." + herbivore.getAge());
@@ -208,7 +208,7 @@ public class EcoSystemService {
     }
     
     /**
-     * Takes care of the reproducing of the animals
+     * Iterates the herbivores and carnivores and checks if their reproduction rate is equal to 0, if it is - an animal is being reproduced.
      */
     private void animalFactory(List<Carnivore> carnivores, List<Herbivore> herbivores) {
         for (Carnivore carnivore : carnivores) {
@@ -235,7 +235,10 @@ public class EcoSystemService {
         }
     }
     
-    
+    /**
+     * Straight forward prints animals' information, for example specie and age.
+     * The goal of the application is not to reach this method, so it is not really used, unless all the animals are dead.
+     */
     public String printAnimalsInfo() {
         StringBuilder sb = new StringBuilder();
         

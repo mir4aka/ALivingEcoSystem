@@ -9,6 +9,7 @@ import java.util.List;
 
 public interface GroupRepository {
     List<Group> getCarnivoresGroup();
+    
     List<Group> getHerbivoresGroup();
     
     void addGroupOfCarnivores(Group group);
@@ -16,4 +17,6 @@ public interface GroupRepository {
     void addGroupOfHerbivores(Group group);
     
     Carnivore findCarnivoreInGroup(Carnivore carnivore);
+    
+    void removeCarnivore(Animal animal);
 }

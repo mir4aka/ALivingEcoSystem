@@ -1,17 +1,16 @@
 package eu.deltasource.internship.repository.BiomeRepository;
 
+import eu.deltasource.internship.enums.BiomeEnum;
 import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Biome;
 
 import java.util.*;
 
 public class BiomeRepositoryImpl implements BiomeRepository {
-    private Map<String, List<Animal>> animalsInBiome = new HashMap<>();
-    private String biome;
+    private Map<Biome, List<Animal>> animalsInBiome = new HashMap<>();
     
     @Override
-    public void addBiomeAndAnimals(String biome, Animal... animals) {
-        this.biome = String.valueOf(biome);
+    public void addBiomeAndAnimals(Biome biome, Animal... animals) {
         for (Animal animal : animals) {
             if (!animalsInBiome.containsKey(biome)) {
                 animalsInBiome.put(biome, new ArrayList<>());
@@ -21,11 +20,12 @@ public class BiomeRepositoryImpl implements BiomeRepository {
         }
     }
     
-    public Map<String, List<Animal>> getAnimalsInBiome() {
-        return Collections.unmodifiableMap(animalsInBiome);
-    }
-    
-    public String getBiome() {
-        return biome;
+    @Override
+    public BiomeEnum findBiome(Biome biome) {
+        if(!animalsInBiome.containsKey(biome)) {
+            throw new IllegalArgumentException("No such biome exception.");
+        }
+        String biom = biome.toString();
+        return BiomeEnum.valueOf(biom);
     }
 }

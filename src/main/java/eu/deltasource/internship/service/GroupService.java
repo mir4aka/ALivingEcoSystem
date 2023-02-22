@@ -1,6 +1,7 @@
 package eu.deltasource.internship.service;
 
 import eu.deltasource.internship.model.Animal;
+import eu.deltasource.internship.model.Herbivore;
 import eu.deltasource.internship.repository.GroupRepository.GroupRepository;
 import eu.deltasource.internship.repository.GroupRepository.GroupRepositoryImpl;
 import eu.deltasource.internship.model.Carnivore;
@@ -9,29 +10,96 @@ import eu.deltasource.internship.model.Group;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class GroupService {
+    private AnimalService animalService = new AnimalService();
     private GroupRepository groupRepository = new GroupRepositoryImpl();
-    private List<Animal> animals = new ArrayList<>();
     
     public List<Group> getCarnivoresGroup() {
         return Collections.unmodifiableList(groupRepository.getCarnivoresGroup());
     }
     
-    public Carnivore findCarnivoreInGroup(Carnivore carnivore) {
-        return groupRepository.findCarnivoreInGroup(carnivore);
+    public List<Group> getHerbivoresGroup() {
+        return Collections.unmodifiableList(groupRepository.getHerbivoresGroup());
     }
     
-    public void addAnimal(Animal animal) {
-        animals.add(animal);
+    public void addCarnivoresGroupToRepository(Group group) {
+        groupRepository.addGroupOfCarnivores(group);
     }
     
-    public void removeAnimal(Animal animal) {
-        animals.remove(animal);
+    public void addHerbivoresGroupToRepository(Group group) {
+        groupRepository.addGroupOfHerbivores(group);
     }
     
-    public void findFirstAnimalToRemove(Carnivore carnivore) {
-        Animal animal = animals.stream().filter(a -> a.getSpecie().equals(carnivore.getSpecie())).findFirst().orElse(null);
-        animals.remove(animal);
+    public Animal findCarnivoreInGroup(Animal carnivore) {
+        List<Group> carnivoresGroup = groupRepository.getCarnivoresGroup();
+        for (Group group : carnivoresGroup) {
+            List<Animal> animals = group.getAnimals();
+            for (Animal animal : animals) {
+                if (animal.equals(carnivore)) {
+                    return animal;
+                }
+            }
+        }
+        return null;
+    }
+    
+    public void removeCarnivore(Animal carnivore) {
+        List<Group> carnivoresGroup = groupRepository.getCarnivoresGroup();
+        
+        for (Group group : carnivoresGroup) {
+            List<Animal> animals = group.getAnimals();
+            
+            for (Animal animal : animals) {
+                if (animal.equals(carnivore)) {
+                    group.removeAnimal(animal);
+                    break;
+                }
+            }
+        }
+    }
+    
+    public List<Carnivore> createGroupOfCarnivores(Carnivore carnivore) {
+        List<Carnivore> carnivores = new ArrayList<>();
+        Group group = new Group();
+        group.addAnimal(carnivore);
+        carnivores.add(carnivore);
+        for (int i = 0; i < carnivore.getGroupAmount() - 1; i++) {
+            int maxAge = carnivore.getMaxAge();
+            double weight = new Random().nextDouble(0, carnivore.getWeight());
+            int productionRate = new Random().nextInt(0, carnivore.getReproductionRate());
+            int hungerRate = new Random().nextInt(1, 100);
+            int attackPoints = new Random().nextInt(0, carnivore.getPoints());
+            int groupAmount = carnivore.getGroupAmount();
+            
+            Carnivore animalInGroup = new Carnivore(carnivore.getSpecie(), maxAge, weight, carnivore.getHabitat(), carnivore.getSocialStatus(), groupAmount, productionRate, hungerRate, attackPoints);
+            
+            group.addAnimal(animalInGroup);
+            carnivores.add(animalInGroup);
+        }
+        addCarnivoresGroupToRepository(group);
+        return carnivores;
+    }
+    
+    public List<Herbivore> createGroupOfHerbivores(Herbivore herbivore) {
+        List<Herbivore> herbivores = new ArrayList<>();
+        Group group = new Group();
+        group.addAnimal(herbivore);
+        herbivores.add(herbivore);
+        for (int i = 0; i < herbivore.getGroupAmount() - 1; i++) {
+            int maxAge = herbivore.getMaxAge();
+            double weight = new Random().nextDouble(0, herbivore.getWeight());
+            int productionRate = new Random().nextInt(0, herbivore.getReproductionRate());
+            int escapePoints = herbivore.getPoints();
+            int groupAmount = herbivore.getGroupAmount();
+            
+            Herbivore animalInGroup = new Herbivore(herbivore.getSpecie(), maxAge, weight, herbivore.getHabitat(), herbivore.getSocialStatus(), groupAmount, productionRate, escapePoints);
+            
+            group.addAnimal(animalInGroup);
+            herbivores.add(animalInGroup);
+        }
+        addHerbivoresGroupToRepository(group);
+        return herbivores;
     }
 }

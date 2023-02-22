@@ -109,32 +109,58 @@ public class AnimalService {
         double attackPoints;
         double escapePoints;
         double successRate;
-        
-        if (carnivore.getSocialStatus().equals(SocialStatus.GROUP)) {
-            attackPoints = getScaledAttackPoints(carnivore) * carnivore.getGroupAmount();
-        } else {
-            attackPoints = getScaledAttackPoints(carnivore);
+    
+        if(herbivore.getPoints() > carnivore.getPoints()) {
+            successRate = 0;
+            return successRate;
         }
-        
-        if (herbivore.getSocialStatus().equals(SocialStatus.GROUP)) {
-            escapePoints = getScaledEscapePoints(herbivore) * herbivore.getGroupAmount();
-        } else {
-            escapePoints = getScaledEscapePoints(herbivore);
-        }
-        
+    
+        attackPoints = calculateAttackPoints(carnivore);
+        escapePoints = calculateEscapePoints(herbivore);
+    
         successRate = attackPoints / (attackPoints + escapePoints) * 100;
+    
+        successRate = calculateSuccessChanceIfTheCarnivoreAttacksAlone(carnivore, successRate);
+    
+        successRate = calculatesTheSuccessChanceIfTheHerbivoreWeighsMoreThanTheCarnivore(carnivore, herbivore, successRate);
         
+        return successRate;
+    }
+    
+    private double calculatesTheSuccessChanceIfTheHerbivoreWeighsMoreThanTheCarnivore(Carnivore carnivore, Herbivore herbivore, double successRate) {
+        if (herbivore.getWeight() > carnivore.getWeight() && carnivore.getSocialStatus().equals(SocialStatus.ALONE)) {
+            successRate = herbivore.getWeight() / carnivore.getWeight();
+        }
+        return successRate;
+    }
+    
+    private double calculateSuccessChanceIfTheCarnivoreAttacksAlone(Carnivore carnivore, double successRate) {
         if (carnivore.getSocialStatus().equals(SocialStatus.ALONE)) {
             successRate *= 0.5;
         } else {
             successRate = successRate + (successRate * 0.3);
         }
-        
-        if (herbivore.getWeight() > carnivore.getWeight() && carnivore.getSocialStatus().equals(SocialStatus.ALONE)) {
-            successRate = herbivore.getWeight() / carnivore.getWeight();
-        }
-        
         return successRate;
+    }
+    
+    private double calculateEscapePoints(Herbivore herbivore) {
+        double escapePoints;
+        if (herbivore.getSocialStatus().equals(SocialStatus.GROUP)) {
+            escapePoints = getScaledEscapePoints(herbivore) * herbivore.getGroupAmount();
+        } else {
+            escapePoints = getScaledEscapePoints(herbivore);
+        }
+        return escapePoints;
+    }
+    
+    private double calculateAttackPoints(Carnivore carnivore) {
+        double attackPoints;
+        if (carnivore.getSocialStatus().equals(SocialStatus.GROUP)) {
+            attackPoints = getScaledAttackPoints(carnivore) * carnivore.getGroupAmount();
+        } else {
+            attackPoints = getScaledAttackPoints(carnivore);
+        }
+        return attackPoints;
     }
     
     public void increaseHungerLevel(Carnivore carnivore, double hunger) {
@@ -171,11 +197,11 @@ public class AnimalService {
     }
     
     private int getScaledAttackPoints(Carnivore carnivore) {
-        return scalePoints(carnivore, carnivore.getAttackPoints());
+        return scalePoints(carnivore, carnivore.getPoints());
     }
     
     private int getScaledEscapePoints(Herbivore herbivore) {
-        return scalePoints(herbivore, herbivore.getEscapePoints());
+        return scalePoints(herbivore, herbivore.getPoints());
     }
     
     public void increaseAge(Animal animal) {

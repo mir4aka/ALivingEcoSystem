@@ -15,7 +15,6 @@ public abstract class Animal {
     private String specie;
     private HabitatEnum habitat;
     private SocialStatus socialStatus;
-    private List<Biome> biomes;
     
     public Animal(String specie, int maxAge, double weight, HabitatEnum mainHabitat, SocialStatus socialStatus, int groupAmount, int reproductionRate) {
         this.specie = specie;
@@ -25,7 +24,6 @@ public abstract class Animal {
         this.socialStatus = socialStatus;
         this.groupAmount = groupAmount;
         this.reproductionRate = reproductionRate;
-        this.biomes = new ArrayList<>();
         this.age = 0;
     }
     
@@ -72,6 +70,7 @@ public abstract class Animal {
         return groupAmount;
     }
     
+    public abstract int getPoints();
     @Override
     public String toString() {
         return "Type of animal = " + getClass().getSimpleName() + "\n" +

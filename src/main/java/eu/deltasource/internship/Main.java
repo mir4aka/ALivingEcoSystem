@@ -13,6 +13,7 @@ public class Main {
     
         System.out.println("Enter biome. You can choose savanna, swamp, plains, tundra or ocean");
     
+        //TODO IMPLEMENT A WHILE LOOP UNTIL A VALID BIOME IS ENTERED
         BiomeEnum biomeEnum = BiomeEnum.valueOf(scanner.nextLine().toUpperCase());
 
         ecoSystemService.simulateEcoSystem(biomeEnum);
