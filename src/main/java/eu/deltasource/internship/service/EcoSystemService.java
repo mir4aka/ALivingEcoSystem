@@ -169,20 +169,25 @@ public class EcoSystemService {
     private void foodDistributionDependingOnTheCarnivoresSocialStatus(List<Carnivore> carnivores, Carnivore carnivore, Herbivore herbivore) {
         double foodInKg = herbivore.getWeight();
         double foodForMainAttacker;
-        double foodForTheRestOfTheGroup;
         
         if (carnivore.getSocialStatus().equals(SocialStatus.GROUP)) {
-            List<Group> groups = animalService.getCarnivoresGroup();
-            List<Animal> groupOfAnimals = animalService.findGroup(groups, carnivore);
-            int attackersAmount = groupOfAnimals.size();
-            foodInKg /= attackersAmount + 1;
-            foodForMainAttacker = foodInKg * 2;
-            foodForTheRestOfTheGroup = foodInKg;
-            decreasingTheHungerLevelOfEachMemberOfTheAttackersGroup(carnivores, carnivore, foodForMainAttacker, foodForTheRestOfTheGroup);
+            calculateFoodDistributionBetweenTheGroupMembers(carnivores, carnivore, foodInKg);
         } else {
             foodForMainAttacker = herbivore.getWeight();
             animalService.decreaseHungerLevel(carnivore, foodForMainAttacker);
         }
+    }
+    
+    private void calculateFoodDistributionBetweenTheGroupMembers(List<Carnivore> carnivores, Carnivore carnivore, double foodInKg) {
+        double foodForMainAttacker;
+        double foodForTheRestOfTheGroup;
+        List<Group> groups = animalService.getCarnivoresGroup();
+        List<Animal> groupOfAnimals = animalService.findGroup(groups, carnivore);
+        int attackersAmount = groupOfAnimals.size();
+        foodInKg /= attackersAmount + 1;
+        foodForMainAttacker = foodInKg * 2;
+        foodForTheRestOfTheGroup = foodInKg;
+        decreasingTheHungerLevelOfEachMemberOfTheAttackersGroup(carnivores, carnivore, foodForMainAttacker, foodForTheRestOfTheGroup);
     }
     
     /**
@@ -246,6 +251,11 @@ public class EcoSystemService {
      * Iterates the herbivores and carnivores and checks if their reproduction rate is equal to 0, if it is - an animal is being reproduced.
      */
     private void animalFactory(List<Carnivore> carnivores, List<Herbivore> herbivores) {
+        carnivoreFactory(carnivores);
+        herbivoreFactory(herbivores);
+    }
+    
+    private void carnivoreFactory(List<Carnivore> carnivores) {
         for (Carnivore carnivore : carnivores) {
             double reproductionRate = carnivore.getReproductionRate();
             if (reproductionRate == 0) {
@@ -257,6 +267,9 @@ public class EcoSystemService {
                 reproduceRateHelper.decreaseReproductionRate(carnivore);
             }
         }
+    }
+    
+    private void herbivoreFactory(List<Herbivore> herbivores) {
         for (Herbivore herbivore : herbivores) {
             double reproductionRate = herbivore.getReproductionRate();
             if (reproductionRate <= 0) {
