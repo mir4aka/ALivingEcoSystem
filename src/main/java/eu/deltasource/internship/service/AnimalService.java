@@ -15,6 +15,7 @@ import eu.deltasource.internship.model.Herbivore;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Random;
 
 public class AnimalService {
     private HerbivoreRepository herbivoreRepository;
@@ -132,6 +133,71 @@ public class AnimalService {
         return successRate;
     }
     
+    public void increaseHungerLevel(Carnivore carnivore) {
+        int hungerLevel = carnivore.getHungerLevel();
+        int hungerRate = carnivore.getHungerRate();
+        hungerLevel += hungerRate;
+        carnivore.setHungerLevel(hungerLevel);
+        if (hungerLevel >= 100) {
+            carnivore.setHungerLevel(100);
+        }
+    }
+    
+    public void decreaseHungerLevel(Carnivore carnivore, double food) {
+        int hungerLevel = carnivore.getHungerLevel();
+        hungerLevel-=food;
+        carnivore.setHungerLevel(hungerLevel);
+        if (hungerLevel <= 0) {
+            carnivore.setHungerLevel(0);
+        }
+    }
+    
+    public Carnivore reproduce(Carnivore carnivore) {
+        return new Carnivore(carnivore.getSpecie(), carnivore.getMaxAge(), carnivore.getWeight(), carnivore.getHabitat(), carnivore.getSocialStatus(), carnivore.getGroupAmount(), 10, carnivore.getHungerRate(), getScaledAttackPoints(carnivore));
+    }
+    
+    public Herbivore reproduce(Herbivore herbivore) {
+        return new Herbivore(herbivore.getSpecie(), herbivore.getMaxAge(), herbivore.getWeight(), herbivore.getHabitat(), herbivore.getSocialStatus(), herbivore.getGroupAmount(), 10, getScaledEscapePoints(herbivore));
+    }
+    
+    public double scalePoints(Animal animal, double points) {
+        if (animal.getAge() == 0) {
+            return points;
+        }
+        return points * (1 - (animal.getAge() / animal.getMaxAge()));
+    }
+    
+    public void increaseAge(Animal animal) {
+        double age = animal.getAge();
+        age++;
+        if (animal.getAge() >= animal.getMaxAge()) {
+            age = animal.getMaxAge();
+        }
+        animal.setAge(age);
+    }
+    
+    public void decreaseReproductionRate(Animal animal) {
+        int reproductionRate = animal.getReproductionRate();
+        reproductionRate--;
+        if (reproductionRate <= 0) {
+            reproductionRate = 0;
+        }
+        animal.setReproductionRate(reproductionRate);
+    }
+    
+    public void resetReproductionRate(Animal animal) {
+        int randomReproductionRate = new Random().nextInt(10, 25);
+        animal.setReproductionRate(randomReproductionRate);
+    }
+    
+    private double getScaledAttackPoints(Carnivore carnivore) {
+        return scalePoints(carnivore, carnivore.getPoints());
+    }
+    
+    private double getScaledEscapePoints(Herbivore herbivore) {
+        return scalePoints(herbivore, herbivore.getPoints());
+    }
+    
     private double calculatesTheSuccessChanceIfTheHerbivoreWeighsMoreThanTheCarnivore(Carnivore carnivore, Herbivore herbivore, double successRate) {
         if (herbivore.getWeight() > carnivore.getWeight() && carnivore.getSocialStatus().equals(SocialStatus.ALONE)) {
             successRate = herbivore.getWeight() / carnivore.getWeight();
@@ -166,68 +232,5 @@ public class AnimalService {
             attackPoints = getScaledAttackPoints(carnivore);
         }
         return attackPoints;
-    }
-    
-    public void increaseHungerLevel(Carnivore carnivore, double hunger) {
-        int hungerRate = carnivore.getHungerRate();
-        hungerRate += hunger;
-        carnivore.setHungerRate(hungerRate);
-        if (hungerRate >= 100) {
-            carnivore.setHungerRate(100);
-        }
-    }
-    
-    public void decreaseHungerLevel(Carnivore carnivore, double hunger) {
-        int hungerRate = carnivore.getHungerRate();
-        hungerRate -= hunger;
-        carnivore.setHungerRate(hungerRate);
-        if (hungerRate <= 0) {
-            carnivore.setHungerRate(0);
-        }
-    }
-    
-    public Carnivore reproduce(Carnivore carnivore) {
-        return new Carnivore(carnivore.getSpecie(), carnivore.getMaxAge(), carnivore.getWeight(), carnivore.getHabitat(), carnivore.getSocialStatus(), carnivore.getGroupAmount(), 10, carnivore.getHungerRate(), getScaledAttackPoints(carnivore));
-    }
-    
-    public Herbivore reproduce(Herbivore herbivore) {
-        return new Herbivore(herbivore.getSpecie(), herbivore.getMaxAge(), herbivore.getWeight(), herbivore.getHabitat(), herbivore.getSocialStatus(), herbivore.getGroupAmount(), 10, getScaledEscapePoints(herbivore));
-    }
-    
-    public double scalePoints(Animal animal, double points) {
-        if (animal.getAge() == 0) {
-            return points;
-        }
-        return points * (1 - (animal.getAge() / animal.getMaxAge()));
-    }
-    
-    private double getScaledAttackPoints(Carnivore carnivore) {
-        return scalePoints(carnivore, carnivore.getPoints());
-    }
-    
-    private double getScaledEscapePoints(Herbivore herbivore) {
-        return scalePoints(herbivore, herbivore.getPoints());
-    }
-    
-    public void increaseAge(Animal animal) {
-        double age = animal.getAge();
-        age++;
-        if (animal.getAge() >= animal.getMaxAge()) {
-            age = animal.getMaxAge();
-        }
-        animal.setAge(age);
-    }
-    
-    public void decreaseReproductionRate(Animal animal) {
-        int reproductionRate = animal.getReproductionRate();
-        reproductionRate--;
-        if (reproductionRate <= 0) {
-            reproductionRate = 0;
-        }
-        animal.setReproductionRate(reproductionRate);
-    }
-    
-    public void resetReproductionRate(Animal animal) {
-        animal.setReproductionRate(animal.getOriginalReproductionRate());
     }
 }

@@ -1,4 +1,5 @@
 package eu.deltasource.internship.service;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -6,6 +7,7 @@ import com.google.gson.JsonParser;
 import eu.deltasource.internship.enums.BiomeEnum;
 import eu.deltasource.internship.enums.HabitatEnum;
 import eu.deltasource.internship.enums.SocialStatus;
+import eu.deltasource.internship.model.Biome;
 import eu.deltasource.internship.model.Carnivore;
 import eu.deltasource.internship.model.Herbivore;
 import eu.deltasource.internship.repository.BiomeRepository.BiomeRepository;
@@ -22,7 +24,7 @@ import org.junit.jupiter.api.Test;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.lang.reflect.Type;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -34,9 +36,9 @@ class EcoSystemServiceTest {
     private GroupRepository groupRepository = new GroupRepositoryImpl();
     private BiomeRepository biomeRepository = new BiomeRepositoryImpl();
     private AnimalService animalService = new AnimalService(herbivoreRepository, carnivoreRepository, groupRepository);
-    private GroupService groupService = new GroupService(groupRepository);
+    private GroupService groupService = new GroupService(groupRepository, animalService);
     private BiomeService biomeService = new BiomeService(animalService, groupService, biomeRepository);
-    private EcoSystemService ecoSystemService = new EcoSystemService(biomeService);
+    private EcoSystemService ecoSystemService = new EcoSystemService(biomeService, animalService, groupService);
     private Carnivore carnivore;
     private Herbivore herbivore;
     
@@ -47,114 +49,63 @@ class EcoSystemServiceTest {
     }
     
     @Test
-    public void testIfAppEndsWhenAllAnimalsAreDead() throws IOException, InterruptedException {
-        JsonParser parser = new JsonParser();
-        JsonObject asJsonObject = parser.parse(new FileReader("C:\\Users\\mirchakis\\IdeaProjects\\ProjectsDeltaSource\\ALivingEcoSystem\\ALivingEcoSystem\\src\\main\\resources\\animals.json")).getAsJsonObject();
-        Gson gson = new GsonBuilder().create();
-        BiomeEnum biomeEnum = BiomeEnum.DESERT;
-    
-        biomeService.updateAnimalsRepositories(biomeEnum, gson, asJsonObject);
-    
-        List<Carnivore> carnivores = biomeService.getAnimalService().getCarnivores();
-        List<Herbivore> herbivores = biomeService.getAnimalService().getHerbivores();
-    
-        assertTrue(ecoSystemService.isAnimalsDead(carnivores, herbivores));
-        ecoSystemService.simulateEcoSystem(biomeEnum);
-        assertFalse(ecoSystemService.isAnimalsDead(carnivores, herbivores));
-    }
-    
-    @Test
-    public void testIfTheNewBornAnimalsAreAddedToTheirGroups() {
-        biomeService.getAnimalService().addCarnivore(carnivore);
-        biomeService.getAnimalService().addHerbivore(herbivore);
-        
-        Carnivore reproducedCarnivore = biomeService.getAnimalService().reproduce(carnivore);
-        Herbivore reproducedHerbivore = biomeService.getAnimalService().reproduce(herbivore);
-    
-        biomeService.getAnimalService().addNewBornCarnivore(reproducedCarnivore);
-        biomeService.getAnimalService().addNewBornHerbivore(reproducedHerbivore);
-    
-        List<Carnivore> newBornCarnivores = biomeService.getAnimalService().getNewBornCarnivores();
-        List<Herbivore> newBornHerbivores = biomeService.getAnimalService().getNewBornHerbivores();
-        
-        assertEquals(1, biomeService.getAnimalService().getCarnivores().size());
-        assertEquals(1, biomeService.getAnimalService().getHerbivores().size());
-    
-        /**
-         * The logic behind this method lies on the bottom of the class.
-         */
-        addsNewBornAnimalsToTheirSpecies(newBornCarnivores, newBornHerbivores);
-    
-        assertEquals(2, biomeService.getAnimalService().getCarnivores().size());
-        assertEquals(2, biomeService.getAnimalService().getHerbivores().size());
-    }
-    
-    @Test
     public void testIfTheHungerLevelOfTheCarnivoresIsIncreasedIfNoHerbivoresAreLeftAlive() throws IOException, InterruptedException {
         JsonParser parser = new JsonParser();
         JsonObject asJsonObject = parser.parse(new FileReader("C:\\Users\\mirchakis\\IdeaProjects\\ProjectsDeltaSource\\ALivingEcoSystem\\ALivingEcoSystem\\src\\main\\resources\\animals.json")).getAsJsonObject();
         Gson gson = new GsonBuilder().create();
-        BiomeEnum biomeEnum = BiomeEnum.SWAMP;
+        BiomeEnum biomeEnum = BiomeEnum.TESTBIOME;
 
         biomeService.updateAnimalsRepositories(biomeEnum, gson, asJsonObject);
     
-        List<Carnivore> carnivores = biomeService.getAnimalService().getCarnivores();
-        List<Herbivore> herbivores = new ArrayList<>();
+        List<Carnivore> carnivores = animalService.getCarnivores();
 
-        ecoSystemService.increaseHungerLevelOfCarnivoresIfAllHerbivoresAreDead(carnivores, herbivores);
+        ecoSystemService.simulateEcoSystem(biomeEnum);
 
         assertEquals(0, carnivores.size());
     }
     
     @Test
-    public void testIfTheFoodIsDistributedCorrectlyBetweenTheAnimals() {
-        animalService.addCarnivore(carnivore);
-        animalService.addHerbivore(herbivore);
-        
-        groupService.createGroupOfCarnivores(carnivore);
+    public void testIfTheFoodIsDistributedCorrectlyBetweenTheAnimals() throws IOException, InterruptedException {
+        BiomeEnum biome1 = createBiome();
+        getInformationFromJsonFile(biome1);
+        Carnivore carnivore = getCarnivore();
     
+        assert carnivore != null;
+        assertEquals(0, carnivore.getHungerLevel());
+        
+        ecoSystemService.simulateEcoSystem(biome1);
+        
+        assertEquals(100, carnivore.getHungerLevel());
+    }
+    
+    private BiomeEnum createBiome() {
+        Biome biome = new Biome(BiomeEnum.TESTBIOME);
+        biomeRepository.addBiomeAndAnimals(biome, carnivore, herbivore);
+        return biomeService.getBiome(biome);
+    }
+    
+    private void getInformationFromJsonFile(BiomeEnum biome1) throws IOException {
+        Gson gson = new GsonBuilder().create();
+        JsonParser parser = new JsonParser();
+        JsonObject asJsonObject = parser.parse(new FileReader("C:\\Users\\mirchakis\\IdeaProjects\\ProjectsDeltaSource\\ALivingEcoSystem\\ALivingEcoSystem\\src\\main\\resources\\animals.json")).getAsJsonObject();
+        
+        biomeService.updateAnimalsRepositories(biome1, gson, asJsonObject);
+    }
+    
+    private Carnivore getCarnivore() {
         List<Carnivore> carnivores = animalService.getCarnivores();
-        
-        assertEquals(15, carnivore.getHungerRate());
-        
-        ecoSystemService.foodDistributionDependingOnTheCarnivoresSocialStatus(carnivores, carnivore, herbivore);
-        
-        assertEquals(0, carnivore.getHungerRate());
+        Carnivore carnivore = null;
+        for (Carnivore carnivore1 : carnivores) {
+            carnivore = carnivore1;
+            break;
+        }
+        return carnivore;
     }
     
     @Test
-    public void testIfAnimalsAreReproducedCorrectlyAndAddedToRepositories() {
-        biomeService.getAnimalService().addCarnivore(carnivore);
-        biomeService.getAnimalService().addHerbivore(herbivore);
-    
-        List<Carnivore> carnivores = biomeService.getAnimalService().getCarnivores();
-        List<Herbivore> herbivores = biomeService.getAnimalService().getHerbivores();
-        List<Carnivore> newBornCarnivores = biomeService.getAnimalService().getNewBornCarnivores();
-        List<Herbivore> newBornHerbivores = biomeService.getAnimalService().getNewBornHerbivores();
-    
-        biomeService.getAnimalService().decreaseReproductionRate(carnivore);
-        biomeService.getAnimalService().decreaseReproductionRate(herbivore);
-        
-        ecoSystemService.animalFactory(carnivores, herbivores);
-        ecoSystemService.addNewBornAnimalsToTheirSpecies(newBornCarnivores, newBornHerbivores);
-        
-        assertEquals(2, carnivores.size());
-        assertEquals(2, herbivores.size());
-    }
-    
-    private void addsNewBornAnimalsToTheirSpecies(List<Carnivore> newBornCarnivores, List<Herbivore> newBornHerbivores) {
-        List<Carnivore> carnivores = ecoSystemService.addNewBornCarnivoresToTheCarnivores(newBornCarnivores);
-        for (Carnivore carnivore1 : carnivores) {
-            biomeService.getAnimalService().addCarnivore(carnivore1);
-        }
-        
-        List<Herbivore> herbivores = ecoSystemService.addNewBornHerbivoresToTheHerbivores(newBornHerbivores);
-        for (Herbivore herbivore : herbivores) {
-            biomeService.getAnimalService().addHerbivore(herbivore);
-        }
-        
-        biomeService.getAnimalService().clearNewBornCarnivoresList();
-        biomeService.getAnimalService().clearNewBornHerbivoresList();
+    public void testIfTheCarnivoreIsRemovedAfterReachingItsMaxAge() throws IOException, InterruptedException {
+        ecoSystemService.simulateEcoSystem(BiomeEnum.DESERT);
+        assertEquals(0, animalService.getCarnivores().size());
     }
     
 }

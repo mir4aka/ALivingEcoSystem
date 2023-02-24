@@ -15,17 +15,21 @@ import java.util.Random;
 
 public class EcoSystemService {
     private BiomeService biomeService;
+    private AnimalService animalService;
+    private GroupService groupService;
     
-    public EcoSystemService(BiomeService biomeService) {
+    public EcoSystemService(BiomeService biomeService, AnimalService animalService, GroupService groupService) {
         this.biomeService = biomeService;
+        this.animalService = animalService;
+        this.groupService = groupService;
     }
     
-    public void simulateEcoSystem(BiomeEnum ecoSystemBiome) throws InterruptedException, IOException {
+    public void simulateEcoSystem(BiomeEnum ecoSystemBiome) throws IOException, InterruptedException {
         
-        List<Carnivore> carnivores = biomeService.getAnimalService().getCarnivores();
-        List<Herbivore> herbivores = biomeService.getAnimalService().getHerbivores();
-        List<Carnivore> newBornCarnivores = biomeService.getAnimalService().getNewBornCarnivores();
-        List<Herbivore> newBornHerbivores = biomeService.getAnimalService().getNewBornHerbivores();
+        List<Carnivore> carnivores = animalService.getCarnivores();
+        List<Herbivore> herbivores = animalService.getHerbivores();
+        List<Carnivore> newBornCarnivores = animalService.getNewBornCarnivores();
+        List<Herbivore> newBornHerbivores = animalService.getNewBornHerbivores();
         
         Gson gson = new GsonBuilder().create();
         JsonObject jsonObject = readingFile().getAsJsonObject();
@@ -44,25 +48,32 @@ public class EcoSystemService {
             carnivoreAttacksHerbivore(carnivores, herbivores);
             increaseTheAgeOfTheAnimals(carnivores, herbivores);
             animalFactory(carnivores, herbivores);
-            
+            increaseEachCarnivoresHungerLevel(carnivores);
+    
             System.out.println("------------------------------------------");
             Thread.sleep(2000);
         }
     }
     
-    public void addNewBornAnimalsToTheirSpecies(List<Carnivore> newBornCarnivores, List<Herbivore> newBornHerbivores) {
+    private void increaseEachCarnivoresHungerLevel(List<Carnivore> carnivores) {
+        for (Carnivore carnivore : carnivores) {
+            animalService.increaseHungerLevel(carnivore);
+        }
+    }
+    
+    private void addNewBornAnimalsToTheirSpecies(List<Carnivore> newBornCarnivores, List<Herbivore> newBornHerbivores) {
         List<Carnivore> carnivores1 = addNewBornCarnivoresToTheCarnivores(newBornCarnivores);
         List<Herbivore> herbivores1 = addNewBornHerbivoresToTheHerbivores(newBornHerbivores);
         
         for (Carnivore carnivore : carnivores1) {
-            biomeService.getAnimalService().addCarnivore(carnivore);
+            animalService.addCarnivore(carnivore);
         }
         
         for (Herbivore herbivore : herbivores1) {
-            biomeService.getAnimalService().addHerbivore(herbivore);
+            animalService.addHerbivore(herbivore);
         }
-        biomeService.getAnimalService().clearNewBornCarnivoresList();
-        biomeService.getAnimalService().clearNewBornHerbivoresList();
+        animalService.clearNewBornCarnivoresList();
+        animalService.clearNewBornHerbivoresList();
     }
     
     private JsonElement readingFile() throws FileNotFoundException {
@@ -70,21 +81,21 @@ public class EcoSystemService {
         return parser.parse(new FileReader("C:\\Users\\mirchakis\\IdeaProjects\\ProjectsDeltaSource\\ALivingEcoSystem\\ALivingEcoSystem\\src\\main\\resources\\animals.json"));
     }
     
-    public boolean isAnimalsDead(List<Carnivore> carnivores, List<Herbivore> herbivores) {
+    private boolean isAnimalsDead(List<Carnivore> carnivores, List<Herbivore> herbivores) {
         return carnivores.size() != 0 || herbivores.size() != 0;
     }
     
-    public void increaseHungerLevelOfCarnivoresIfAllHerbivoresAreDead(List<Carnivore> carnivores, List<Herbivore> herbivores) {
+    private void increaseHungerLevelOfCarnivoresIfAllHerbivoresAreDead(List<Carnivore> carnivores, List<Herbivore> herbivores) {
         if (herbivores.size() == 0) {
             while (carnivores.size() > 0) {
                 for (int i = 0; i < carnivores.size(); i++) {
                     Carnivore carnivore = carnivores.get(i);
                     increasingCarnivoreHungerLevel(carnivore);
-                    if (carnivore.getHungerRate() >= 100) {
+                    if (carnivore.getHungerLevel() >= 100) {
                         System.out.println(carnivore.getSpecie() + " died out of hunger.");
-                        Animal carnivoreInGroup = biomeService.getGroupService().findCarnivoreInGroup(carnivore);
-                        biomeService.getAnimalService().removeCarnivore(carnivore);
-                        biomeService.getGroupService().removeCarnivore(carnivoreInGroup);
+                        Animal carnivoreInGroup = groupService.findCarnivoreInGroup(carnivore);
+                        animalService.removeCarnivore(carnivore);
+                        groupService.removeCarnivore(carnivoreInGroup);
                     }
                 }
             }
@@ -92,15 +103,14 @@ public class EcoSystemService {
     }
     
     private void increasingCarnivoreHungerLevel(Carnivore carnivore) {
-        int hungerLevel = new Random().nextInt(1, 10);
-        biomeService.getAnimalService().increaseHungerLevel(carnivore, hungerLevel);
+        animalService.increaseHungerLevel(carnivore);
     }
     
-    public List<Carnivore> addNewBornCarnivoresToTheCarnivores(List<Carnivore> newBornCarnivores) {
+    private List<Carnivore> addNewBornCarnivoresToTheCarnivores(List<Carnivore> newBornCarnivores) {
         return new ArrayList<>(newBornCarnivores);
     }
     
-    public List<Herbivore> addNewBornHerbivoresToTheHerbivores(List<Herbivore> newBornHerbivores) {
+    private List<Herbivore> addNewBornHerbivoresToTheHerbivores(List<Herbivore> newBornHerbivores) {
         return new ArrayList<>(newBornHerbivores);
     }
     
@@ -115,7 +125,7 @@ public class EcoSystemService {
         Herbivore herbivore = herbivores.get(new Random().nextInt(0, herbivores.size()));
         
         //Calculates the success rate of the attack
-        double successRate = biomeService.getAnimalService().getAttackSuccess(carnivore, herbivore);
+        double successRate = animalService.getAttackSuccess(carnivore, herbivore);
         double randomNumberGenerated = new Random().nextDouble(0, 100);
         
         System.out.println(carnivore.getSpecie() + " attacked " + herbivore.getSpecie());
@@ -127,28 +137,31 @@ public class EcoSystemService {
             System.out.println(herbivore.getSpecie() + " escaped the attack from " + carnivore.getSpecie());
             increasingCarnivoreHungerLevel(carnivore);
         }
-        biomeService.getAnimalService().decreaseReproductionRate(carnivore);
-        biomeService.getAnimalService().decreaseReproductionRate(herbivore);
+        if (checkIfTheAnimalHasReachedItsMaxAge(carnivore) ||
+                checkIfTheAnimalHasReachedItsMaxAge(herbivore)) {
+            animalService.removeCarnivore(carnivore);
+            animalService.removeHerbivore(herbivore);
+        }
     }
     
     private void attack(List<Carnivore> carnivores, Carnivore carnivore, Herbivore herbivore) {
         //Distributing the food depending on the carnivore's social status (GROUP, ALONE).
         foodDistributionDependingOnTheCarnivoresSocialStatus(carnivores, carnivore, herbivore);
         System.out.println(carnivore.getSpecie() + " killed " + herbivore.getSpecie());
-        biomeService.getAnimalService().removeHerbivore(herbivore);
+        animalService.removeHerbivore(herbivore);
     }
     
     /**
      * Distributing the food of the carnivores whether the carnivore is living in a group or alone.
      */
-    public void foodDistributionDependingOnTheCarnivoresSocialStatus(List<Carnivore> carnivores, Carnivore carnivore, Herbivore herbivore) {
+    private void foodDistributionDependingOnTheCarnivoresSocialStatus(List<Carnivore> carnivores, Carnivore carnivore, Herbivore herbivore) {
         double foodInKg = herbivore.getWeight();
         double foodForMainAttacker;
         double foodForTheRestOfTheGroup;
         
         if (carnivore.getSocialStatus().equals(SocialStatus.GROUP)) {
-            List<Group> groups = biomeService.getAnimalService().getCarnivoresGroup();
-            List<Animal> groupOfAnimals = biomeService.getAnimalService().findGroup(groups, carnivore);
+            List<Group> groups = animalService.getCarnivoresGroup();
+            List<Animal> groupOfAnimals = animalService.findGroup(groups, carnivore);
             int attackersAmount = groupOfAnimals.size();
             foodInKg /= attackersAmount + 1;
             foodForMainAttacker = foodInKg * 2;
@@ -156,7 +169,7 @@ public class EcoSystemService {
             decreasingTheHungerLevelOfEachMemberOfTheAttackersGroup(carnivores, carnivore, foodForMainAttacker, foodForTheRestOfTheGroup);
         } else {
             foodForMainAttacker = herbivore.getWeight();
-            biomeService.getAnimalService().decreaseHungerLevel(carnivore, foodForMainAttacker);
+            animalService.decreaseHungerLevel(carnivore, foodForMainAttacker);
         }
     }
     
@@ -166,15 +179,15 @@ public class EcoSystemService {
     private void decreasingTheHungerLevelOfEachMemberOfTheAttackersGroup(List<Carnivore> carnivores, Carnivore carnivore, double foodForMainAttacker, double foodForTheRestOfTheGroup) {
         for (Animal groupMember : carnivores) {
             if (groupMember.equals(carnivore)) {
-                List<Group> groups = biomeService.getAnimalService().getCarnivoresGroup();
-                List<Animal> groupOfAnimals = biomeService.getAnimalService().findGroup(groups, carnivore);
+                List<Group> groups = animalService.getCarnivoresGroup();
+                List<Animal> groupOfAnimals = animalService.findGroup(groups, carnivore);
                 for (Animal animal : groupOfAnimals) {
                     if (animal.equals(carnivore)) {
                         //The main attacker receives two portions of food
-                        biomeService.getAnimalService().decreaseHungerLevel(carnivore, foodForMainAttacker);
+                        animalService.decreaseHungerLevel(carnivore, foodForMainAttacker);
                     } else {
                         //Each groupMember that is not the attacker should receive a single portion of the food.
-                        biomeService.getAnimalService().decreaseHungerLevel(carnivore, foodForTheRestOfTheGroup);
+                        animalService.decreaseHungerLevel(carnivore, foodForTheRestOfTheGroup);
                     }
                 }
             }
@@ -183,13 +196,11 @@ public class EcoSystemService {
     
     private void increaseTheAgeOfTheAnimals(List<Carnivore> carnivores, List<Herbivore> herbivores) {
         for (Carnivore carnivore : carnivores) {
-            biomeService.getAnimalService().increaseAge(carnivore);
-            checkIfTheAnimalHasReachedItsMaxAge(carnivore);
+            animalService.increaseAge(carnivore);
         }
         
         for (Herbivore herbivore : herbivores) {
-            biomeService.getAnimalService().increaseAge(herbivore);
-            checkIfTheAnimalHasReachedItsMaxAge(herbivore);
+            animalService.increaseAge(herbivore);
         }
     }
     
@@ -198,11 +209,12 @@ public class EcoSystemService {
      *
      * @param carnivore
      */
-    private void checkIfTheAnimalHasReachedItsMaxAge(Carnivore carnivore) {
-        if (carnivore.getAge() > carnivore.getMaxAge()) {
+    private boolean checkIfTheAnimalHasReachedItsMaxAge(Carnivore carnivore) {
+        if (carnivore.getAge() >= carnivore.getMaxAge()) {
             System.out.println("Animal " + carnivore.getSpecie() + " died old." + carnivore.getAge());
-            biomeService.getAnimalService().removeCarnivore(carnivore);
+            return true;
         }
+        return false;
     }
     
     /**
@@ -210,33 +222,38 @@ public class EcoSystemService {
      *
      * @param herbivore
      */
-    private void checkIfTheAnimalHasReachedItsMaxAge(Herbivore herbivore) {
-        if (herbivore.getAge() > herbivore.getMaxAge()) {
+    private boolean checkIfTheAnimalHasReachedItsMaxAge(Herbivore herbivore) {
+        if (herbivore.getAge() >= herbivore.getMaxAge()) {
             System.out.println("Animal " + herbivore.getSpecie() + " died old." + herbivore.getAge());
-            biomeService.getAnimalService().removeHerbivore(herbivore);
+            return true;
         }
+        return false;
     }
     
     /**
      * Iterates the herbivores and carnivores and checks if their reproduction rate is equal to 0, if it is - an animal is being reproduced.
      */
-    public void animalFactory(List<Carnivore> carnivores, List<Herbivore> herbivores) {
+    private void animalFactory(List<Carnivore> carnivores, List<Herbivore> herbivores) {
         for (Carnivore carnivore : carnivores) {
             double reproductionRate = carnivore.getReproductionRate();
             if (reproductionRate == 0) {
-                Carnivore newBornCarnivore = biomeService.getAnimalService().reproduce(carnivore);
-                biomeService.getAnimalService().addNewBornCarnivore(newBornCarnivore);
-                biomeService.getAnimalService().resetReproductionRate(carnivore);
+                Carnivore newBornCarnivore = animalService.reproduce(carnivore);
+                animalService.addNewBornCarnivore(newBornCarnivore);
+                animalService.resetReproductionRate(carnivore);
                 System.out.println("New carnivore " + newBornCarnivore.getSpecie() + " is born.");
+            } else {
+                animalService.decreaseReproductionRate(carnivore);
             }
         }
         for (Herbivore herbivore : herbivores) {
             double reproductionRate = herbivore.getReproductionRate();
             if (reproductionRate <= 0) {
-                Herbivore newBornHerbivore = biomeService.getAnimalService().reproduce(herbivore);
-                biomeService.getAnimalService().addNewBornHerbivore(newBornHerbivore);
-                biomeService.getAnimalService().resetReproductionRate(herbivore);
+                Herbivore newBornHerbivore = animalService.reproduce(herbivore);
+                animalService.addNewBornHerbivore(newBornHerbivore);
+                animalService.resetReproductionRate(herbivore);
                 System.out.println("New herbivore " + newBornHerbivore.getSpecie() + " is born.");
+            } else {
+                animalService.decreaseReproductionRate(herbivore);
             }
         }
     }
@@ -247,8 +264,8 @@ public class EcoSystemService {
      */
     public String printAnimalsInfo() {
         StringBuilder sb = new StringBuilder();
-        List<Carnivore> carnivores = biomeService.getAnimalService().getCarnivores();
-        List<Herbivore> herbivores = biomeService.getAnimalService().getHerbivores();
+        List<Carnivore> carnivores = animalService.getCarnivores();
+        List<Herbivore> herbivores = animalService.getHerbivores();
         
         if (carnivores.isEmpty() && herbivores.isEmpty()) {
             sb.append("No more animals alive left.");

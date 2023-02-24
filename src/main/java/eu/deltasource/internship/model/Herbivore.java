@@ -8,7 +8,7 @@ public class Herbivore extends Animal {
     
     public Herbivore(String specie, double maxAge, double weight, HabitatEnum habitat, SocialStatus livingType, int groupAmount, int reproductionRate, double escapePoints) {
         super(specie, maxAge, weight, habitat, livingType, groupAmount, reproductionRate);
-        this.escapePoints = escapePoints;
+        setEscapePoints(escapePoints);
     }
     
     public Herbivore() {
@@ -19,6 +19,9 @@ public class Herbivore extends Animal {
         return escapePoints;
     }
     
+    public void setEscapePoints(double escapePoints) {
+        this.escapePoints = escapePoints;
+    }
     
     @Override
     public String toString() {

@@ -3,20 +3,20 @@ package eu.deltasource.internship.service;
 import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Herbivore;
 import eu.deltasource.internship.repository.GroupRepository.GroupRepository;
-import eu.deltasource.internship.repository.GroupRepository.GroupRepositoryImpl;
 import eu.deltasource.internship.model.Carnivore;
 import eu.deltasource.internship.model.Group;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
 public class GroupService {
     private GroupRepository groupRepository;
+    private AnimalService animalService;
     
-    public GroupService(GroupRepository groupRepository) {
+    public GroupService(GroupRepository groupRepository, AnimalService animalService) {
         this.groupRepository = groupRepository;
+        this.animalService = animalService;
     }
     
     public List<Group> getCarnivoresGroup() {
@@ -62,15 +62,14 @@ public class GroupService {
         }
     }
     
-    public List<Carnivore> createGroupOfCarnivores(Carnivore carnivore) {
-        List<Carnivore> carnivores = new ArrayList<>();
+    public void createGroupOfCarnivores(Carnivore carnivore) {
         Group group = new Group();
         group.addAnimal(carnivore);
-        carnivores.add(carnivore);
+        animalService.addCarnivore(carnivore);
         for (int i = 0; i < carnivore.getGroupAmount() - 1; i++) {
             double maxAge = carnivore.getMaxAge();
             double weight = carnivore.getWeight();
-            int productionRate = new Random().nextInt(0, carnivore.getReproductionRate());
+            int productionRate = carnivore.getReproductionRate();
             int hungerRate = new Random().nextInt(1, 100);
             double attackPoints = new Random().nextDouble(0, carnivore.getPoints());
             int groupAmount = carnivore.getGroupAmount();
@@ -78,31 +77,28 @@ public class GroupService {
             Carnivore animalInGroup = new Carnivore(carnivore.getSpecie(), maxAge, weight, carnivore.getHabitat(), carnivore.getSocialStatus(), groupAmount, productionRate, hungerRate, attackPoints);
             
             group.addAnimal(animalInGroup);
-            carnivores.add(animalInGroup);
+            animalService.addCarnivore(animalInGroup);
         }
         addCarnivoresGroupToRepository(group);
-        return carnivores;
     }
     
-    public List<Herbivore> createGroupOfHerbivores(Herbivore herbivore) {
-        List<Herbivore> herbivores = new ArrayList<>();
+    public void createGroupOfHerbivores(Herbivore herbivore) {
         Group group = new Group();
         group.addAnimal(herbivore);
-        herbivores.add(herbivore);
+        animalService.addHerbivore(herbivore);
         for (int i = 0; i < herbivore.getGroupAmount() - 1; i++) {
             double maxAge = herbivore.getMaxAge();
             double weight = herbivore.getWeight();
-            int productionRate = new Random().nextInt(0, herbivore.getReproductionRate());
+            int productionRate = herbivore.getReproductionRate();
             double escapePoints = herbivore.getPoints();
             int groupAmount = herbivore.getGroupAmount();
             
             Herbivore animalInGroup = new Herbivore(herbivore.getSpecie(), maxAge, weight, herbivore.getHabitat(), herbivore.getSocialStatus(), groupAmount, productionRate, escapePoints);
             
             group.addAnimal(animalInGroup);
-            herbivores.add(animalInGroup);
+            animalService.addHerbivore(animalInGroup);
         }
         addHerbivoresGroupToRepository(group);
-        return herbivores;
     }
     
     public Group findCarnivoreGroup(Carnivore carnivore) {
@@ -113,7 +109,6 @@ public class GroupService {
                 return group;
             }
         }
-        
         return null;
     }
 }

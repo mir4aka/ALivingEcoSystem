@@ -412,7 +412,7 @@
       "Carnivores": [
         {
           "specie": "coyote",
-          "maxAge": 44,
+          "maxAge": 2,
           "weight": 700,
           "habitat": "LAND",
           "socialStatus": "ALONE",
@@ -423,7 +423,7 @@
         },
         {
           "specie": "gray fox",
-          "maxAge": 24,
+          "maxAge": 2,
           "weight": 670,
           "habitat": "LAND",
           "socialStatus": "ALONE",
@@ -434,13 +434,42 @@
         },
         {
           "specie": "bobcat",
-          "maxAge": 44,
+          "maxAge": 2,
           "weight": 57,
           "habitat": "LAND",
           "socialStatus": "ALONE",
           "groupAmount": 1,
           "reproductionRate": 4,
           "hungerRate": 18,
+          "attackPoints": 80
+        }
+      ]
+    }
+  ],
+  "TESTBIOME": [
+    {
+      "Herbivores": [
+        {
+          "specie": "antelope",
+          "maxAge": 8,
+          "weight": 90,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 5,
+          "escapePoints": 60
+        }
+      ],
+      "Carnivores": [
+        {
+          "specie": "lion",
+          "maxAge": 20,
+          "weight": 200,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 1,
+          "hungerRate": 15,
           "attackPoints": 80
         }
       ]

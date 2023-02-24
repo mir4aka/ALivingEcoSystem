@@ -18,15 +18,11 @@ import java.io.IOException;
 import java.util.Scanner;
 
 public class Main {
-    public static void main(String[] args) throws InterruptedException, IOException {
+    public static void main(String[] args) throws IOException, InterruptedException {
         Scanner scanner = new Scanner(System.in);
-    
         EcoSystemService ecoSystemService = ecoSystemServiceInitiation();
-    
         System.out.println("Enter biome. You can choose savanna, swamp, plains, tundra, ocean or desert.");
-        
         BiomeEnum biomeEnum = BiomeEnum.valueOf(scanner.nextLine().toUpperCase());
-        
         ecoSystemService.simulateEcoSystem(biomeEnum);
 
         System.out.println(ecoSystemService.printAnimalsInfo());
@@ -38,8 +34,8 @@ public class Main {
         GroupRepository groupRepository = new GroupRepositoryImpl();
         BiomeRepository biomeRepository = new BiomeRepositoryImpl();
         AnimalService animalService = new AnimalService(herbivoreRepository, carnivoreRepository, groupRepository);
-        GroupService groupService = new GroupService(groupRepository);
+        GroupService groupService = new GroupService(groupRepository, animalService);
         BiomeService biomeService = new BiomeService(animalService, groupService, biomeRepository);
-        return new EcoSystemService(biomeService);
+        return new EcoSystemService(biomeService, animalService, groupService);
     }
 }

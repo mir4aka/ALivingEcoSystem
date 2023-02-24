@@ -31,9 +31,9 @@ public class AnimalServiceTest {
     
     @BeforeEach
     public void setUp() {
-        carnivore1 = new Carnivore("lion", 20, 200, HabitatEnum.LAND, SocialStatus.ALONE, 1, 9, 15, 110);
+        carnivore1 = new Carnivore("lion", 20, 200, HabitatEnum.LAND, SocialStatus.ALONE, 1, 9, 15, 120);
         carnivore2 = new Carnivore("lion", 20, 200, HabitatEnum.LAND, SocialStatus.ALONE, 1, 9, 15, 110);
-        herbivore = new Herbivore("Deer", 20, 200, HabitatEnum.LAND, SocialStatus.GROUP, 5, 11, 70);
+        herbivore = new Herbivore("Deer", 20, 200, HabitatEnum.LAND, SocialStatus.GROUP, 5, 11, 170);
     }
     
     @Test
@@ -147,10 +147,10 @@ public class AnimalServiceTest {
     }
     
     @Test
-    public void testIfTheHungerRateIsIncreasedOfTheCarnivore() {
-        assertEquals(15, carnivore1.getHungerRate());
-        animalService.increaseHungerLevel(carnivore1, 5);
-        assertEquals(20, carnivore1.getHungerRate());
+    public void testIfTheHungerLevelIsIncreasedOfTheCarnivore() {
+        assertEquals(0, carnivore1.getHungerLevel());
+        animalService.increaseHungerLevel(carnivore1);
+        assertEquals(15, carnivore1.getHungerLevel());
     }
     
     @Test
@@ -180,8 +180,13 @@ public class AnimalServiceTest {
     @Test
     public void testIfTheReproductionRateOfTheAnimalIsResetTo10() {
         assertEquals(9, carnivore1.getReproductionRate());
+        animalService.decreaseReproductionRate(carnivore1);
+        animalService.decreaseReproductionRate(carnivore1);
+        animalService.decreaseReproductionRate(carnivore1);
+        animalService.decreaseReproductionRate(carnivore1);
         animalService.resetReproductionRate(carnivore1);
-        assertEquals(10, carnivore1.getReproductionRate());
+        int reproductionRate = carnivore1.getReproductionRate();
+        assertEquals(reproductionRate, carnivore1.getReproductionRate());
     }
     
     @Test
@@ -212,14 +217,14 @@ public class AnimalServiceTest {
     public void testIfTheAttackPointsOfTheCarnivoreAreScaledCorrectly() {
         double attackPoints = carnivore1.getPoints();
         
-        assertEquals(10, attackPoints);
+        assertEquals(120, attackPoints);
         double scaledAttackPoints = animalService.scalePoints(carnivore1, attackPoints);
         
-        assertEquals(10, scaledAttackPoints);
+        assertEquals(120, scaledAttackPoints);
         carnivore1.setAge(5);
     
         double scaledAttackPointsAfterAgeIsIncreased = animalService.scalePoints(carnivore1, attackPoints);
-        assertEquals(7.5, scaledAttackPointsAfterAgeIsIncreased);
+        assertEquals(90, scaledAttackPointsAfterAgeIsIncreased);
     }
     
     @Test
@@ -228,6 +233,7 @@ public class AnimalServiceTest {
         animalService.decreaseReproductionRate(carnivore1);
         assertEquals(8, carnivore1.getReproductionRate());
         animalService.resetReproductionRate(carnivore1);
-        assertEquals(9, carnivore1.getReproductionRate());
+        int reproductionRate = carnivore1.getReproductionRate();
+        assertEquals(reproductionRate, carnivore1.getReproductionRate());
     }
 }

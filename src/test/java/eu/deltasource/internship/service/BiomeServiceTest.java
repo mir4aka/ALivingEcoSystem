@@ -1,5 +1,6 @@
 package eu.deltasource.internship.service;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.*;
 import eu.deltasource.internship.enums.BiomeEnum;
 import eu.deltasource.internship.model.Carnivore;
@@ -18,6 +19,7 @@ import org.junit.jupiter.api.Test;
 
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -27,7 +29,7 @@ class BiomeServiceTest {
     private HerbivoreRepository herbivoreRepository = new HerbivoreRepositoryImpl();
     private GroupRepository groupRepository = new GroupRepositoryImpl();
     private AnimalService animalService = new AnimalService(herbivoreRepository, carnivoreRepository, groupRepository);
-    private GroupService groupService = new GroupService(groupRepository);
+    private GroupService groupService = new GroupService(groupRepository, animalService);
     private BiomeRepository biomeRepository = new BiomeRepositoryImpl();
     private BiomeService biomeService = new BiomeService(animalService, groupService, biomeRepository);
 
@@ -40,8 +42,8 @@ class BiomeServiceTest {
         
         biomeService.updateAnimalsRepositories(biomeEnum, gson, asJsonObject);
     
-        List<Carnivore> carnivores = biomeService.getAnimalService().getCarnivores();
-        List<Herbivore> herbivores = biomeService.getAnimalService().getHerbivores();
+        List<Carnivore> carnivores = animalService.getCarnivores();
+        List<Herbivore> herbivores = animalService.getHerbivores();
         
         assertEquals(3, herbivores.size());
         assertEquals(3, carnivores.size());

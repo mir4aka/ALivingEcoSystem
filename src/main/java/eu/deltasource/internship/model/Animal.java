@@ -10,23 +10,21 @@ public abstract class Animal {
     private double age;
     private double maxAge;
     private int reproductionRate;
-    private int originalReproductionRate;
     private int groupAmount;
     private double weight;
     private String specie;
     private HabitatEnum habitat;
     private SocialStatus socialStatus;
     
-    public Animal(String specie, double maxAge, double weight, HabitatEnum mainHabitat, SocialStatus socialStatus, int groupAmount, int reproductionRate) {
-        this.specie = specie;
-        this.maxAge = maxAge;
-        this.weight = weight;
-        this.habitat = mainHabitat;
-        this.socialStatus = socialStatus;
-        this.groupAmount = groupAmount;
-        this.reproductionRate = reproductionRate;
+    public Animal(String specie, double maxAge, double weight, HabitatEnum habitat, SocialStatus socialStatus, int groupAmount, int reproductionRate) {
+        setSpecie(specie);
+        setMaxAge(maxAge);
+        setWeight(weight);
+        setHabitat(habitat);
+        setSocialStatus(socialStatus);
+        setGroupAmount(groupAmount);
+        setReproductionRate(reproductionRate);
         this.age = 0;
-        this.originalReproductionRate = reproductionRate;
     }
     
     public Animal() {
@@ -34,6 +32,10 @@ public abstract class Animal {
     
     public String getSpecie() {
         return specie;
+    }
+    
+    public void setSpecie(String specie) {
+        this.specie = specie;
     }
     
     public double getAge() {
@@ -46,6 +48,26 @@ public abstract class Animal {
     
     public double getMaxAge() {
         return maxAge;
+    }
+    
+    public void setMaxAge(double maxAge) {
+        this.maxAge = maxAge;
+    }
+    
+    public void setGroupAmount(int groupAmount) {
+        this.groupAmount = groupAmount;
+    }
+    
+    public void setWeight(double weight) {
+        this.weight = weight;
+    }
+    
+    public void setHabitat(HabitatEnum habitat) {
+        this.habitat = habitat;
+    }
+    
+    public void setSocialStatus(SocialStatus socialStatus) {
+        this.socialStatus = socialStatus;
     }
     
     public double getWeight() {
@@ -62,10 +84,6 @@ public abstract class Animal {
     
     public void setReproductionRate(int reproductionRate) {
         this.reproductionRate = reproductionRate;
-    }
-    
-    public int getOriginalReproductionRate() {
-        return originalReproductionRate;
     }
     
     public SocialStatus getSocialStatus() {
