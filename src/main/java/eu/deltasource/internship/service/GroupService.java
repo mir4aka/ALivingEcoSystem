@@ -65,7 +65,7 @@ public class GroupService {
     public void createGroupOfCarnivores(Carnivore carnivore) {
         Group group = new Group();
         group.addAnimal(carnivore);
-        animalService.addCarnivore(carnivore);
+        animalService.addCarnivoreToRepository(carnivore);
         for (int i = 0; i < carnivore.getGroupAmount() - 1; i++) {
             double maxAge = carnivore.getMaxAge();
             double weight = carnivore.getWeight();
@@ -77,7 +77,7 @@ public class GroupService {
             Carnivore animalInGroup = new Carnivore(carnivore.getSpecie(), maxAge, weight, carnivore.getHabitat(), carnivore.getSocialStatus(), groupAmount, productionRate, hungerRate, attackPoints);
             
             group.addAnimal(animalInGroup);
-            animalService.addCarnivore(animalInGroup);
+            animalService.addCarnivoreToRepository(animalInGroup);
         }
         addCarnivoresGroupToRepository(group);
     }
@@ -85,7 +85,7 @@ public class GroupService {
     public void createGroupOfHerbivores(Herbivore herbivore) {
         Group group = new Group();
         group.addAnimal(herbivore);
-        animalService.addHerbivore(herbivore);
+        animalService.addHerbivoreToRepository(herbivore);
         for (int i = 0; i < herbivore.getGroupAmount() - 1; i++) {
             double maxAge = herbivore.getMaxAge();
             double weight = herbivore.getWeight();
@@ -96,7 +96,7 @@ public class GroupService {
             Herbivore animalInGroup = new Herbivore(herbivore.getSpecie(), maxAge, weight, herbivore.getHabitat(), herbivore.getSocialStatus(), groupAmount, productionRate, escapePoints);
             
             group.addAnimal(animalInGroup);
-            animalService.addHerbivore(animalInGroup);
+            animalService.addHerbivoreToRepository(animalInGroup);
         }
         addHerbivoresGroupToRepository(group);
     }

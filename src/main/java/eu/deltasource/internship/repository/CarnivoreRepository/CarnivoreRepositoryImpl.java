@@ -10,10 +10,16 @@ import java.util.List;
 
 public class CarnivoreRepositoryImpl implements CarnivoreRepository {
     private List<Carnivore> carnivoresList = new ArrayList<>();
+    private List<Carnivore> newBornCarnivores = new ArrayList<>();
     
     @Override
     public List<Carnivore> getCarnivores() {
         return Collections.unmodifiableList(carnivoresList);
+    }
+    
+    @Override
+    public List<Carnivore> getNewBornCarnivores() {
+        return newBornCarnivores;
     }
     
     @Override
@@ -22,12 +28,17 @@ public class CarnivoreRepositoryImpl implements CarnivoreRepository {
     }
     
     @Override
+    public void addNewBornCarnivore(Carnivore carnivore) {
+        newBornCarnivores.add(carnivore);
+    }
+    
+    @Override
     public void removeCarnivore(Carnivore animal) {
         carnivoresList.remove(animal);
     }
     
     @Override
-    public void addAllCarnivores(List<Carnivore> carnivores) {
-        carnivoresList.addAll(carnivores);
+    public void clearNewBornCarnivoresCollection() {
+        newBornCarnivores.clear();
     }
 }

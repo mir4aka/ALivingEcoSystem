@@ -13,6 +13,10 @@ import eu.deltasource.internship.service.AnimalService;
 import eu.deltasource.internship.service.BiomeService;
 import eu.deltasource.internship.service.EcoSystemService;
 import eu.deltasource.internship.service.GroupService;
+import eu.deltasource.internship.service.helper.NewBornCarnivoresCollection;
+import eu.deltasource.internship.service.helper.NewBornHerbivoresCollection;
+import eu.deltasource.internship.service.helper.ReproduceRateHelper;
+import eu.deltasource.internship.service.helper.SuccessChanceCalculator;
 
 import java.io.IOException;
 import java.util.Scanner;
@@ -24,7 +28,7 @@ public class Main {
         System.out.println("Enter biome. You can choose savanna, swamp, plains, tundra, ocean or desert.");
         BiomeEnum biomeEnum = BiomeEnum.valueOf(scanner.nextLine().toUpperCase());
         ecoSystemService.simulateEcoSystem(biomeEnum);
-
+        
         System.out.println(ecoSystemService.printAnimalsInfo());
     }
     
@@ -33,9 +37,13 @@ public class Main {
         HerbivoreRepository herbivoreRepository = new HerbivoreRepositoryImpl();
         GroupRepository groupRepository = new GroupRepositoryImpl();
         BiomeRepository biomeRepository = new BiomeRepositoryImpl();
-        AnimalService animalService = new AnimalService(herbivoreRepository, carnivoreRepository, groupRepository);
+        SuccessChanceCalculator successChanceCalculator = new SuccessChanceCalculator();
+        AnimalService animalService = new AnimalService(herbivoreRepository, carnivoreRepository, groupRepository, successChanceCalculator);
         GroupService groupService = new GroupService(groupRepository, animalService);
         BiomeService biomeService = new BiomeService(animalService, groupService, biomeRepository);
-        return new EcoSystemService(biomeService, animalService, groupService);
+        ReproduceRateHelper reproduceRateHelper = new ReproduceRateHelper(successChanceCalculator);
+        NewBornCarnivoresCollection newBornCarnivoresCollection = new NewBornCarnivoresCollection(carnivoreRepository);
+        NewBornHerbivoresCollection newBornHerbivoresCollection = new NewBornHerbivoresCollection(herbivoreRepository);
+        return new EcoSystemService(biomeService, animalService, groupService, reproduceRateHelper, successChanceCalculator, newBornCarnivoresCollection, newBornHerbivoresCollection);
     }
 }

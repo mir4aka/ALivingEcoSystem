@@ -14,6 +14,7 @@ import eu.deltasource.internship.repository.GroupRepository.GroupRepository;
 import eu.deltasource.internship.repository.GroupRepository.GroupRepositoryImpl;
 import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepository;
 import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepositoryImpl;
+import eu.deltasource.internship.service.helper.SuccessChanceCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,7 +29,8 @@ class BiomeServiceTest {
     private CarnivoreRepository carnivoreRepository = new CarnivoreRepositoryImpl();
     private HerbivoreRepository herbivoreRepository = new HerbivoreRepositoryImpl();
     private GroupRepository groupRepository = new GroupRepositoryImpl();
-    private AnimalService animalService = new AnimalService(herbivoreRepository, carnivoreRepository, groupRepository);
+    private SuccessChanceCalculator successChanceCalculator = new SuccessChanceCalculator();
+    private AnimalService animalService = new AnimalService(herbivoreRepository, carnivoreRepository, groupRepository, successChanceCalculator);
     private GroupService groupService = new GroupService(groupRepository, animalService);
     private BiomeRepository biomeRepository = new BiomeRepositoryImpl();
     private BiomeService biomeService = new BiomeService(animalService, groupService, biomeRepository);

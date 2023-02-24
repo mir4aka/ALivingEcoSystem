@@ -1,9 +1,6 @@
 package eu.deltasource.internship.service;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonMappingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.fasterxml.jackson.databind.jsonFormatVisitors.JsonFormatVisitorWrapper;
 import com.google.gson.Gson;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonElement;
@@ -14,9 +11,6 @@ import eu.deltasource.internship.exception.NoSuchBiomeException;
 import eu.deltasource.internship.model.*;
 import eu.deltasource.internship.repository.BiomeRepository.BiomeRepository;
 import org.modelmapper.ModelMapper;
-
-import java.io.File;
-import java.io.IOException;
 
 public class BiomeService {
     private AnimalService animalService;
@@ -61,7 +55,7 @@ public class BiomeService {
             if (carnivore.getSocialStatus().equals(SocialStatus.GROUP)) {
                 groupService.createGroupOfCarnivores(carnivore);
             } else {
-                animalService.addCarnivore(carnivore);
+                animalService.addCarnivoreToRepository(carnivore);
             }
         }
     }
@@ -72,8 +66,9 @@ public class BiomeService {
             if (herbivore.getSocialStatus().equals(SocialStatus.GROUP)) {
                 groupService.createGroupOfHerbivores(herbivore);
             } else {
-                animalService.addHerbivore(herbivore);
+                animalService.addHerbivoreToRepository(herbivore);
             }
         }
     }
+    
 }
