@@ -6,10 +6,13 @@ import eu.deltasource.internship.repository.CarnivoreRepository.CarnivoreReposit
 import java.util.Collections;
 import java.util.List;
 
-public class NewBornCarnivoresCollection {
+/**
+ *
+ */
+public class NewBornCarnivoresRepository {
     private CarnivoreRepository carnivoreRepository;
     
-    public NewBornCarnivoresCollection(CarnivoreRepository carnivoreRepository) {
+    public NewBornCarnivoresRepository(CarnivoreRepository carnivoreRepository) {
         this.carnivoreRepository = carnivoreRepository;
     }
     
@@ -21,7 +24,7 @@ public class NewBornCarnivoresCollection {
         carnivoreRepository.addNewBornCarnivore(carnivore);
     }
     
-    public void clearNewBornCarnivoresCollection() {
-        carnivoreRepository.clearNewBornCarnivoresCollection();
+    public void clearNewBornCarnivoresRepository() {
+        carnivoreRepository.clearNewBornCarnivoresRepository();
     }
 }

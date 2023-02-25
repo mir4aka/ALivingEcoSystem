@@ -12,9 +12,9 @@ import eu.deltasource.internship.repository.GroupRepository.GroupRepository;
 import eu.deltasource.internship.repository.GroupRepository.GroupRepositoryImpl;
 import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepository;
 import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepositoryImpl;
-import eu.deltasource.internship.service.helper.NewBornCarnivoresCollection;
-import eu.deltasource.internship.service.helper.NewBornHerbivoresCollection;
-import eu.deltasource.internship.service.helper.ReproduceRateHelper;
+import eu.deltasource.internship.service.helper.NewBornCarnivoresRepository;
+import eu.deltasource.internship.service.helper.NewBornHerbivoresRepository;
+import eu.deltasource.internship.service.helper.ReproductionRateHelper;
 import eu.deltasource.internship.service.helper.SuccessChanceCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -27,11 +27,11 @@ import static org.junit.jupiter.api.Assertions.*;
 public class AnimalServiceTest {
     private CarnivoreRepository carnivoreRepository = new CarnivoreRepositoryImpl();
     private HerbivoreRepository herbivoreRepository = new HerbivoreRepositoryImpl();
-    private NewBornCarnivoresCollection newBornCarnivoresCollection = new NewBornCarnivoresCollection(carnivoreRepository);
-    private NewBornHerbivoresCollection newBornHerbivoresCollection = new NewBornHerbivoresCollection(herbivoreRepository);
+    private NewBornCarnivoresRepository newBornCarnivoresCollection = new NewBornCarnivoresRepository(carnivoreRepository);
+    private NewBornHerbivoresRepository newBornHerbivoresCollection = new NewBornHerbivoresRepository(herbivoreRepository);
     private GroupRepository groupRepository = new GroupRepositoryImpl();
     private SuccessChanceCalculator successChanceCalculator = new SuccessChanceCalculator();
-    private ReproduceRateHelper reproduceRateHelper = new ReproduceRateHelper(successChanceCalculator);
+    private ReproductionRateHelper reproduceRateHelper = new ReproductionRateHelper(successChanceCalculator);
     private AnimalService animalService = new AnimalService(herbivoreRepository, carnivoreRepository, groupRepository, successChanceCalculator);
     private Carnivore carnivore1;
     private Carnivore carnivore2;
@@ -132,7 +132,7 @@ public class AnimalServiceTest {
         List<Carnivore> carnivores = newBornCarnivoresCollection.getNewBornCarnivores();
         
         assertEquals(1, carnivores.size());
-        newBornCarnivoresCollection.clearNewBornCarnivoresCollection();
+        newBornCarnivoresCollection.clearNewBornCarnivoresRepository();
         assertEquals(0, carnivores.size());
     }
     
@@ -150,7 +150,7 @@ public class AnimalServiceTest {
         List<Herbivore> herbivores = newBornHerbivoresCollection.getNewBornHerbivores();
         
         assertEquals(1, herbivores.size());
-        newBornHerbivoresCollection.clearNewBornHerbivoresCollection();
+        newBornHerbivoresCollection.clearNewBornHerbivoresRepository();
         assertEquals(0, herbivores.size());
     }
     
@@ -174,27 +174,27 @@ public class AnimalServiceTest {
     }
     
     @Test
-    public void testIfTheReproductionRateOfTheAnimalIsDecreased() {
-        assertEquals(9, carnivore1.getReproductionRate());
-        assertEquals(11, herbivore.getReproductionRate());
+    public void testIfTheReproductionLevelOfTheAnimalIsDecreased() {
+        assertEquals(100, carnivore1.getReproductionLevel());
+        assertEquals(100, herbivore.getReproductionLevel());
         
-        reproduceRateHelper.decreaseReproductionRate(carnivore1);
-        reproduceRateHelper.decreaseReproductionRate(herbivore);
+        reproduceRateHelper.decreaseReproductionLevel(carnivore1);
+        reproduceRateHelper.decreaseReproductionLevel(herbivore);
         
-        assertEquals(8, carnivore1.getReproductionRate());
-        assertEquals(10, herbivore.getReproductionRate());
+        assertEquals(91, carnivore1.getReproductionLevel());
+        assertEquals(89, herbivore.getReproductionLevel());
     }
     
     @Test
-    public void testIfTheReproductionRateOfTheAnimalIsResetTo10() {
-        assertEquals(9, carnivore1.getReproductionRate());
-        reproduceRateHelper.decreaseReproductionRate(carnivore1);
-        reproduceRateHelper.decreaseReproductionRate(carnivore1);
-        reproduceRateHelper.decreaseReproductionRate(carnivore1);
-        reproduceRateHelper.decreaseReproductionRate(carnivore1);
-        reproduceRateHelper.resetReproductionRate(carnivore1);
-        int reproductionRate = carnivore1.getReproductionRate();
-        assertEquals(reproductionRate, carnivore1.getReproductionRate());
+    public void testIfTheReproductionLevelOfTheAnimalIsResetTo100() {
+        assertEquals(100, carnivore1.getReproductionLevel());
+        reproduceRateHelper.decreaseReproductionLevel(carnivore1);
+        reproduceRateHelper.decreaseReproductionLevel(carnivore1);
+        reproduceRateHelper.decreaseReproductionLevel(carnivore1);
+        reproduceRateHelper.decreaseReproductionLevel(carnivore1);
+        assertEquals(64, carnivore1.getReproductionLevel());
+        reproduceRateHelper.resetReproductionLevel(carnivore1);
+        assertEquals(100, carnivore1.getReproductionLevel());
     }
     
     @Test
@@ -236,12 +236,11 @@ public class AnimalServiceTest {
     }
     
     @Test
-    public void testIfTheReproductionRateIsReset() {
-        assertEquals(9, carnivore1.getReproductionRate());
-        reproduceRateHelper.decreaseReproductionRate(carnivore1);
-        assertEquals(8, carnivore1.getReproductionRate());
-        reproduceRateHelper.resetReproductionRate(carnivore1);
-        int reproductionRate = carnivore1.getReproductionRate();
-        assertEquals(reproductionRate, carnivore1.getReproductionRate());
+    public void testIfTheReproductionLevelIsReset() {
+        assertEquals(100, carnivore1.getReproductionLevel());
+        reproduceRateHelper.decreaseReproductionLevel(carnivore1);
+        assertEquals(91, carnivore1.getReproductionLevel());
+        reproduceRateHelper.resetReproductionLevel(carnivore1);
+        assertEquals(100, carnivore1.getReproductionLevel());
     }
 }

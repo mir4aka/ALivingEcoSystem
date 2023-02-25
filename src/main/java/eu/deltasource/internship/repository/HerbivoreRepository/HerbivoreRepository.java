@@ -1,9 +1,7 @@
 package eu.deltasource.internship.repository.HerbivoreRepository;
 
-import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Herbivore;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public interface HerbivoreRepository {
@@ -14,5 +12,5 @@ public interface HerbivoreRepository {
     void addNewBornHerbivore(Herbivore herbivore);
     
     void removeHerbivore(Herbivore herbivore);
-    void clearNewBornHerbivoresCollection();
+    void clearNewBornHerbivoresRepository();
 }

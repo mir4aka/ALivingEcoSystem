@@ -37,7 +37,7 @@ public class HerbivoreRepositoryImpl implements HerbivoreRepository {
     }
     
     @Override
-    public void clearNewBornHerbivoresCollection() {
+    public void clearNewBornHerbivoresRepository() {
         newBornHerbivores.clear();
     }
 }

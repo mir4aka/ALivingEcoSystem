@@ -4,27 +4,29 @@ import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Carnivore;
 import eu.deltasource.internship.model.Herbivore;
 
-import java.util.Random;
-
-public class ReproduceRateHelper {
+public class ReproductionRateHelper {
     private SuccessChanceCalculator successChanceCalculator;
     
-    public ReproduceRateHelper(SuccessChanceCalculator successChanceCalculator) {
+    public ReproductionRateHelper(SuccessChanceCalculator successChanceCalculator) {
         this.successChanceCalculator = successChanceCalculator;
     }
     
-    public void decreaseReproductionRate(Animal animal) {
+    /**
+     * Decreasing the animal's reproduction rate by one.
+     */
+    public void decreaseReproductionLevel(Animal animal) {
+        int reproductionLevel = animal.getReproductionLevel();
         int reproductionRate = animal.getReproductionRate();
-        reproductionRate--;
-        if (reproductionRate <= 0) {
-            reproductionRate = 0;
+        reproductionLevel-=reproductionRate;
+        if (reproductionLevel <= 0) {
+            animal.setReproductionLevel(0);
         }
-        animal.setReproductionRate(reproductionRate);
+        animal.setReproductionLevel(reproductionLevel);
     }
     
-    public void resetReproductionRate(Animal animal) {
-        int randomReproductionRate = new Random().nextInt(10, 25);
-        animal.setReproductionRate(randomReproductionRate);
+    public void resetReproductionLevel(Animal animal) {
+        int reproductionLevel = 100;
+        animal.setReproductionLevel(reproductionLevel);
     }
     
     public Carnivore reproduce(Carnivore carnivore) {

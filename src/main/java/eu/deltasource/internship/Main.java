@@ -13,9 +13,9 @@ import eu.deltasource.internship.service.AnimalService;
 import eu.deltasource.internship.service.BiomeService;
 import eu.deltasource.internship.service.EcoSystemService;
 import eu.deltasource.internship.service.GroupService;
-import eu.deltasource.internship.service.helper.NewBornCarnivoresCollection;
-import eu.deltasource.internship.service.helper.NewBornHerbivoresCollection;
-import eu.deltasource.internship.service.helper.ReproduceRateHelper;
+import eu.deltasource.internship.service.helper.NewBornCarnivoresRepository;
+import eu.deltasource.internship.service.helper.NewBornHerbivoresRepository;
+import eu.deltasource.internship.service.helper.ReproductionRateHelper;
 import eu.deltasource.internship.service.helper.SuccessChanceCalculator;
 
 import java.io.IOException;
@@ -41,9 +41,9 @@ public class Main {
         AnimalService animalService = new AnimalService(herbivoreRepository, carnivoreRepository, groupRepository, successChanceCalculator);
         GroupService groupService = new GroupService(groupRepository, animalService);
         BiomeService biomeService = new BiomeService(animalService, groupService, biomeRepository);
-        ReproduceRateHelper reproduceRateHelper = new ReproduceRateHelper(successChanceCalculator);
-        NewBornCarnivoresCollection newBornCarnivoresCollection = new NewBornCarnivoresCollection(carnivoreRepository);
-        NewBornHerbivoresCollection newBornHerbivoresCollection = new NewBornHerbivoresCollection(herbivoreRepository);
+        ReproductionRateHelper reproduceRateHelper = new ReproductionRateHelper(successChanceCalculator);
+        NewBornCarnivoresRepository newBornCarnivoresCollection = new NewBornCarnivoresRepository(carnivoreRepository);
+        NewBornHerbivoresRepository newBornHerbivoresCollection = new NewBornHerbivoresRepository(herbivoreRepository);
         return new EcoSystemService(biomeService, animalService, groupService, reproduceRateHelper, successChanceCalculator, newBornCarnivoresCollection, newBornHerbivoresCollection);
     }
 }

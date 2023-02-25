@@ -1,16 +1,15 @@
 package eu.deltasource.internship.service.helper;
 
-import eu.deltasource.internship.model.Carnivore;
 import eu.deltasource.internship.model.Herbivore;
 import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepository;
 
 import java.util.Collections;
 import java.util.List;
 
-public class NewBornHerbivoresCollection {
+public class NewBornHerbivoresRepository {
     private HerbivoreRepository herbivoreRepository;
     
-    public NewBornHerbivoresCollection(HerbivoreRepository herbivoreRepository) {
+    public NewBornHerbivoresRepository(HerbivoreRepository herbivoreRepository) {
         this.herbivoreRepository = herbivoreRepository;
     }
     
@@ -22,7 +21,7 @@ public class NewBornHerbivoresCollection {
         herbivoreRepository.addNewBornHerbivore(herbivore);
     }
     
-    public void clearNewBornHerbivoresCollection() {
-        herbivoreRepository.clearNewBornHerbivoresCollection();
+    public void clearNewBornHerbivoresRepository() {
+        herbivoreRepository.clearNewBornHerbivoresRepository();
     }
 }

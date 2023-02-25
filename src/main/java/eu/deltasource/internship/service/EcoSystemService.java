@@ -5,9 +5,9 @@ import eu.deltasource.internship.model.Group;
 import eu.deltasource.internship.enums.BiomeEnum;
 import eu.deltasource.internship.enums.SocialStatus;
 import eu.deltasource.internship.model.*;
-import eu.deltasource.internship.service.helper.NewBornCarnivoresCollection;
-import eu.deltasource.internship.service.helper.NewBornHerbivoresCollection;
-import eu.deltasource.internship.service.helper.ReproduceRateHelper;
+import eu.deltasource.internship.service.helper.NewBornCarnivoresRepository;
+import eu.deltasource.internship.service.helper.NewBornHerbivoresRepository;
+import eu.deltasource.internship.service.helper.ReproductionRateHelper;
 import eu.deltasource.internship.service.helper.SuccessChanceCalculator;
 
 import java.io.FileNotFoundException;
@@ -21,12 +21,12 @@ public class EcoSystemService {
     private BiomeService biomeService;
     private AnimalService animalService;
     private GroupService groupService;
-    private ReproduceRateHelper reproduceRateHelper;
+    private ReproductionRateHelper reproduceRateHelper;
     private SuccessChanceCalculator successChanceCalculator;
-    private NewBornCarnivoresCollection newBornCarnivoresCollection;
-    private NewBornHerbivoresCollection newBornHerbivoresCollection;
+    private NewBornCarnivoresRepository newBornCarnivoresCollection;
+    private NewBornHerbivoresRepository newBornHerbivoresCollection;
     
-    public EcoSystemService(BiomeService biomeService, AnimalService animalService, GroupService groupService, ReproduceRateHelper reproduceRateHelper, SuccessChanceCalculator successChanceCalculator, NewBornCarnivoresCollection newBornCarnivoresCollection, NewBornHerbivoresCollection newBornHerbivoresCollection) {
+    public EcoSystemService(BiomeService biomeService, AnimalService animalService, GroupService groupService, ReproductionRateHelper reproduceRateHelper, SuccessChanceCalculator successChanceCalculator, NewBornCarnivoresRepository newBornCarnivoresCollection, NewBornHerbivoresRepository newBornHerbivoresCollection) {
         this.biomeService = biomeService;
         this.animalService = animalService;
         this.groupService = groupService;
@@ -84,8 +84,8 @@ public class EcoSystemService {
         for (Herbivore herbivore : herbivores1) {
             animalService.addHerbivoreToRepository(herbivore);
         }
-        newBornCarnivoresCollection.clearNewBornCarnivoresCollection();
-        newBornHerbivoresCollection.clearNewBornHerbivoresCollection();
+        newBornCarnivoresCollection.clearNewBornCarnivoresRepository();
+        newBornHerbivoresCollection.clearNewBornHerbivoresRepository();
     }
     
     private JsonElement readingFile() throws FileNotFoundException {
@@ -257,28 +257,28 @@ public class EcoSystemService {
     
     private void carnivoreFactory(List<Carnivore> carnivores) {
         for (Carnivore carnivore : carnivores) {
-            double reproductionRate = carnivore.getReproductionRate();
-            if (reproductionRate == 0) {
+            int reproductionLevel = carnivore.getReproductionLevel();
+            if (reproductionLevel == 0) {
                 Carnivore newBornCarnivore = reproduceRateHelper.reproduce(carnivore);
                 newBornCarnivoresCollection.addNewBornCarnivore(newBornCarnivore);
-                reproduceRateHelper.resetReproductionRate(carnivore);
+                reproduceRateHelper.resetReproductionLevel(carnivore);
                 System.out.println("New carnivore " + newBornCarnivore.getSpecie() + " is born.");
             } else {
-                reproduceRateHelper.decreaseReproductionRate(carnivore);
+                reproduceRateHelper.decreaseReproductionLevel(carnivore);
             }
         }
     }
     
     private void herbivoreFactory(List<Herbivore> herbivores) {
         for (Herbivore herbivore : herbivores) {
-            double reproductionRate = herbivore.getReproductionRate();
-            if (reproductionRate <= 0) {
+            int reproductionLevel = herbivore.getReproductionLevel();
+            if (reproductionLevel <= 0) {
                 Herbivore newBornHerbivore = reproduceRateHelper.reproduce(herbivore);
                 newBornHerbivoresCollection.addNewBornHerbivore(newBornHerbivore);
-                reproduceRateHelper.resetReproductionRate(herbivore);
+                reproduceRateHelper.resetReproductionLevel(herbivore);
                 System.out.println("New herbivore " + newBornHerbivore.getSpecie() + " is born.");
             } else {
-                reproduceRateHelper.decreaseReproductionRate(herbivore);
+                reproduceRateHelper.decreaseReproductionLevel(herbivore);
             }
         }
     }

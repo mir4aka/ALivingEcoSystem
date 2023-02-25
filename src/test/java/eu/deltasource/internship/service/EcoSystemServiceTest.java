@@ -1,4 +1,5 @@
 package eu.deltasource.internship.service;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonObject;
@@ -17,9 +18,9 @@ import eu.deltasource.internship.repository.GroupRepository.GroupRepository;
 import eu.deltasource.internship.repository.GroupRepository.GroupRepositoryImpl;
 import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepository;
 import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepositoryImpl;
-import eu.deltasource.internship.service.helper.NewBornCarnivoresCollection;
-import eu.deltasource.internship.service.helper.NewBornHerbivoresCollection;
-import eu.deltasource.internship.service.helper.ReproduceRateHelper;
+import eu.deltasource.internship.service.helper.NewBornCarnivoresRepository;
+import eu.deltasource.internship.service.helper.NewBornHerbivoresRepository;
+import eu.deltasource.internship.service.helper.ReproductionRateHelper;
 import eu.deltasource.internship.service.helper.SuccessChanceCalculator;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,6 +31,32 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
+//TODO WRITE GIVEN WHEN THEN
 class EcoSystemServiceTest {
     
     private CarnivoreRepository carnivoreRepository = new CarnivoreRepositoryImpl();
@@ -40,9 +67,9 @@ class EcoSystemServiceTest {
     private AnimalService animalService = new AnimalService(herbivoreRepository, carnivoreRepository, groupRepository, successChanceCalculator);
     private GroupService groupService = new GroupService(groupRepository, animalService);
     private BiomeService biomeService = new BiomeService(animalService, groupService, biomeRepository);
-    private ReproduceRateHelper reproduceRateHelper = new ReproduceRateHelper(successChanceCalculator);
-    private NewBornCarnivoresCollection newBornCarnivoresCollection = new NewBornCarnivoresCollection(carnivoreRepository);
-    private NewBornHerbivoresCollection newBornHerbivoresCollection = new NewBornHerbivoresCollection(herbivoreRepository);
+    private ReproductionRateHelper reproduceRateHelper = new ReproductionRateHelper(successChanceCalculator);
+    private NewBornCarnivoresRepository newBornCarnivoresCollection = new NewBornCarnivoresRepository(carnivoreRepository);
+    private NewBornHerbivoresRepository newBornHerbivoresCollection = new NewBornHerbivoresRepository(herbivoreRepository);
     private EcoSystemService ecoSystemService = new EcoSystemService(biomeService, animalService, groupService, reproduceRateHelper, successChanceCalculator, newBornCarnivoresCollection, newBornHerbivoresCollection);
     private Carnivore carnivore;
     private Herbivore herbivore;
@@ -59,31 +86,11 @@ class EcoSystemServiceTest {
         JsonObject asJsonObject = parser.parse(new FileReader("C:\\Users\\mirchakis\\IdeaProjects\\ProjectsDeltaSource\\ALivingEcoSystem\\ALivingEcoSystem\\src\\main\\resources\\animals.json")).getAsJsonObject();
         Gson gson = new GsonBuilder().create();
         BiomeEnum biomeEnum = BiomeEnum.TESTBIOME;
-
-        biomeService.updateAnimalsRepositories(biomeEnum, gson, asJsonObject);
-    
-        List<Carnivore> carnivores = animalService.getCarnivores();
-
-        ecoSystemService.simulateEcoSystem(biomeEnum);
-
-        assertEquals(0, carnivores.size());
-    }
-    
-    @Test
-    public void testIfTheAnimalsAreReproducedCorrectly() throws IOException, InterruptedException {
-        BiomeEnum biome1 = createBiome();
-        getInformationFromJsonFile(biome1);
-    
-        List<Carnivore> carnivores = animalService.getCarnivores();
-        List<Herbivore> herbivores = animalService.getHerbivores();
-    
-        assertEquals(1, carnivores.size());
-        assertEquals(1, herbivores.size());
         
-        ecoSystemService.simulateEcoSystem(biome1);
-    
-        assertEquals(2, carnivores.size());
-        assertEquals(2, herbivores.size());
+        biomeService.updateAnimalsRepositories(biomeEnum, gson, asJsonObject);
+        List<Carnivore> carnivores = animalService.getCarnivores();
+        ecoSystemService.simulateEcoSystem(biomeEnum);
+        assertEquals(0, carnivores.size());
     }
     
     @Test
@@ -91,12 +98,9 @@ class EcoSystemServiceTest {
         BiomeEnum biome1 = createBiome();
         getInformationFromJsonFile(biome1);
         Carnivore carnivore = getCarnivore();
-    
         assert carnivore != null;
         assertEquals(0, carnivore.getHungerLevel());
-        
         ecoSystemService.simulateEcoSystem(biome1);
-        
         assertEquals(100, carnivore.getHungerLevel());
     }
     

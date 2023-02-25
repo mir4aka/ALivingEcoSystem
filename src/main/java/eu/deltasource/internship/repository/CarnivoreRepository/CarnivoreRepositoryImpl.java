@@ -38,7 +38,7 @@ public class CarnivoreRepositoryImpl implements CarnivoreRepository {
     }
     
     @Override
-    public void clearNewBornCarnivoresCollection() {
+    public void clearNewBornCarnivoresRepository() {
         newBornCarnivores.clear();
     }
 }

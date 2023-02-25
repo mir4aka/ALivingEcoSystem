@@ -6,6 +6,9 @@ import eu.deltasource.internship.model.Carnivore;
 import eu.deltasource.internship.model.Herbivore;
 
 public class SuccessChanceCalculator {
+    /**
+     * Calculates the success chance of the attack, based on the carnivore/herbivore's social status.
+     * */
     public double getAttackSuccess(Carnivore carnivore, Herbivore herbivore) {
         double attackPoints;
         double escapePoints;
@@ -16,14 +19,28 @@ public class SuccessChanceCalculator {
             return successRate;
         }
         
-        attackPoints = calculateAttackPoints(carnivore);
-        escapePoints = calculateEscapePoints(herbivore);
-        
+        attackPoints = calculateAttackPointsOfTheCarnivore(carnivore);
+        escapePoints = calculateEscapePointsOfTheHerbivore(herbivore);
         successRate = attackPoints / (attackPoints + escapePoints) * 100;
         successRate = calculateSuccessChanceIfTheCarnivoreAttacksAlone(carnivore, successRate);
         successRate = calculatesTheSuccessChanceIfTheHerbivoreWeighsMoreThanTheCarnivore(carnivore, herbivore, successRate);
         
         return successRate;
+    }
+    
+    public double getScaledAttackPoints(Carnivore carnivore) {
+        return scalePoints(carnivore, carnivore.getPoints());
+    }
+    
+    public double getScaledEscapePoints(Herbivore herbivore) {
+        return scalePoints(herbivore, herbivore.getPoints());
+    }
+    
+    public double scalePoints(Animal animal, double points) {
+        if (animal.getAge() == 0) {
+            return points;
+        }
+        return points * (1 - (animal.getAge() / animal.getMaxAge()));
     }
     
     private double calculatesTheSuccessChanceIfTheHerbivoreWeighsMoreThanTheCarnivore(Carnivore carnivore, Herbivore herbivore, double successRate) {
@@ -42,7 +59,7 @@ public class SuccessChanceCalculator {
         return successRate;
     }
     
-    private double calculateEscapePoints(Herbivore herbivore) {
+    private double calculateEscapePointsOfTheHerbivore(Herbivore herbivore) {
         double escapePoints;
         if (herbivore.getSocialStatus().equals(SocialStatus.GROUP)) {
             escapePoints = getScaledEscapePoints(herbivore) * herbivore.getGroupAmount();
@@ -52,7 +69,7 @@ public class SuccessChanceCalculator {
         return escapePoints;
     }
     
-    private double calculateAttackPoints(Carnivore carnivore) {
+    private double calculateAttackPointsOfTheCarnivore(Carnivore carnivore) {
         double attackPoints;
         if (carnivore.getSocialStatus().equals(SocialStatus.GROUP)) {
             attackPoints = getScaledAttackPoints(carnivore) * carnivore.getGroupAmount();
@@ -60,20 +77,5 @@ public class SuccessChanceCalculator {
             attackPoints = getScaledAttackPoints(carnivore);
         }
         return attackPoints;
-    }
-    
-    public double getScaledAttackPoints(Carnivore carnivore) {
-        return scalePoints(carnivore, carnivore.getPoints());
-    }
-    
-    public double getScaledEscapePoints(Herbivore herbivore) {
-        return scalePoints(herbivore, herbivore.getPoints());
-    }
-    
-    public double scalePoints(Animal animal, double points) {
-        if (animal.getAge() == 0) {
-            return points;
-        }
-        return points * (1 - (animal.getAge() / animal.getMaxAge()));
     }
 }

@@ -9,6 +9,7 @@ import java.util.List;
 public abstract class Animal {
     private double age;
     private double maxAge;
+    private int reproductionLevel;
     private int reproductionRate;
     private int groupAmount;
     private double weight;
@@ -23,8 +24,9 @@ public abstract class Animal {
         setHabitat(habitat);
         setSocialStatus(socialStatus);
         setGroupAmount(groupAmount);
+        setReproductionLevel(100);
         setReproductionRate(reproductionRate);
-        this.age = 0;
+        setAge(0);
     }
     
     public Animal() {
@@ -76,6 +78,14 @@ public abstract class Animal {
     
     public HabitatEnum getHabitat() {
         return habitat;
+    }
+    
+    public int getReproductionLevel() {
+        return reproductionLevel;
+    }
+    
+    public void setReproductionLevel(int reproductionLevel) {
+        this.reproductionLevel = reproductionLevel;
     }
     
     public int getReproductionRate() {
