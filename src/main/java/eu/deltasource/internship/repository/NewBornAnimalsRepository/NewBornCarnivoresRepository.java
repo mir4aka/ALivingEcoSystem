@@ -1,4 +1,4 @@
-package eu.deltasource.internship.service.helper;
+package eu.deltasource.internship.repository.NewBornAnimalsRepository;
 
 import eu.deltasource.internship.model.Carnivore;
 import eu.deltasource.internship.repository.CarnivoreRepository.CarnivoreRepository;
@@ -6,9 +6,6 @@ import eu.deltasource.internship.repository.CarnivoreRepository.CarnivoreReposit
 import java.util.Collections;
 import java.util.List;
 
-/**
- *
- */
 public class NewBornCarnivoresRepository {
     private CarnivoreRepository carnivoreRepository;
     

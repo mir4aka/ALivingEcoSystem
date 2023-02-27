@@ -32,26 +32,4 @@ public class GroupRepositoryImpl implements GroupRepository {
         herbivoresGroup.add(group);
     }
     
-    public Carnivore findCarnivoreInGroup(Carnivore carnivore) {
-        for (Group group : carnivoresGroup) {
-            List<Animal> animals = group.getAnimals();
-            if (animals.contains(carnivore)) {
-                return carnivore;
-            }
-        }
-        return carnivore;
-    }
-    
-    @Override
-    public void removeCarnivore(Animal animal) {
-        for (Group group : carnivoresGroup) {
-            List<Animal> animals = group.getAnimals();
-            for (Animal animal1 : animals) {
-                if(animal1.equals(animal)) {
-                    animals.remove(animal);
-                }
-            }
-        }
-    }
-    
 }

@@ -5,17 +5,22 @@ import java.util.Collections;
 import java.util.List;
 
 public class Group {
-    private List<Animal> animals = new ArrayList<>();
+    private List<Carnivore> carnivores = new ArrayList<>();
+    private List<Herbivore> herbivores = new ArrayList<>();
     
-    public List<Animal> getAnimals() {
-        return Collections.unmodifiableList(animals);
+    public List<Carnivore> getCarnivoresGroup() {
+        return Collections.unmodifiableList(carnivores);
     }
     
-    public void addAnimal(Animal animal) {
-        animals.add(animal);
+    public void addCarnivoreToTheGroup(Carnivore carnivore) {
+        carnivores.add(carnivore);
     }
     
-    public void removeAnimal(Animal animal) {
-        animals.remove(animal);
+    public void addHerbivoreToTheGroup(Herbivore herbivore) {
+        herbivores.add(herbivore);
+    }
+    
+    public void removeCarnivoreFromTheGroup(Carnivore carnivore) {
+        carnivores.remove(carnivore);
     }
 }

@@ -1,5 +1,5 @@
 package eu.deltasource.internship.enums;
 
-public enum BiomeEnum {
+public enum BiomeList {
     SAVANNA, SWAMP, PLAINS, TUNDRA, DESERT, OCEAN, TESTBIOME
 }

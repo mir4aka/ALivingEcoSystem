@@ -1,4 +1,4 @@
-package eu.deltasource.internship.service.helper;
+package eu.deltasource.internship.repository.NewBornAnimalsRepository;
 
 import eu.deltasource.internship.model.Herbivore;
 import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepository;

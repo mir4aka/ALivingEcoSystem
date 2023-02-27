@@ -1,23 +1,20 @@
 package eu.deltasource.internship.model;
 
-import eu.deltasource.internship.enums.HabitatEnum;
+import eu.deltasource.internship.enums.Habitat;
 import eu.deltasource.internship.enums.SocialStatus;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public abstract class Animal {
-    private double age;
-    private double maxAge;
+    private int age;
+    private int maxAge;
     private int reproductionLevel;
     private int reproductionRate;
     private int groupAmount;
-    private double weight;
+    private int weight;
     private String specie;
-    private HabitatEnum habitat;
+    private Habitat habitat;
     private SocialStatus socialStatus;
     
-    public Animal(String specie, double maxAge, double weight, HabitatEnum habitat, SocialStatus socialStatus, int groupAmount, int reproductionRate) {
+    public Animal(String specie, int maxAge, int weight, Habitat habitat, SocialStatus socialStatus, int groupAmount, int reproductionRate) {
         setSpecie(specie);
         setMaxAge(maxAge);
         setWeight(weight);
@@ -32,52 +29,20 @@ public abstract class Animal {
     public Animal() {
     }
     
-    public String getSpecie() {
-        return specie;
-    }
-    
-    public void setSpecie(String specie) {
-        this.specie = specie;
-    }
-    
-    public double getAge() {
+    public int getAge() {
         return age;
     }
     
-    public void setAge(double age) {
+    public void setAge(int age) {
         this.age = age;
     }
     
-    public double getMaxAge() {
+    public int getMaxAge() {
         return maxAge;
     }
     
-    public void setMaxAge(double maxAge) {
+    public void setMaxAge(int maxAge) {
         this.maxAge = maxAge;
-    }
-    
-    public void setGroupAmount(int groupAmount) {
-        this.groupAmount = groupAmount;
-    }
-    
-    public void setWeight(double weight) {
-        this.weight = weight;
-    }
-    
-    public void setHabitat(HabitatEnum habitat) {
-        this.habitat = habitat;
-    }
-    
-    public void setSocialStatus(SocialStatus socialStatus) {
-        this.socialStatus = socialStatus;
-    }
-    
-    public double getWeight() {
-        return weight;
-    }
-    
-    public HabitatEnum getHabitat() {
-        return habitat;
     }
     
     public int getReproductionLevel() {
@@ -96,15 +61,48 @@ public abstract class Animal {
         this.reproductionRate = reproductionRate;
     }
     
-    public SocialStatus getSocialStatus() {
-        return socialStatus;
-    }
-    
     public int getGroupAmount() {
         return groupAmount;
     }
     
+    public void setGroupAmount(int groupAmount) {
+        this.groupAmount = groupAmount;
+    }
+    
+    public int getWeight() {
+        return weight;
+    }
+    
+    public void setWeight(int weight) {
+        this.weight = weight;
+    }
+    
+    public String getSpecie() {
+        return specie;
+    }
+    
+    public void setSpecie(String specie) {
+        this.specie = specie;
+    }
+    
+    public Habitat getHabitat() {
+        return habitat;
+    }
+    
+    public void setHabitat(Habitat habitat) {
+        this.habitat = habitat;
+    }
+    
+    public SocialStatus getSocialStatus() {
+        return socialStatus;
+    }
+    
+    public void setSocialStatus(SocialStatus socialStatus) {
+        this.socialStatus = socialStatus;
+    }
+    
     public abstract double getPoints();
+    
     @Override
     public String toString() {
         return "Type of animal = " + getClass().getSimpleName() + "\n" +

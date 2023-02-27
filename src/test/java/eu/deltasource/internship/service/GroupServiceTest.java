@@ -1,6 +1,6 @@
 package eu.deltasource.internship.service;
 
-import eu.deltasource.internship.enums.HabitatEnum;
+import eu.deltasource.internship.enums.Habitat;
 import eu.deltasource.internship.enums.SocialStatus;
 import eu.deltasource.internship.model.Animal;
 import eu.deltasource.internship.model.Carnivore;
@@ -13,7 +13,6 @@ import eu.deltasource.internship.repository.GroupRepository.GroupRepositoryImpl;
 import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepository;
 import eu.deltasource.internship.repository.HerbivoreRepository.HerbivoreRepositoryImpl;
 import eu.deltasource.internship.service.helper.SuccessChanceCalculator;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
@@ -31,73 +30,100 @@ class GroupServiceTest {
     
     @Test
     public void testIfCarnivoresGroupSizeIsCorrect() {
-        Carnivore carnivore = new Carnivore("lion", 20, 200, HabitatEnum.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
-        groupService.createGroupOfCarnivores(carnivore);
-        
+        // Given
+        Carnivore carnivore = new Carnivore("lion", 20, 200, Habitat.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
         List<Group> carnivoresGroup = groupService.getCarnivoresGroup();
         
+        // When
+        groupService.createGroupOfCarnivores(carnivore);
+        
+        // Then
         assertEquals(1, carnivoresGroup.size());
     }
     
     @Test
     public void testIfACarnivoreIsFoundInTheGroup() {
-        Carnivore carnivore = new Carnivore("lion", 20, 200, HabitatEnum.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
-        groupService.createGroupOfCarnivores(carnivore);
+        // Given
+        Carnivore carnivore = new Carnivore("lion", 20, 200, Habitat.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
         
+        // When
+        groupService.createGroupOfCarnivores(carnivore);
         Animal carnivoreInGroup = groupService.findCarnivoreInGroup(carnivore);
         
+        // Then
         assertEquals(carnivore, carnivoreInGroup);
     }
     
     @Test
     public void testIfTheGroupOfCarnivoresIsCreated() {
-        Carnivore carnivore = new Carnivore("lion", 20, 200, HabitatEnum.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
-        Carnivore carnivore2 = new Carnivore("ko4e", 20, 200, HabitatEnum.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
+        
+        // Given
+        Carnivore carnivore = new Carnivore("lion", 20, 200, Habitat.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
+        Carnivore carnivore2 = new Carnivore("ko4e", 20, 200, Habitat.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
+        List<Group> carnivoresGroup = groupService.getCarnivoresGroup();
+        
+        // When
         groupService.createGroupOfCarnivores(carnivore);
         groupService.createGroupOfCarnivores(carnivore2);
-        List<Group> carnivoresGroup = groupService.getCarnivoresGroup();
+        
+        // Then
         assertEquals(2, carnivoresGroup.size());
     }
     
     @Test
     public void testIfTheGroupOfHerbivoresIsCreated() {
-        Herbivore herbivore = new Herbivore("Deer", 20, 200, HabitatEnum.LAND, SocialStatus.GROUP, 5, 11, 70);
-        Herbivore herbivore1 = new Herbivore("Deereee", 210, 2020, HabitatEnum.LAND, SocialStatus.GROUP, 51, 111, 60);
+        // Given
+        Herbivore herbivore = new Herbivore("Deer", 20, 200, Habitat.LAND, SocialStatus.GROUP, 5, 11, 70);
+        Herbivore herbivore1 = new Herbivore("Deereee", 210, 2020, Habitat.LAND, SocialStatus.GROUP, 51, 111, 60);
+        List<Group> herbivoresGroup = groupService.getHerbivoresGroup();
+        
+        // When
         groupService.createGroupOfHerbivores(herbivore);
         groupService.createGroupOfHerbivores(herbivore1);
         
-        List<Group> herbivoresGroup = groupService.getHerbivoresGroup();
+        // Then
         assertEquals(2, herbivoresGroup.size());
     }
     
     @Test
     public void testIfTheChosenAnimalIsRemovedFromTheGroup() {
-        Carnivore carnivore = new Carnivore("lion", 20, 200, HabitatEnum.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
-        groupService.createGroupOfCarnivores(carnivore);
+        // Given
+        Carnivore carnivore = new Carnivore("lion", 20, 200, Habitat.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
         
+        // When
+        groupService.createGroupOfCarnivores(carnivore);
         Group carnivoreGroup = groupService.findCarnivoreGroup(carnivore);
         
-        assertEquals(3, carnivoreGroup.getAnimals().size());
+        // Then
+        assertEquals(3, carnivoreGroup.getCarnivoresGroup().size());
         
-        carnivoreGroup.removeAnimal(carnivore);
+        // When
+        carnivoreGroup.removeCarnivoreFromTheGroup(carnivore);
         
-        assertEquals(2, carnivoreGroup.getAnimals().size());
+        // Then
+        assertEquals(2, carnivoreGroup.getCarnivoresGroup().size());
     }
     
     @Test
     public void testIfTheCarnivoreIsRemovedFromTheGroup() {
-        Carnivore carnivore = new Carnivore("lion", 20, 200, HabitatEnum.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
-        groupService.createGroupOfCarnivores(carnivore);
-        
-        List<Animal> animals = new ArrayList<>();
-        
+        // Given
+        Carnivore carnivore = new Carnivore("lion", 20, 200, Habitat.LAND, SocialStatus.GROUP, 3, 9, 15, 10);
+        List<Carnivore> carnivores = new ArrayList<>();
         List<Group> carnivoresGroup = groupService.getCarnivoresGroup();
+        
+        // When
+        groupService.createGroupOfCarnivores(carnivore);
         for (Group group : carnivoresGroup) {
-            animals = group.getAnimals();
+            carnivores = group.getCarnivoresGroup();
         }
         
-        assertEquals(3, animals.size());
+        // Then
+        assertEquals(3, carnivores.size());
+        
+        // When
         groupService.removeCarnivore(carnivore);
-        assertEquals(2, animals.size());
+        
+        // Then
+        assertEquals(2, carnivores.size());
     }
 }

@@ -1,5 +1,5 @@
 package eu.deltasource.internship.enums;
 
-public enum HabitatEnum {
+public enum Habitat {
     LAND, WATER, AIR
 }

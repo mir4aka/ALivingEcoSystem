@@ -1,11 +1,11 @@
 package eu.deltasource.internship.model;
 
-import eu.deltasource.internship.enums.BiomeEnum;
+import eu.deltasource.internship.enums.BiomeList;
 
 public class Biome {
-    private BiomeEnum biome;
+    private BiomeList biome;
     
-    public Biome(BiomeEnum biome) {
+    public Biome(BiomeList biome) {
         this.biome = biome;
     }
     

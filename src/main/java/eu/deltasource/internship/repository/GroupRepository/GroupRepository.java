@@ -15,8 +15,4 @@ public interface GroupRepository {
     void addGroupOfCarnivores(Group group);
     
     void addGroupOfHerbivores(Group group);
-    
-    Carnivore findCarnivoreInGroup(Carnivore carnivore);
-    
-    void removeCarnivore(Animal animal);
 }

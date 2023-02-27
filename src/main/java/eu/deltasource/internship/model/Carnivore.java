@@ -1,6 +1,6 @@
 package eu.deltasource.internship.model;
 
-import eu.deltasource.internship.enums.HabitatEnum;
+import eu.deltasource.internship.enums.Habitat;
 import eu.deltasource.internship.enums.SocialStatus;
 
 public class Carnivore extends Animal {
@@ -8,19 +8,14 @@ public class Carnivore extends Animal {
     private int hungerLevel;
     private int hungerRate;
     
-    public Carnivore(String specie, double maxAge, double weight, HabitatEnum habitat, SocialStatus livingType, int groupAmount, int reproductionRate, int hungerRate, double attackPoints) {
-        super(specie, maxAge, weight, habitat, livingType, groupAmount, reproductionRate);
+    public Carnivore(String specie, int maxAge, int weight, Habitat habitat, SocialStatus socialStatus, int groupAmount, int reproductionRate, int hungerRate, double attackPoints) {
+        super(specie, maxAge, weight, habitat, socialStatus, groupAmount, reproductionRate);
         setHungerRate(hungerRate);
         setAttackPoints(attackPoints);
         setHungerLevel(0);
     }
     
     public Carnivore() {
-    }
-    
-    @Override
-    public double getPoints() {
-        return attackPoints;
     }
     
     public void setAttackPoints(double attackPoints) {
@@ -41,6 +36,15 @@ public class Carnivore extends Animal {
     
     public void setHungerLevel(int hungerLevel) {
         this.hungerLevel = hungerLevel;
+    }
+    
+    /**
+     * Gets the attack points of the carnivore.
+     * @return
+     */
+    @Override
+    public double getPoints() {
+        return attackPoints;
     }
     
     @Override

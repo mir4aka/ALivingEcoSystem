@@ -12,7 +12,6 @@ import eu.deltasource.internship.service.helper.SuccessChanceCalculator;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 public class AnimalService {
     private HerbivoreRepository herbivoreRepository;
@@ -47,11 +46,11 @@ public class AnimalService {
         return groupRepository.getHerbivoresGroup();
     }
     
-    public List<Animal> findGroup(List<Group> groups, Animal animal) {
-        List<Animal> animals = new ArrayList<>();
+    public List<Carnivore> findGroup(List<Group> groups, Animal animal) {
+        List<Carnivore> animals = new ArrayList<>();
         for (Group group : groups) {
-            List<Animal> animalsList = group.getAnimals();
-            for (Animal animalInList : animalsList) {
+            List<Carnivore> animalsList = group.getCarnivoresGroup();
+            for (Carnivore animalInList : animalsList) {
                 if (animal.getSpecie().equals(animalInList.getSpecie())) {
                     animals.add(animalInList);
                 }
@@ -88,27 +87,8 @@ public class AnimalService {
         return Collections.unmodifiableList(herbivoreRepository.getHerbivoresList());
     }
     
-    public void increaseHungerLevel(Carnivore carnivore) {
-        int hungerLevel = carnivore.getHungerLevel();
-        int hungerRate = carnivore.getHungerRate();
-        hungerLevel += hungerRate;
-        carnivore.setHungerLevel(hungerLevel);
-        if (hungerLevel >= 100) {
-            carnivore.setHungerLevel(100);
-        }
-    }
-    
-    public void decreaseHungerLevel(Carnivore carnivore, double food) {
-        int hungerLevel = carnivore.getHungerLevel();
-        hungerLevel-=food;
-        carnivore.setHungerLevel(hungerLevel);
-        if (hungerLevel <= 0) {
-            carnivore.setHungerLevel(0);
-        }
-    }
-    
     public void increaseAge(Animal animal) {
-        double age = animal.getAge();
+        int age = animal.getAge();
         age++;
         if (animal.getAge() >= animal.getMaxAge()) {
             age = animal.getMaxAge();
