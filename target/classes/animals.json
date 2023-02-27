@@ -1,0 +1,478 @@
+{
+  "SAVANNA": [
+    {
+      "Herbivores": [
+        {
+          "specie": "zebra",
+          "maxAge": 50,
+          "weight": 300,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 6,
+          "reproductionRate": 10,
+          "escapePoints": 80
+        },
+        {
+          "specie": "hare",
+          "maxAge": 24,
+          "weight": 5,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 3,
+          "escapePoints": 100
+        },
+        {
+          "specie": "gazelle",
+          "maxAge": 25,
+          "weight": 25,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 11,
+          "reproductionRate": 5,
+          "escapePoints": 80
+        },
+        {
+          "specie": "bufallo",
+          "maxAge": 35,
+          "weight": 800,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 6,
+          "reproductionRate": 9,
+          "escapePoints": 40
+        }
+      ],
+      "Carnivores": [
+        {
+          "specie": "lion",
+          "maxAge": 30,
+          "weight": 150,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 4,
+          "reproductionRate": 6,
+          "hungerRate": 20,
+          "attackPoints": 80
+        },
+        {
+          "specie": "cheetah",
+          "maxAge": 30,
+          "weight": 60,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 5,
+          "hungerRate": 15,
+          "attackPoints": 110
+        },
+        {
+          "specie": "tiger",
+          "maxAge": 20,
+          "weight": 200,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 6,
+          "hungerRate": 18,
+          "attackPoints": 75
+        },
+        {
+          "specie": "hyena",
+          "maxAge": 24,
+          "weight": 50,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 6,
+          "reproductionRate": 5,
+          "hungerRate": 14,
+          "attackPoints": 80
+        }
+      ]
+    }
+  ],
+  "TUNDRA": [
+    {
+      "Herbivores": [
+        {
+          "specie": "katerica",
+          "maxAge": 12,
+          "weight": 4,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 6,
+          "reproductionRate": 176,
+          "escapePoints": 60
+        },
+        {
+          "specie": "mishka",
+          "maxAge": 9,
+          "weight": 2,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 176,
+          "escapePoints": 60
+        },
+        {
+          "specie": "lemming",
+          "maxAge": 4,
+          "weight": 11,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 19,
+          "reproductionRate": 276,
+          "escapePoints": 60
+        }
+      ],
+      "Carnivores": [
+        {
+          "specie": "lisica",
+          "maxAge": 19,
+          "weight": 15,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 5,
+          "reproductionRate": 106,
+          "hungerRate": 14,
+          "attackPoints": 80
+        },
+        {
+          "specie": "buhal",
+          "maxAge": 14,
+          "weight": 9,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 255,
+          "hungerRate": 14,
+          "attackPoints": 80
+        },
+        {
+          "specie": "polqrna me4ka",
+          "maxAge": 24,
+          "weight": 120,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 6,
+          "reproductionRate": 306,
+          "hungerRate": 18,
+          "attackPoints": 80
+        }
+      ]
+    }
+  ],
+  "SWAMP": [
+    {
+      "Herbivores": [
+        {
+          "specie": "los",
+          "maxAge": 12,
+          "weight": 45,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 176,
+          "escapePoints": 60
+        },
+        {
+          "specie": "bobar",
+          "maxAge": 11,
+          "weight": 45,
+          "habitat": "WATER",
+          "socialStatus": "GROUP",
+          "groupAmount": 19,
+          "reproductionRate": 276,
+          "escapePoints": 60
+        },
+        {
+          "specie": "patka",
+          "maxAge": 11,
+          "weight": 45,
+          "habitat": "WATER",
+          "socialStatus": "GROUP",
+          "groupAmount": 8,
+          "reproductionRate": 276,
+          "escapePoints": 60
+        }
+      ],
+      "Carnivores": [
+        {
+          "specie": "pastarva",
+          "maxAge": 84,
+          "weight": 60,
+          "habitat": "WATER",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 106,
+          "hungerRate": 14,
+          "attackPoints": 80
+        },
+        {
+          "specie": "qzovec",
+          "maxAge": 84,
+          "weight": 70,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 255,
+          "hungerRate": 14,
+          "attackPoints": 80
+        },
+        {
+          "specie": "bik riba",
+          "maxAge": 84,
+          "weight": 77,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 16,
+          "reproductionRate": 306,
+          "hungerRate": 18,
+          "attackPoints": 80
+        }
+      ]
+    }
+  ],
+  "PLAINS": [
+    {
+      "Herbivores": [
+        {
+          "specie": "impala",
+          "maxAge": 12,
+          "weight": 45,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 176,
+          "escapePoints": 60
+        },
+        {
+          "specie": "bizon",
+          "maxAge": 19,
+          "weight": 45,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 11,
+          "reproductionRate": 176,
+          "escapePoints": 60
+        },
+        {
+          "specie": "elen",
+          "maxAge": 14,
+          "weight": 45,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 19,
+          "reproductionRate": 276,
+          "escapePoints": 60
+        }
+      ],
+      "Carnivores": [
+        {
+          "specie": "leopard",
+          "maxAge": 19,
+          "weight": 40,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 106,
+          "hungerRate": 14,
+          "attackPoints": 80
+        },
+        {
+          "specie": "chita",
+          "maxAge": 14,
+          "weight": 19,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 255,
+          "hungerRate": 14,
+          "attackPoints": 80
+        },
+        {
+          "specie": "div ku4",
+          "maxAge": 24,
+          "weight": 40,
+          "habitat": "LAND",
+          "socialStatus": "GROUP",
+          "groupAmount": 6,
+          "reproductionRate": 306,
+          "hungerRate": 18,
+          "attackPoints": 80
+        }
+      ]
+    }
+  ],
+  "OCEAN": [
+    {
+      "Herbivores": [
+        {
+          "specie": "riba kloun",
+          "maxAge": 8,
+          "weight": 0.05,
+          "habitat": "WATER",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 5,
+          "escapePoints": 60
+        },
+        {
+          "specie": "kit",
+          "maxAge": 11,
+          "weight": 40000,
+          "habitat": "WATER",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 6,
+          "escapePoints": 60
+        },
+        {
+          "specie": "siomga",
+          "maxAge": 10,
+          "weight": 0.01,
+          "habitat": "WATER",
+          "socialStatus": "GROUP",
+          "groupAmount": 19,
+          "reproductionRate": 7,
+          "escapePoints": 60
+        }
+      ],
+      "Carnivores": [
+        {
+          "specie": "akula",
+          "maxAge": 44,
+          "weight": 700,
+          "habitat": "WATER",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 106,
+          "hungerRate": 14,
+          "attackPoints": 80
+        },
+        {
+          "specie": "ribame4",
+          "maxAge": 24,
+          "weight": 670,
+          "habitat": "WATER",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 255,
+          "hungerRate": 14,
+          "attackPoints": 80
+        },
+        {
+          "specie": "barakuda",
+          "maxAge": 44,
+          "weight": 57,
+          "habitat": "WATER",
+          "socialStatus": "GROUP",
+          "groupAmount": 6,
+          "reproductionRate": 306,
+          "hungerRate": 18,
+          "attackPoints": 80
+        }
+      ]
+    }
+  ],
+  "DESERT": [
+    {
+      "Herbivores": [
+        {
+          "specie": "antelope",
+          "maxAge": 8,
+          "weight": 0.05,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 5,
+          "escapePoints": 60
+        },
+        {
+          "specie": "kangaroo",
+          "maxAge": 11,
+          "weight": 40000,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 6,
+          "escapePoints": 60
+        },
+        {
+          "specie": "rabbit",
+          "maxAge": 10,
+          "weight": 0.01,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 7,
+          "escapePoints": 60
+        }
+      ],
+      "Carnivores": [
+        {
+          "specie": "coyote",
+          "maxAge": 2,
+          "weight": 700,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 6,
+          "hungerRate": 14,
+          "attackPoints": 80
+        },
+        {
+          "specie": "gray fox",
+          "maxAge": 2,
+          "weight": 670,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 5,
+          "hungerRate": 14,
+          "attackPoints": 80
+        },
+        {
+          "specie": "bobcat",
+          "maxAge": 2,
+          "weight": 57,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 4,
+          "hungerRate": 18,
+          "attackPoints": 80
+        }
+      ]
+    }
+  ],
+  "TESTBIOME": [
+    {
+      "Herbivores": [
+        {
+          "specie": "antelope",
+          "maxAge": 8,
+          "weight": 90,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 5,
+          "escapePoints": 60
+        }
+      ],
+      "Carnivores": [
+        {
+          "specie": "lion",
+          "maxAge": 20,
+          "weight": 200,
+          "habitat": "LAND",
+          "socialStatus": "ALONE",
+          "groupAmount": 1,
+          "reproductionRate": 1,
+          "hungerRate": 15,
+          "attackPoints": 80
+        }
+      ]
+    }
+  ]
+}
